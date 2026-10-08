@@ -1,7 +1,8 @@
 'use client';
-import Image from 'next/image';
 
+import Image from 'next/image';
 import React, { useState, use } from 'react';
+import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, Clock, MapPin, Share2, Download, ExternalLink, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -39,16 +40,31 @@ export function EventsDetailClient({ params }: { params: Promise<{ id: string }>
     }
 
     return (
-        <div className="container mx-auto px-4 pt-32 pb-24 max-w-5xl [font-size:85%]">
-            <Link href="/events" className="inline-flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors mb-8 group font-medium">
-                <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-                Back to Events
-            </Link>
+        <div className="relative container mx-auto px-4 pt-32 pb-24 max-w-5xl [font-size:85%] overflow-hidden">
+            {/* Ambient Background Glow */}
+            <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-primary/15 rounded-full blur-[140px] pointer-events-none -z-10" />
+
+            <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4 }}
+            >
+                <Link href="/events" className="inline-flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-primary transition-colors mb-8 group font-medium">
+                    <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+                    Back to Events
+                </Link>
+            </motion.div>
 
             <div className="grid lg:grid-cols-3 gap-8 md:gap-10">
                 {/* Left: Content */}
-                <div className="lg:col-span-2 space-y-8">
+                <motion.div
+                    initial={{ opacity: 0, y: 25 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    className="lg:col-span-2 space-y-8"
+                >
                     <div className="rounded-[2.5rem] overflow-hidden border border-white/10 bg-[#050505] shadow-2xl relative aspect-[16/9] group">
+                        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10" />
                         {event.image_url ? (
                             <Image fill src={event.image_url} alt={event.title} sizes="(max-width: 1024px) 100vw, 66vw" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                         ) : (
@@ -59,181 +75,157 @@ export function EventsDetailClient({ params }: { params: Promise<{ id: string }>
                                 </div>
                             </>
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                        <div className="absolute bottom-5 left-6">
-                            <span className="px-3.5 py-1 rounded-xl bg-primary/20 backdrop-blur-xl text-primary text-[10px] font-black border border-primary/40 uppercase tracking-[0.25em] shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]">
-                                {event.type || 'Workshop'}
+                        <div className="absolute top-4 left-4 z-20 flex gap-2">
+                            <span className="px-3.5 py-1.5 rounded-full bg-black/70 backdrop-blur-md text-primary text-xs font-black uppercase tracking-wider border border-white/10 shadow-lg">
+                                {event.type || 'Event'}
+                            </span>
+                            {event.category && (
+                                <span className="px-3.5 py-1.5 rounded-full bg-black/70 backdrop-blur-md text-cyan-400 text-xs font-black uppercase tracking-wider border border-white/10 shadow-lg">
+                                    {event.category}
+                                </span>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="space-y-4">
+                        <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-tight text-white">
+                            {event.title}
+                        </h1>
+
+                        <div className="flex flex-wrap items-center gap-4 text-xs md:text-sm text-muted-foreground pt-1">
+                            <span className="flex items-center gap-1.5 text-white font-medium">
+                                <Calendar size={15} className="text-primary" /> {formattedDate}
+                            </span>
+                            {event.time && (
+                                <span className="flex items-center gap-1.5 text-white font-medium">
+                                    <Clock size={15} className="text-secondary" /> {event.time}
+                                </span>
+                            )}
+                            <span className="flex items-center gap-1.5 text-white font-medium">
+                                <MapPin size={15} className="text-pink-400" /> {event.location}
                             </span>
                         </div>
                     </div>
 
-                    <div className="space-y-3">
-                        <h1 className="text-3xl md:text-5xl font-black tracking-tighter text-white leading-tight drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">{event.title}</h1>
+                    {/* About the Event */}
+                    <div className="p-8 rounded-[2.5rem] border border-white/10 bg-[#07070a]/90 backdrop-blur-xl shadow-2xl space-y-6">
+                        <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                            <span className="w-2 h-6 bg-primary rounded-full" />
+                            About the Event
+                        </h2>
+                        <div className="text-slate-300 text-sm md:text-base leading-relaxed whitespace-pre-wrap font-normal">
+                            {event.long_description || event.description}
+                        </div>
+
+                        {event.organizer && (
+                            <div className="pt-4 border-t border-white/5 flex items-center gap-2 text-xs text-muted-foreground">
+                                <span className="font-bold text-white">Organized by:</span> {event.organizer}
+                            </div>
+                        )}
                     </div>
 
-                    <div className="space-y-8">
-                        <section className="space-y-4">
+                    {/* Brochure Section */}
+                    {event.brochure_url && (
+                        <div className="p-6 rounded-[2rem] border border-cyan-500/20 bg-cyan-500/5 backdrop-blur-xl flex items-center justify-between gap-4">
                             <div className="flex items-center gap-3">
-                                <h2 className="text-lg md:text-xl font-bold tracking-tight">About the Event</h2>
-                                <div className="h-px flex-1 bg-white/5" />
-                            </div>
-                            <p className="text-sm md:text-base text-muted-foreground leading-relaxed whitespace-pre-wrap font-medium max-w-2xl">
-                                {event.long_description || event.description || "Join us for an exciting deep dive into this topic."}
-                            </p>
-                        </section>
-
-                        {/* Post-Event Gallery Carousel (Renders ONLY if gallery_images exist) */}
-                        {event.gallery_images && event.gallery_images.length > 0 && (
-                            <section className="space-y-4 pt-4 border-t border-white/10">
-                                <div className="flex items-center justify-between">
-                                    <h3 className="text-lg font-bold tracking-tight flex items-center gap-2">
-                                        <span className="w-2 h-6 bg-primary rounded-full" /> Event Highlights &amp; Post-Event Gallery
-                                    </h3>
-                                    <span className="text-xs text-muted-foreground font-semibold">{event.gallery_images.length} Photos</span>
+                                <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center">
+                                    <Download size={22} />
                                 </div>
-
-                                {/* Carousel Display */}
-                                <div className="space-y-3">
-                                    <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-[#050505] aspect-[16/9] group shadow-2xl">
-                                        <Image
-                                            fill
-                                            src={event.gallery_images[activeGalleryIndex % event.gallery_images.length]}
-                                            alt={`${event.title} gallery photo ${(activeGalleryIndex % event.gallery_images.length) + 1}`}
-                                            sizes="(max-width: 1024px) 100vw, 66vw"
-                                            className="w-full h-full object-cover transition-all duration-500"
-                                        />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-
-                                        {event.gallery_images.length > 1 && (
-                                            <>
-                                                <button
-                                                    onClick={() => setActiveGalleryIndex((prev) => (prev > 0 ? prev - 1 : event.gallery_images!.length - 1))}
-                                                    className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 hover:bg-black/90 text-white backdrop-blur-md transition-all border border-white/10"
-                                                >
-                                                    ←
-                                                </button>
-                                                <button
-                                                    onClick={() => setActiveGalleryIndex((prev) => (prev + 1) % event.gallery_images!.length)}
-                                                    className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 hover:bg-black/90 text-white backdrop-blur-md transition-all border border-white/10"
-                                                >
-                                                    →
-                                                </button>
-                                            </>
-                                        )}
-                                    </div>
-
-                                    {/* Thumbnails */}
-                                    {event.gallery_images.length > 1 && (
-                                        <div className="flex items-center gap-2 overflow-x-auto pb-2">
-                                            {event.gallery_images.map((imgUrl, idx) => (
-                                                <button
-                                                    key={idx}
-                                                    onClick={() => setActiveGalleryIndex(idx)}
-                                                    className={`relative w-20 h-14 rounded-xl overflow-hidden shrink-0 border transition-all ${
-                                                        activeGalleryIndex === idx ? 'border-primary ring-2 ring-primary/40 scale-105' : 'border-white/10 opacity-60 hover:opacity-100'
-                                                    }`}
-                                                >
-                                                    <Image fill src={imgUrl} alt={`Thumbnail ${idx + 1}`} sizes="80px" className="w-full h-full object-cover" />
-                                                </button>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            </section>
-                        )}
-
-                        {/* Brochure Download Section (Renders ONLY if brochure_url exists) */}
-                        {event.brochure_url && (
-                            <div className="p-6 rounded-3xl bg-white/5 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-5 group hover:bg-white/10 transition-all">
-                                <div className="flex items-center gap-3.5">
-                                    <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
-                                        <ShieldCheck size={22} />
-                                    </div>
-                                    <div>
-                                        <h4 className="font-bold text-base">Official Event Brochure</h4>
-                                        <p className="text-xs text-muted-foreground">Download schedule, guidelines, and speaker details.</p>
-                                    </div>
-                                </div>
-                                <Button className="rounded-xl h-11 px-5 text-xs font-bold gap-2" variant="neon" asChild>
-                                    <a href={event.brochure_url} target="_blank" rel="noopener noreferrer">
-                                        <Download size={16} /> Download Brochure
-                                    </a>
-                                </Button>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                {/* Right: Info Card */}
-                <aside className="space-y-6">
-                    <div className="rounded-[2.5rem] border border-white/10 bg-[#050505]/40 backdrop-blur-3xl p-8 shadow-[0_0_100px_-20px_rgba(0,0,0,0.5)] sticky top-32 overflow-hidden group">
-                        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)]" />
-                        <div className="space-y-6">
-                            <div className="space-y-5">
-                                <div className="flex items-start gap-4">
-                                    <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20 shadow-inner group-hover:scale-110 transition-transform duration-500">
-                                        <Calendar className="w-4 h-4 text-primary" />
-                                    </div>
-                                    <div className="space-y-0.5">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Date</p>
-                                        <p className="text-base font-bold tracking-tight">{formattedDate}</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-4">
-                                    <div className="p-2.5 rounded-xl bg-secondary/10 border border-secondary/20 shadow-inner group-hover:scale-110 transition-transform duration-500">
-                                        <Clock className="w-4 h-4 text-secondary" />
-                                    </div>
-                                    <div className="space-y-0.5">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Time</p>
-                                        <p className="text-base font-bold tracking-tight">{event.time || 'TBA'}</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-4">
-                                    <div className="p-2.5 rounded-xl bg-accent/10 border border-accent/20 shadow-inner group-hover:scale-110 transition-transform duration-500">
-                                        <MapPin className="w-4 h-4 text-accent" />
-                                    </div>
-                                    <div className="space-y-0.5">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Location</p>
-                                        <p className="text-base font-bold tracking-tight">{event.location}</p>
-                                    </div>
+                                <div>
+                                    <h4 className="text-sm font-bold text-white">Event Brochure</h4>
+                                    <p className="text-xs text-muted-foreground">Download the official event flyer and guidelines</p>
                                 </div>
                             </div>
+                            <Button variant="outline" asChild className="rounded-2xl border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/10 text-xs">
+                                <a href={event.brochure_url} target="_blank" rel="noopener noreferrer">
+                                    Download Brochure
+                                </a>
+                            </Button>
+                        </div>
+                    )}
 
-                            <div className="pt-6 border-t border-white/5 space-y-3">
-                                {event.has_registration && !event.is_past && (
-                                    event.registration_url ? (
-                                        <Button className="w-full rounded-2xl h-12 text-sm font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all group" variant="neon" asChild>
-                                            <a href={event.registration_url} target="_blank" rel="noopener noreferrer">
-                                                Register Now <ExternalLink size={16} className="ml-2 opacity-50 group-hover:opacity-100 transition-opacity" />
-                                            </a>
-                                        </Button>
-                                    ) : (
-                                        <Button className="w-full rounded-2xl h-12 text-sm font-bold opacity-50 cursor-not-allowed" variant="secondary" disabled>
-                                            Registration Opening Soon
-                                        </Button>
-                                    )
-                                )}
-
-                                <Button
-                                    onClick={() => setShareOpen(true)}
-                                    variant="outline"
-                                    className="w-full rounded-2xl h-10 border-white/5 bg-white/5 hover:bg-white/10 gap-2 font-bold tracking-tight text-xs"
-                                >
-                                    <Share2 size={14} /> Share Event
-                                </Button>
+                    {/* Event Photo Gallery */}
+                    {event.gallery_images && event.gallery_images.length > 0 && (
+                        <div className="space-y-4">
+                            <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                                <span className="w-2 h-6 bg-secondary rounded-full" />
+                                Event Snapshot Gallery
+                            </h2>
+                            <div className="rounded-[2.5rem] border border-white/10 bg-[#07070a] p-4 shadow-xl space-y-4">
+                                <div className="aspect-[16/9] w-full rounded-2xl overflow-hidden relative border border-white/10">
+                                    <Image fill src={event.gallery_images[activeGalleryIndex]} alt={`Event Photo ${activeGalleryIndex + 1}`} sizes="(max-width: 1024px) 100vw, 66vw" className="w-full h-full object-cover transition-all duration-500" />
+                                </div>
+                                <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
+                                    {event.gallery_images.map((img, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={() => setActiveGalleryIndex(idx)}
+                                            className={`relative w-20 h-14 rounded-xl overflow-hidden border shrink-0 transition-all cursor-pointer ${
+                                                activeGalleryIndex === idx ? 'border-primary ring-2 ring-primary/50 scale-105' : 'border-white/10 opacity-60 hover:opacity-100'
+                                            }`}
+                                        >
+                                            <Image fill src={img} alt={`Thumb ${idx}`} sizes="80px" className="w-full h-full object-cover" />
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
                         </div>
+                    )}
+                </motion.div>
+
+                {/* Right: Registration Sidebar */}
+                <motion.div
+                    initial={{ opacity: 0, x: 25 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+                    className="space-y-6"
+                >
+                    <div className="p-8 rounded-[2.5rem] border border-white/10 bg-[#07070e]/90 backdrop-blur-xl shadow-2xl space-y-6 sticky top-32">
+                        <div className="space-y-2">
+                            <span className="px-3 py-1 rounded-full bg-white/5 text-muted-foreground text-[10px] font-black uppercase tracking-wider border border-white/10">
+                                Registration Status
+                            </span>
+                            <h3 className="text-xl font-bold text-white">
+                                {event.is_past ? 'Event Concluded' : (event.has_registration ? 'Open for Registrations' : 'Open Entry')}
+                            </h3>
+                            <p className="text-xs text-muted-foreground leading-relaxed">
+                                {event.is_past
+                                    ? 'This event has concluded. Stay tuned for future editions.'
+                                    : (event.has_registration
+                                        ? 'Limited slots available. Secure your spot now to confirm participation.'
+                                        : 'Free admission for all ACPCE students. No pre-registration required.')
+                                }
+                            </p>
+                        </div>
+
+                        {!event.is_past && event.has_registration && (
+                            event.registration_url ? (
+                                <Button className="w-full h-12 rounded-2xl text-xs font-black uppercase tracking-wider gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all" variant="neon" asChild>
+                                    <a href={event.registration_url} target="_blank" rel="noopener noreferrer">
+                                        Register Online <ExternalLink size={14} />
+                                    </a>
+                                </Button>
+                            ) : (
+                                <Button className="w-full h-12 rounded-2xl text-xs font-black uppercase tracking-wider" variant="neon" disabled>
+                                    Registration Link Opening Soon
+                                </Button>
+                            )
+                        )}
+
+                        <div className="pt-4 border-t border-white/10 space-y-3">
+                            <Button onClick={() => setShareOpen(true)} variant="outline" className="w-full h-11 rounded-2xl text-xs font-bold gap-2 border-white/10 bg-white/5 hover:bg-white/10">
+                                <Share2 size={14} /> Share Event Details
+                            </Button>
+                        </div>
+
+                        <div className="pt-2 flex items-center gap-2 text-[11px] text-muted-foreground/70">
+                            <ShieldCheck size={14} className="text-emerald-400 shrink-0" /> Official Departmental Activity
+                        </div>
                     </div>
-                </aside>
+                </motion.div>
             </div>
 
-            {/* Share Modal Dialog */}
-            <ShareModal
-                isOpen={shareOpen}
-                onClose={() => setShareOpen(false)}
-                title={event.title}
-                description={event.description}
-            />
+            <ShareModal isOpen={shareOpen} onClose={() => setShareOpen(false)} title={event.title} />
         </div>
     );
 }
