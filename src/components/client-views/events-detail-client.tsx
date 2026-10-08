@@ -50,7 +50,7 @@ export function EventsDetailClient({ params }: { params: Promise<{ id: string }>
                 <div className="lg:col-span-2 space-y-8">
                     <div className="rounded-[2.5rem] overflow-hidden border border-white/10 bg-[#050505] shadow-2xl relative aspect-[16/9] group">
                         {event.image_url ? (
-                            <Image fill src={event.image_url} alt={event.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                            <Image fill src={event.image_url} alt={event.title} sizes="(max-width: 1024px) 100vw, 66vw" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                         ) : (
                             <>
                                 <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-secondary/30" />
@@ -99,6 +99,7 @@ export function EventsDetailClient({ params }: { params: Promise<{ id: string }>
                                             fill
                                             src={event.gallery_images[activeGalleryIndex % event.gallery_images.length]}
                                             alt={`${event.title} gallery photo ${(activeGalleryIndex % event.gallery_images.length) + 1}`}
+                                            sizes="(max-width: 1024px) 100vw, 66vw"
                                             className="w-full h-full object-cover transition-all duration-500"
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
@@ -132,7 +133,7 @@ export function EventsDetailClient({ params }: { params: Promise<{ id: string }>
                                                         activeGalleryIndex === idx ? 'border-primary ring-2 ring-primary/40 scale-105' : 'border-white/10 opacity-60 hover:opacity-100'
                                                     }`}
                                                 >
-                                                    <Image fill src={imgUrl} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                                                    <Image fill src={imgUrl} alt={`Thumbnail ${idx + 1}`} sizes="80px" className="w-full h-full object-cover" />
                                                 </button>
                                             ))}
                                         </div>

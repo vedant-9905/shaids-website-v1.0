@@ -66,7 +66,7 @@ export default function LeadershipMessagesPage() {
 
                             <div className="flex items-center gap-4 pt-2">
                                 <div className="relative w-16 h-16 rounded-2xl overflow-hidden border border-white/10 shrink-0">
-                                    <Image fill src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                    <Image fill src={item.image} alt={item.name} sizes="64px" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 </div>
                                 <div>
                                     <h3 className="text-xl font-black text-white tracking-tight">{item.name}</h3>

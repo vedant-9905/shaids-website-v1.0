@@ -281,7 +281,7 @@
 @layer base {
   html {
     font-size: 90%;
-    scroll-behavior: smooth;
+    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -294,11 +294,9 @@
   body {
     @apply bg-background text-foreground;
     position: relative;
-    overflow-x: hidden;
+    overflow-x: clip;
     background-color: var(--background);
     background-image: var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-conic);
-    background-attachment: fixed;
-    contain: layout style;
   }
 
   /* Ribbons */
@@ -330,15 +328,15 @@
 
   /* Global Scrollbar */
   ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 8px;
+    height: 8px;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
     background: var(--border);
-    border-radius: 10px;
+    border-radius: 9999px;
     transition: background 0.2s;
   }
   ::-webkit-scrollbar-thumb:hover {
@@ -349,18 +347,6 @@
   :focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
-  }
-
-  /* GPU-accelerate transformed elements */
-  .glass-card,
-  .glass {
-    will-change: backdrop-filter;
-  }
-
-  /* Lazy render off-screen sections */
-  section {
-    content-visibility: auto;
-    contain-intrinsic-size: auto 600px;
   }
 
   /* Selection color */

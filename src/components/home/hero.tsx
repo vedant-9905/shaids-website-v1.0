@@ -21,10 +21,10 @@ export function Hero() {
                         transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
                         className="font-bold tracking-tighter mb-8"
                     >
-                        <span className="text-4xl md:text-6xl lg:text-7xl text-foreground block mb-2">
+                        <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-foreground block mb-2">
                             Innovating
                         </span>
-                        <span className="text-6xl md:text-8xl lg:text-9xl text-transparent bg-clip-text bg-gradient-to-r from-primary via-fuchsia-500 to-secondary drop-shadow-[0_0_50px_rgba(124,58,237,0.3)]">
+                        <span className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-transparent bg-clip-text bg-gradient-to-r from-primary via-fuchsia-500 to-secondary drop-shadow-[0_0_50px_rgba(124,58,237,0.3)]">
                             Intelligence
                         </span>
                     </motion.h1>
@@ -46,7 +46,7 @@ export function Hero() {
                         className="flex flex-col sm:flex-row items-start justify-start gap-6"
                     >
                         <Link href="/events">
-                            <Button variant="outline" size="lg" className="h-12 px-8 text-base rounded-full border-purple-500/60 bg-purple-950/40 text-purple-200 backdrop-blur-md transition-all duration-300 hover:scale-105 shadow-[0_0_25px_rgba(168,85,247,0.6)] hover:shadow-[0_0_45px_rgba(168,85,247,0.9)] hover:border-purple-400 cursor-pointer font-bold gap-2">
+                            <Button size="lg" className="h-12 px-8 text-base rounded-full border border-primary/50 bg-primary/20 hover:bg-primary/30 text-foreground dark:text-purple-100 backdrop-blur-md transition-all duration-300 hover:scale-105 shadow-[0_0_25px_rgba(168,85,247,0.4)] hover:shadow-[0_0_35px_rgba(168,85,247,0.7)] cursor-pointer font-bold gap-2">
                                 Explore Events
                             </Button>
                         </Link>
@@ -105,6 +105,7 @@ function LogoMorph() {
                             src={LOGOS[currentLogo].src}
                             alt="Logo"
                             fill
+                            sizes="(max-width: 768px) 260px, 340px"
                             className="object-contain"
                             priority
                         />

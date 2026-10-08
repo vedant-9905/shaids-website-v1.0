@@ -51,7 +51,7 @@ export default function BestProjectsPage() {
                                 onClick={() => setLightboxState({ images: [proj.image, ...(proj.gallery || [])], index: 0 })}
                                 className="aspect-[16/9] rounded-2xl overflow-hidden border border-white/10 relative cursor-pointer"
                             >
-                                <Image fill src={proj.image} alt={proj.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <Image fill src={proj.image} alt={proj.title} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 <span className="absolute top-3 left-3 px-3 py-1 rounded-xl bg-black/80 backdrop-blur-md text-[10px] font-black text-cyan-400 border border-cyan-500/30 uppercase tracking-wider">
                                     {proj.category}
                                 </span>
@@ -121,7 +121,7 @@ export default function BestProjectsPage() {
                                             onClick={() => setLightboxState({ images: selectedProject.gallery, index: i })}
                                             className="aspect-[16/9] rounded-xl overflow-hidden border border-white/10 cursor-pointer group relative"
                                         >
-                                            <Image fill src={imgUrl} alt={`Gallery ${i}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                                            <Image fill src={imgUrl} alt={`Gallery ${i}`} sizes="(max-width: 768px) 50vw, 25vw" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                                         </div>
                                     ))}
                                 </div>

@@ -31,14 +31,18 @@ export default function AdminDashboardPage() {
     const [activeTab, setActiveTab] = useState<'overview' | 'events' | 'fests' | 'achievements' | 'team' | 'staff' | 'resources'>('overview');
 
     // Home Config Local Form State
-    const [localHomeConfig, setLocalHomeConfig] = useState<HomeConfig | null>(null);
-
-    // Sync homeConfig state when loaded
-    React.useEffect(() => {
-        if (homeConfig && !localHomeConfig) {
-            setLocalHomeConfig(homeConfig);
+    const [localHomeConfigState, setLocalHomeConfigState] = useState<HomeConfig | null>(null);
+    const localHomeConfig = localHomeConfigState ?? homeConfig;
+    const setLocalHomeConfig = (updater: React.SetStateAction<HomeConfig | null> | HomeConfig) => {
+        if (typeof updater === 'function') {
+            setLocalHomeConfigState((prev) => {
+                const base = prev ?? homeConfig;
+                return (updater as (prevState: HomeConfig | null) => HomeConfig | null)(base);
+            });
+        } else {
+            setLocalHomeConfigState(updater);
         }
-    }, [homeConfig, localHomeConfig]);
+    };
 
     // Modals state
     const [eventModal, setEventModal] = useState<(Partial<EventItem> & { rawGallery?: string }) | null>(null);
@@ -549,7 +553,7 @@ export default function AdminDashboardPage() {
                                         <label className="font-bold text-white block">Events Card Banner Photo</label>
                                         <div className="aspect-[16/9] rounded-xl overflow-hidden bg-black/50 border border-white/10 relative">
                                             {localHomeConfig.image_events ? (
-                                                <Image fill src={localHomeConfig.image_events} alt="Events Showcase" className="w-full h-full object-cover" />
+                                                <Image fill src={localHomeConfig.image_events} alt="Events Showcase" sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-full object-cover" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center text-muted-foreground">Default Image</div>
                                             )}
@@ -585,7 +589,7 @@ export default function AdminDashboardPage() {
                                         <label className="font-bold text-white block">Student Committee Showcase Photo</label>
                                         <div className="aspect-[16/9] rounded-xl overflow-hidden bg-black/50 border border-white/10 relative">
                                             {localHomeConfig.image_team ? (
-                                                <Image fill src={localHomeConfig.image_team} alt="Team Showcase" className="w-full h-full object-cover" />
+                                                <Image fill src={localHomeConfig.image_team} alt="Team Showcase" sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-full object-cover" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center text-muted-foreground">Default Image</div>
                                             )}
@@ -621,7 +625,7 @@ export default function AdminDashboardPage() {
                                         <label className="font-bold text-white block">Resources Showcase Photo</label>
                                         <div className="aspect-[16/9] rounded-xl overflow-hidden bg-black/50 border border-white/10 relative">
                                             {localHomeConfig.image_resources ? (
-                                                <Image fill src={localHomeConfig.image_resources} alt="Resources Showcase" className="w-full h-full object-cover" />
+                                                <Image fill src={localHomeConfig.image_resources} alt="Resources Showcase" sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-full object-cover" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center text-muted-foreground">Default Image</div>
                                             )}
@@ -657,7 +661,7 @@ export default function AdminDashboardPage() {
                                         <label className="font-bold text-white block">Faculty / Staff Showcase Photo</label>
                                         <div className="aspect-[16/9] rounded-xl overflow-hidden bg-black/50 border border-white/10 relative">
                                             {localHomeConfig.image_staff ? (
-                                                <Image fill src={localHomeConfig.image_staff} alt="Faculty Showcase" className="w-full h-full object-cover" />
+                                                <Image fill src={localHomeConfig.image_staff} alt="Faculty Showcase" sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-full object-cover" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center text-muted-foreground">Default Image</div>
                                             )}
@@ -723,7 +727,7 @@ export default function AdminDashboardPage() {
                                     <div className="space-y-3">
                                         <div className="aspect-[16/9] rounded-2xl overflow-hidden bg-black/50 border border-white/10 relative">
                                             {evt.image_url ? (
-                                                <Image fill src={evt.image_url} alt={evt.title} className="w-full h-full object-cover" />
+                                                <Image fill src={evt.image_url} alt={evt.title} sizes="(max-width: 768px) 100vw, 33vw" className="w-full h-full object-cover" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">No Poster</div>
                                             )}
@@ -794,7 +798,7 @@ export default function AdminDashboardPage() {
                                     <div className="space-y-3">
                                         <div className="aspect-[16/9] rounded-2xl overflow-hidden bg-black/50 border border-white/10 relative">
                                             {evt.image ? (
-                                                <Image fill src={evt.image} alt={evt.title} className="w-full h-full object-cover" />
+                                                <Image fill src={evt.image} alt={evt.title} sizes="(max-width: 768px) 100vw, 33vw" className="w-full h-full object-cover" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">No Banner</div>
                                             )}
@@ -917,7 +921,7 @@ export default function AdminDashboardPage() {
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
                                 {(festGalleries[selectedFestForGallery] || []).map((imgUrl, idx) => (
                                     <div key={idx} className="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 relative group bg-black/50">
-                                        <Image fill src={imgUrl} alt={`Carousel ${idx}`} className="w-full h-full object-cover" />
+                                        <Image fill src={imgUrl} alt={`Carousel ${idx}`} sizes="(max-width: 768px) 50vw, 16vw" className="w-full h-full object-cover" />
                                         <button
                                             onClick={() => handleRemoveFestGalleryPhoto(idx)}
                                             className="absolute top-2 right-2 p-1.5 rounded-full bg-red-600 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110"
@@ -957,7 +961,7 @@ export default function AdminDashboardPage() {
                                     <div className="space-y-2">
                                         <div className="aspect-[16/9] rounded-2xl overflow-hidden bg-black/50 border border-white/10 relative">
                                             {proj.image ? (
-                                                <Image fill src={proj.image} alt={proj.title} className="w-full h-full object-cover" />
+                                                <Image fill src={proj.image} alt={proj.title} sizes="(max-width: 768px) 100vw, 33vw" className="w-full h-full object-cover" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center text-xs text-muted-foreground">No Banner</div>
                                             )}
@@ -1193,7 +1197,7 @@ export default function AdminDashboardPage() {
                                     <div className="flex items-start gap-3">
                                         <div className="w-16 h-16 rounded-2xl bg-black/60 overflow-hidden border border-white/10 shrink-0 relative shadow-inner">
                                             {m.image_url ? (
-                                                <Image fill src={m.image_url} alt={m.name} className="w-full h-full object-cover" />
+                                                <Image fill src={m.image_url} alt={m.name} sizes="64px" className="w-full h-full object-cover" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center text-base text-primary font-black bg-primary/10">{m.name.charAt(0)}</div>
                                             )}
@@ -1202,7 +1206,7 @@ export default function AdminDashboardPage() {
                                             <div className="flex items-center gap-1.5 flex-wrap">
                                                 <span className="px-2 py-0.5 rounded-md bg-primary/20 text-primary text-[10px] font-bold uppercase tracking-wider">{m.category || 'Core Team'}</span>
                                                 <span className="px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold">{m.academicYear || '2026-27'}</span>
-                                                {m.graduation_year && <span className="px-2 py-0.5 rounded-md bg-white/10 text-slate-300 text-[10px] font-bold">Class of '{m.graduation_year.slice(-2)}</span>}
+                                                {m.graduation_year && <span className="px-2 py-0.5 rounded-md bg-white/10 text-slate-300 text-[10px] font-bold">Class of &apos;{m.graduation_year.slice(-2)}</span>}
                                             </div>
                                             <h3 className="font-bold text-base text-white truncate">{m.name}</h3>
                                             <p className="text-xs text-cyan-400 font-semibold">{m.role}</p>
@@ -1303,7 +1307,7 @@ export default function AdminDashboardPage() {
                                     <div className="flex items-start gap-3">
                                         <div className="w-16 h-16 rounded-2xl bg-black/60 overflow-hidden border border-white/10 shrink-0 relative shadow-inner">
                                             {st.image_url ? (
-                                                <Image fill src={st.image_url} alt={st.name} className="w-full h-full object-cover" />
+                                                <Image fill src={st.image_url} alt={st.name} sizes="64px" className="w-full h-full object-cover" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center text-base text-emerald-400 font-black bg-emerald-500/10">{st.name.charAt(0)}</div>
                                             )}
@@ -1487,7 +1491,7 @@ export default function AdminDashboardPage() {
                                 </div>
                                 {eventModal.image_url && (
                                     <div className="mt-2 aspect-[16/9] w-36 rounded-xl overflow-hidden border border-white/10 relative">
-                                        <Image fill src={eventModal.image_url} alt="Poster Preview" className="w-full h-full object-cover" />
+                                        <Image fill src={eventModal.image_url} alt="Poster Preview" sizes="144px" className="w-full h-full object-cover" />
                                     </div>
                                 )}
                             </div>
@@ -1553,7 +1557,7 @@ export default function AdminDashboardPage() {
                                     <div className="grid grid-cols-4 gap-2 pt-2">
                                         {eventModal.gallery_images.map((url, idx) => (
                                             <div key={idx} className="aspect-[16/9] rounded-xl overflow-hidden border border-white/10 relative group bg-black/50">
-                                                <Image fill src={url} alt={`Event Gallery ${idx}`} className="w-full h-full object-cover" />
+                                                <Image fill src={url} alt={`Event Gallery ${idx}`} sizes="(max-width: 768px) 50vw, 25vw" className="w-full h-full object-cover" />
                                                 <button
                                                     type="button"
                                                     onClick={() => {
@@ -1629,7 +1633,7 @@ export default function AdminDashboardPage() {
                                 </div>
                                 {festModal.image && (
                                     <div className="mt-2 aspect-[16/9] w-36 rounded-xl overflow-hidden border border-white/10 relative">
-                                        <Image fill src={festModal.image} alt="Banner Preview" className="w-full h-full object-cover" />
+                                        <Image fill src={festModal.image} alt="Banner Preview" sizes="144px" className="w-full h-full object-cover" />
                                     </div>
                                 )}
                             </div>
@@ -1686,7 +1690,7 @@ export default function AdminDashboardPage() {
                                     <div className="grid grid-cols-4 gap-2 pt-2">
                                         {festModal.eventGallery.map((url, idx) => (
                                             <div key={idx} className="aspect-[16/9] rounded-xl overflow-hidden border border-white/10 relative group bg-black/50">
-                                                <Image fill src={url} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
+                                                <Image fill src={url} alt={`Gallery ${idx}`} sizes="(max-width: 768px) 50vw, 25vw" className="w-full h-full object-cover" />
                                                 <button
                                                     type="button"
                                                     onClick={() => {
@@ -1743,7 +1747,7 @@ export default function AdminDashboardPage() {
                                 </div>
                                 {projectModal.image && (
                                     <div className="mt-2 aspect-[16/9] w-36 rounded-xl overflow-hidden border border-white/10 relative">
-                                        <Image fill src={projectModal.image} alt="Banner Preview" className="w-full h-full object-cover" />
+                                        <Image fill src={projectModal.image} alt="Banner Preview" sizes="144px" className="w-full h-full object-cover" />
                                     </div>
                                 )}
                             </div>
@@ -1824,7 +1828,7 @@ export default function AdminDashboardPage() {
                                     <div className="grid grid-cols-4 gap-2 pt-2">
                                         {projectModal.gallery.map((url, idx) => (
                                             <div key={idx} className="aspect-[16/9] rounded-xl overflow-hidden border border-white/10 relative group bg-black/50">
-                                                <Image fill src={url} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
+                                                <Image fill src={url} alt={`Gallery ${idx}`} sizes="(max-width: 768px) 50vw, 25vw" className="w-full h-full object-cover" />
                                                 <button
                                                     type="button"
                                                     onClick={() => {
@@ -2219,7 +2223,7 @@ export default function AdminDashboardPage() {
                                     <div className="grid grid-cols-4 gap-2 pt-2">
                                         {highlightModal.gallery.map((imgUrl, i) => (
                                             <div key={i} className="aspect-[16/9] rounded-lg overflow-hidden border border-white/10 relative group">
-                                                <Image fill src={imgUrl} alt={`Gallery ${i}`} className="w-full h-full object-cover" />
+                                                <Image fill src={imgUrl} alt={`Gallery ${i}`} sizes="(max-width: 768px) 50vw, 25vw" className="w-full h-full object-cover" />
                                                 <button
                                                     type="button"
                                                     onClick={() => setHighlightModal({ ...highlightModal, gallery: highlightModal.gallery?.filter((_, idx) => idx !== i) })}

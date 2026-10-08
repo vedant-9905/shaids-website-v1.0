@@ -37,7 +37,7 @@ export function TeamDetailClient({ params }: { params: Promise<{ id: string }> }
                 <div className="md:col-span-1 p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl text-center space-y-4">
                     <div className="relative w-40 h-40 mx-auto rounded-full border-2 border-sky-400/20 overflow-hidden bg-white/5 flex items-center justify-center shadow-md">
                         {member.image_url ? (
-                            <Image fill src={member.image_url} alt={member.name} className="w-full h-full object-cover" />
+                            <Image fill src={member.image_url} alt={member.name} sizes="160px" className="w-full h-full object-cover" />
                         ) : (
                             <span className="text-5xl opacity-40">👤</span>
                         )}

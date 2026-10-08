@@ -343,7 +343,9 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
                 const bc = new BroadcastChannel('shaids-live-sync');
                 bc.postMessage('SYNC_REFRESH');
                 bc.close();
-            } catch (_) {}
+            } catch {
+                // BroadcastChannel may not be supported or allowed in all contexts
+            }
         }
     };
 
@@ -370,7 +372,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             };
         }
 
-        let channel: any = null;
+        let channel: ReturnType<NonNullable<typeof supabase>['channel']> | null = null;
         if (isSupabaseConfigured && supabase) {
             const client = supabase;
             channel = client
@@ -383,7 +385,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
 
         const pollInterval = setInterval(() => {
             refreshContent();
-        }, 2000);
+        }, 20000);
 
         return () => {
             if (bc) bc.close();

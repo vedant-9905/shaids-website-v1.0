@@ -136,6 +136,7 @@ export function ImageLightbox({ images, currentIndex: initialIndex, onClose, onI
                         fill
                         src={currentSrc}
                         alt={`Viewing photo ${index + 1}`}
+                        sizes="(max-width: 1024px) 100vw, 90vw"
                         className="max-w-full max-h-full object-contain rounded-2xl shadow-2xl pointer-events-auto"
                         draggable={false}
                     />
@@ -166,7 +167,7 @@ export function ImageLightbox({ images, currentIndex: initialIndex, onClose, onI
                             }}
                             className={`w-12 h-12 rounded-xl overflow-hidden border-2 shrink-0 transition-all ${i === index ? 'border-primary scale-110 shadow-lg' : 'border-white/20 opacity-50 hover:opacity-100'}`}
                         >
-                            <Image fill src={img} alt={`Thumb ${i + 1}`} className="w-full h-full object-cover" />
+                            <Image fill src={img} alt={`Thumb ${i + 1}`} sizes="48px" className="w-full h-full object-cover" />
                         </button>
                     ))}
                 </div>

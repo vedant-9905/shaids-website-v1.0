@@ -42,7 +42,7 @@ export default function TeamMemberPage({ params }: { params: Promise<{ id: strin
                             <div className="absolute inset-0 bg-sky-400/20 rounded-full blur-2xl group-hover:scale-110 transition-transform duration-700" />
                             <div className="relative w-full h-full rounded-full border-2 border-sky-400/20 overflow-hidden shadow-2xl bg-white/5 flex items-center justify-center">
                                 {member.image_url ? (
-                                    <Image fill src={member.image_url} alt={member.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                    <Image fill src={member.image_url} alt={member.name} sizes="176px" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center text-5xl opacity-40">👤</div>
                                 )}

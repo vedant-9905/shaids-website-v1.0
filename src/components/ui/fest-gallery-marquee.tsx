@@ -34,6 +34,7 @@ export function FestGalleryMarquee({ images, onImageClick }: FestGalleryMarqueeP
                                 fill
                                 src={src}
                                 alt={`Fest gallery photo ${originalIndex + 1}`}
+                                sizes="(max-width: 640px) 256px, 320px"
                                 className="w-full h-full object-cover group-hover/item:brightness-110 transition-all duration-300"
                             />
                         </div>

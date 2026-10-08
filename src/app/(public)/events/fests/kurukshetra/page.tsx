@@ -67,7 +67,7 @@ export default function KurukshetraFestPage() {
                                     onClick={() => setLightboxState({ images: [evt.image, ...(evt.eventGallery || [])], index: 0 })}
                                     className="aspect-[16/9] rounded-2xl overflow-hidden border border-white/10 relative cursor-pointer"
                                 >
-                                    <Image fill src={evt.image} alt={evt.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                    <Image fill src={evt.image} alt={evt.title} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 </div>
                                 <h3 className="text-xl font-black text-white tracking-tight">{evt.title}</h3>
                                 <p className="text-xs text-muted-foreground leading-relaxed">{evt.desc}</p>
@@ -144,7 +144,7 @@ export default function KurukshetraFestPage() {
                                             onClick={() => setLightboxState({ images: selectedSubEvent.eventGallery, index: i })}
                                             className="aspect-[16/9] rounded-xl overflow-hidden border border-white/10 cursor-pointer group relative"
                                         >
-                                            <Image fill src={imgUrl} alt={`Sub event ${i}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                                            <Image fill src={imgUrl} alt={`Sub event ${i}`} sizes="(max-width: 768px) 50vw, 25vw" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                                         </div>
                                     ))}
                                 </div>

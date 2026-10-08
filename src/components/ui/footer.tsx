@@ -23,7 +23,7 @@ export function Footer() {
                     </Link>
                 </div>
 
-                <p className="text-xs text-zinc-500 dark:text-zinc-600">
+                <p className="text-xs text-zinc-500 dark:text-zinc-600" suppressHydrationWarning>
                     &copy; {new Date().getFullYear()} SHAIDS-ACPCE. All rights reserved.
                 </p>
             </div>

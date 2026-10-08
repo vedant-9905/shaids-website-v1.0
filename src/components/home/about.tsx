@@ -23,7 +23,7 @@ const features = [
 
 export function About() {
     return (
-        <section className="pt-20 pb-32 relative overflow-hidden bg-gradient-to-b from-black/5 dark:from-black/80 to-background/50 dark:bg-black/40 backdrop-blur-3xl shadow-[inset_0_0_100px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_0_100px_rgba(0,0,0,0.8)] [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)]">
+        <section className="pt-20 pb-32 relative overflow-hidden bg-gradient-to-b from-black/5 dark:from-black/80 to-background/50 dark:bg-black/40 backdrop-blur-3xl shadow-[inset_0_0_100px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-16">
                     <motion.h2

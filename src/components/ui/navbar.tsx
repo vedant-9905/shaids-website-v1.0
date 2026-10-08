@@ -29,9 +29,9 @@ export function Navbar() {
                 {/* Left group: Logo + Separator + Nav */}
                 <div className="flex items-center gap-4">
                     {/* Logo */}
-                    <Link href="/" className="flex items-center gap-3 group shrink-0">
-                        <div className="relative w-9 h-9 transition-transform group-hover:scale-110">
-                            <Image src="/images/shaids-logo.png" alt="SHAIDS Logo" fill className="object-contain" />
+                    <Link href="/" className="flex items-center gap-3 group shrink-0" suppressHydrationWarning>
+                        <div className="w-9 h-9 transition-transform group-hover:scale-110 shrink-0" suppressHydrationWarning>
+                            <Image src="/images/shaids-logo.png" alt="SHAIDS Logo" width={36} height={36} priority className="object-contain" />
                         </div>
                         <div className="hidden sm:flex flex-col gap-0.5">
                             <span className="text-xl font-bold tracking-tighter text-gradient leading-none">SHAIDS</span>
@@ -84,8 +84,8 @@ export function Navbar() {
 
                     <Link href="https://acpce.ac.in" target="_blank" className="shrink-0">
                         <Button variant="ghost" className="glass h-9 px-3 gap-2 hover:bg-black/5 dark:hover:bg-white/10 text-muted-foreground hover:text-foreground dark:hover:text-white rounded-full border border-black/10 dark:border-white/10 hover:border-white/20">
-                            <div className="relative w-5 h-5">
-                                <Image src="/images/acpce-logo-v2.png" alt="ACPCE" fill className="object-contain" />
+                            <div className="w-5 h-5 shrink-0 flex items-center justify-center" suppressHydrationWarning>
+                                <Image src="/images/acpce-logo-v2.png" alt="ACPCE" width={20} height={20} className="object-contain" />
                             </div>
                             <span className="text-xs font-medium hidden lg:inline">ACPCE</span>
                         </Button>

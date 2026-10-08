@@ -16,6 +16,11 @@ interface ShareModalProps {
 
 export function ShareModal({ isOpen, onClose, title, description, url }: ShareModalProps) {
     const [copied, setCopied] = useState(false);
+    const canNativeShare = React.useSyncExternalStore(
+        () => () => {},
+        () => typeof navigator !== 'undefined' && typeof navigator.share === 'function',
+        () => false
+    );
 
     if (!isOpen) return null;
 
@@ -157,7 +162,7 @@ export function ShareModal({ isOpen, onClose, title, description, url }: ShareMo
                             </Button>
                         </div>
 
-                        {typeof navigator !== 'undefined' && 'share' in navigator && (
+                        {canNativeShare && (
                             <Button
                                 onClick={handleNativeShare}
                                 variant="outline"

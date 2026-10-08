@@ -2,7 +2,14 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // reactCompiler: true,
+  allowedDevOrigins: [
+    '192.168.0.103',
+    'localhost:3000',
+    'localhost:3001',
+    '127.0.0.1',
+  ],
   images: {
+    qualities: [75, 80],
     localPatterns: [
       {
         pathname: '/**',

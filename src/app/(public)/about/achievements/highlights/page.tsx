@@ -51,7 +51,7 @@ export default function HighlightsAchievementsPage() {
                                 onClick={() => setLightboxState({ images: [item.image, ...(item.gallery || [])], index: 0 })}
                                 className="aspect-[16/9] rounded-2xl overflow-hidden border border-white/10 relative cursor-pointer"
                             >
-                                <Image fill src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <Image fill src={item.image} alt={item.title} sizes="(max-width: 768px) 100vw, 33vw" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 <span className="absolute top-3 left-3 px-3 py-1 rounded-xl bg-black/80 backdrop-blur-md text-[10px] font-black uppercase tracking-wider border bg-primary/20 text-primary border-primary/30">
                                     {item.category}
                                 </span>
@@ -137,7 +137,7 @@ export default function HighlightsAchievementsPage() {
                                             onClick={() => setLightboxState({ images: selectedHighlight.gallery, index: i })}
                                             className="aspect-[16/9] rounded-xl overflow-hidden border border-white/10 cursor-pointer group relative"
                                         >
-                                            <Image fill src={imgUrl} alt={`Gallery ${i}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                                            <Image fill src={imgUrl} alt={`Gallery ${i}`} sizes="(max-width: 640px) 100vw, 33vw" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                                         </div>
                                     ))}
                                 </div>
