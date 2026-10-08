@@ -6,19 +6,21 @@ import Image from 'next/image';
 
 interface ImageLightboxProps {
     images: string[];
-    currentIndex: number;
+    currentIndex?: number;
+    initialIndex?: number;
     onClose: () => void;
     onIndexChange?: (newIndex: number) => void;
 }
 
-export function ImageLightbox({ images, currentIndex: initialIndex, onClose, onIndexChange }: ImageLightboxProps) {
-    const [prevInitialIndex, setPrevInitialIndex] = useState(initialIndex);
-    const [index, setIndex] = useState(initialIndex);
+export function ImageLightbox({ images, currentIndex, initialIndex, onClose, onIndexChange }: ImageLightboxProps) {
+    const activeIndex = currentIndex ?? initialIndex ?? 0;
+    const [prevInitialIndex, setPrevInitialIndex] = useState(activeIndex);
+    const [index, setIndex] = useState(activeIndex);
     const [zoom, setZoom] = useState(1);
 
-    if (initialIndex !== prevInitialIndex) {
-        setPrevInitialIndex(initialIndex);
-        setIndex(initialIndex);
+    if (activeIndex !== prevInitialIndex) {
+        setPrevInitialIndex(activeIndex);
+        setIndex(activeIndex);
         setZoom(1);
     }
 

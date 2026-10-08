@@ -142,7 +142,7 @@ export interface TopperItem {
     id: string;
     semType: 'Odd' | 'Even';
     yearBatch: 'SE' | 'TE' | 'BE';
-    rank: string; // 'Rank 1', 'Rank 2', 'Rank 3'
+    rank: string;
     name: string;
     sgpa: string;
 }
@@ -194,7 +194,89 @@ const DEFAULT_HOME_CONFIG: HomeConfig = {
     image_staff: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1200&q=80'
 };
 
+const CACHE_KEY = 'shaids_content_cache_v2';
 
+// Entity Data Mappers
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapEvent(r: Record<string, any>): EventItem {
+    return { ...r, academicYear: r.academic_year || r.academicYear || '2026-27' } as EventItem;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapTeam(r: Record<string, any>): TeamMember {
+    return { ...r, academicYear: r.academic_year || r.academicYear || '2026-27' } as TeamMember;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapStaff(r: Record<string, any>): StaffMember {
+    return r as StaffMember;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapResource(r: Record<string, any>): ResourceItem {
+    return r as ResourceItem;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapProject(r: Record<string, any>): ProjectItem {
+    return {
+        ...r,
+        academicYear: r.academic_year || r.academicYear || '2026-27',
+        techStack: r.tech_stack || r.techStack || []
+    } as ProjectItem;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapNptel(r: Record<string, any>): NptelItem {
+    return {
+        ...r,
+        academicYear: r.academic_year || r.academicYear || '2026-27',
+        isFaculty: r.is_faculty !== undefined ? r.is_faculty : r.isFaculty
+    } as NptelItem;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapHighlight(r: Record<string, any>): HighlightItem {
+    return { ...r, academicYear: r.academic_year || r.academicYear || '2026-27' } as HighlightItem;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapFestSubEvent(r: Record<string, any>): FestSubEvent {
+    return {
+        ...r,
+        festId: r.fest_id || r.festId,
+        runnerUp: r.runner_up || r.runnerUp,
+        desc: r.desc_text || r.desc,
+        detailedInfo: r.detailed_info || r.detailedInfo,
+        academicYear: r.academic_year || r.academicYear || '2026-27',
+        eventGallery: r.event_gallery || r.eventGallery || []
+    } as FestSubEvent;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapTopper(r: Record<string, any>): TopperItem {
+    return {
+        ...r,
+        semType: r.sem_type || r.semType,
+        yearBatch: r.year_batch || r.yearBatch
+    } as TopperItem;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapDomainAward(r: Record<string, any>): DomainAwardItem {
+    return r as DomainAwardItem;
+}
+
+type SyncMessage =
+    | { type: 'SYNC_REFRESH' }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    | { type: 'PATCH'; table: string; eventType: 'INSERT' | 'UPDATE' | 'DELETE'; item?: any; id?: string }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    | { type: 'SET_STATE'; table: string; data: any };
+
+// Global module-level coordination to prevent concurrent flood and preserve compiler purity
+let inFlightRefreshPromise: Promise<void> | null = null;
+const singleTableTimers: Record<string, ReturnType<typeof setTimeout>> = {};
 
 interface ContentContextType {
     events: EventItem[];
@@ -256,145 +338,528 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     const [homeConfig, setHomeConfig] = useState<HomeConfig>(DEFAULT_HOME_CONFIG);
     const [loading, setLoading] = useState(true);
 
-    const refreshContent = useCallback(async () => {
-        if (!isSupabaseConfigured || !supabase) return;
+    // Broadcast instant sync signals across all open tabs/windows
+    const broadcastSync = useCallback((message: SyncMessage = { type: 'SYNC_REFRESH' }) => {
+        if (typeof window === 'undefined') return;
         try {
-            const [evRes, tmRes, stRes, rsRes, prRes, npRes, hlRes, fsRes, fgRes, tpRes, daRes, hcRes] = await Promise.all([
-                supabase.from('events').select('*'),
-                supabase.from('team').select('*'),
-                supabase.from('staff').select('*'),
-                supabase.from('resources').select('*'),
-                supabase.from('projects').select('*'),
-                supabase.from('nptel').select('*'),
-                supabase.from('highlights').select('*'),
-                supabase.from('fest_sub_events').select('*'),
-                supabase.from('fest_galleries').select('*'),
-                supabase.from('toppers').select('*'),
-                supabase.from('domain_awards').select('*'),
-                supabase.from('home_config').select('*').single()
-            ]);
-
-            if (evRes.data) {
-                setEvents(evRes.data.map((r: Record<string, unknown>) => ({ ...r, academicYear: r.academic_year || '2026-27' } as unknown as EventItem)));
+            if ('BroadcastChannel' in window) {
+                const bc = new BroadcastChannel('shaids-live-sync');
+                bc.postMessage(message);
+                bc.close();
             }
-            if (tmRes.data) {
-                const mapped = tmRes.data.map((r: Record<string, unknown>) => ({ ...r, academicYear: r.academic_year || '2026-27' } as unknown as TeamMember));
-                mapped.sort((a, b) => {
-                    const timeA = a.created_at ? new Date(a.created_at).getTime() : 0;
-                    const timeB = b.created_at ? new Date(b.created_at).getTime() : 0;
-                    return timeA - timeB;
-                });
-                setTeam(mapped);
-            }
-            if (stRes.data) {
-                const mapped = stRes.data.map((r: Record<string, unknown>) => (r as unknown as StaffMember));
-                mapped.sort((a, b) => {
-                    const timeA = a.created_at ? new Date(a.created_at).getTime() : 0;
-                    const timeB = b.created_at ? new Date(b.created_at).getTime() : 0;
-                    return timeA - timeB;
-                });
-                setStaff(mapped);
-            }
-            if (rsRes.data) {
-                setResources(rsRes.data);
-            }
-            if (prRes.data) {
-                setProjects(prRes.data.map((r: Record<string, unknown>) => ({ ...r, academicYear: r.academic_year || '2026-27', techStack: r.tech_stack } as unknown as ProjectItem)));
-            }
-            if (npRes.data) {
-                setNptel(npRes.data.map((r: Record<string, unknown>) => ({ ...r, academicYear: r.academic_year || '2026-27', isFaculty: r.is_faculty } as unknown as NptelItem)));
-            }
-            if (hlRes.data) {
-                setHighlights(hlRes.data.map((r: Record<string, unknown>) => ({ ...r, academicYear: r.academic_year || '2026-27' } as unknown as HighlightItem)));
-            }
-            if (fsRes.data) {
-                setFestSubEvents(fsRes.data.map((r: Record<string, unknown>) => ({
-                    ...r,
-                    festId: r.fest_id,
-                    runnerUp: r.runner_up,
-                    desc: r.desc_text || r.desc,
-                    detailedInfo: r.detailed_info,
-                    academicYear: r.academic_year || '2026-27',
-                    eventGallery: r.event_gallery
-                } as unknown as FestSubEvent)));
-            }
-            if (fgRes.data) {
-                const map: Record<string, string[]> = {};
-                fgRes.data.forEach((row: { id: string; gallery: string[] }) => { map[row.id] = row.gallery; });
-                setFestGalleries(prev => ({ ...prev, ...map }));
-            }
-            if (tpRes.data) {
-                setToppers(tpRes.data.map((r: Record<string, unknown>) => ({ ...r, semType: r.sem_type, yearBatch: r.year_batch } as unknown as TopperItem)));
-            }
-            if (daRes.data) {
-                setDomainAwards(daRes.data);
-            }
-            if (hcRes.data) {
-                setHomeConfig(hcRes.data);
-            }
-        } catch (err: unknown) {
-            console.error('Supabase Live Refresh Error:', err);
+            window.localStorage.setItem('shaids_live_signal', JSON.stringify({ ...message, _ts: Date.now() }));
+        } catch {
+            // Channel not available in context
         }
     }, []);
 
-    const broadcastSync = () => {
-        if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
-            try {
-                const bc = new BroadcastChannel('shaids-live-sync');
-                bc.postMessage('SYNC_REFRESH');
-                bc.close();
-            } catch {
-                // BroadcastChannel may not be supported or allowed in all contexts
+    // Instant patch applicator: updates local React state immediately in 0ms
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const applyRealtimePatch = useCallback((table: string, eventType: 'INSERT' | 'UPDATE' | 'DELETE', newRecord?: Record<string, any>, oldRecord?: Record<string, any>) => {
+        switch (table) {
+            case 'events': {
+                if (eventType === 'DELETE') {
+                    const targetId = oldRecord?.id || newRecord?.id;
+                    if (targetId) setEvents(prev => prev.filter(e => e.id !== targetId));
+                } else if (newRecord) {
+                    const item = mapEvent(newRecord);
+                    setEvents(prev => {
+                        const exists = prev.some(e => e.id === item.id);
+                        return exists ? prev.map(e => e.id === item.id ? item : e) : [item, ...prev];
+                    });
+                }
+                break;
+            }
+            case 'team': {
+                if (eventType === 'DELETE') {
+                    const targetId = oldRecord?.id || newRecord?.id;
+                    if (targetId) setTeam(prev => prev.filter(m => m.id !== targetId));
+                } else if (newRecord) {
+                    const item = mapTeam(newRecord);
+                    setTeam(prev => {
+                        const filtered = prev.filter(m => m.id !== item.id);
+                        const next = [...filtered, item];
+                        next.sort((a, b) => (new Date(a.created_at || 0).getTime()) - (new Date(b.created_at || 0).getTime()));
+                        return next;
+                    });
+                }
+                break;
+            }
+            case 'staff': {
+                if (eventType === 'DELETE') {
+                    const targetId = oldRecord?.id || newRecord?.id;
+                    if (targetId) setStaff(prev => prev.filter(s => s.id !== targetId));
+                } else if (newRecord) {
+                    const item = mapStaff(newRecord);
+                    setStaff(prev => {
+                        const filtered = prev.filter(s => s.id !== item.id);
+                        const next = [...filtered, item];
+                        next.sort((a, b) => (new Date(a.created_at || 0).getTime()) - (new Date(b.created_at || 0).getTime()));
+                        return next;
+                    });
+                }
+                break;
+            }
+            case 'resources': {
+                if (eventType === 'DELETE') {
+                    const targetId = oldRecord?.id || newRecord?.id;
+                    if (targetId) setResources(prev => prev.filter(r => r.id !== targetId));
+                } else if (newRecord) {
+                    const item = mapResource(newRecord);
+                    setResources(prev => {
+                        const exists = prev.some(r => r.id === item.id);
+                        return exists ? prev.map(r => r.id === item.id ? item : r) : [item, ...prev];
+                    });
+                }
+                break;
+            }
+            case 'projects': {
+                if (eventType === 'DELETE') {
+                    const targetId = oldRecord?.id || newRecord?.id;
+                    if (targetId) setProjects(prev => prev.filter(p => p.id !== targetId));
+                } else if (newRecord) {
+                    const item = mapProject(newRecord);
+                    setProjects(prev => {
+                        const exists = prev.some(p => p.id === item.id);
+                        return exists ? prev.map(p => p.id === item.id ? item : p) : [item, ...prev];
+                    });
+                }
+                break;
+            }
+            case 'nptel': {
+                if (eventType === 'DELETE') {
+                    const targetId = oldRecord?.id || newRecord?.id;
+                    if (targetId) setNptel(prev => prev.filter(n => n.id !== targetId));
+                } else if (newRecord) {
+                    const item = mapNptel(newRecord);
+                    setNptel(prev => {
+                        const exists = prev.some(n => n.id === item.id);
+                        return exists ? prev.map(n => n.id === item.id ? item : n) : [item, ...prev];
+                    });
+                }
+                break;
+            }
+            case 'highlights': {
+                if (eventType === 'DELETE') {
+                    const targetId = oldRecord?.id || newRecord?.id;
+                    if (targetId) setHighlights(prev => prev.filter(h => h.id !== targetId));
+                } else if (newRecord) {
+                    const item = mapHighlight(newRecord);
+                    setHighlights(prev => {
+                        const exists = prev.some(h => h.id === item.id);
+                        return exists ? prev.map(h => h.id === item.id ? item : h) : [item, ...prev];
+                    });
+                }
+                break;
+            }
+            case 'fest_sub_events': {
+                if (eventType === 'DELETE') {
+                    const targetId = oldRecord?.id || newRecord?.id;
+                    if (targetId) setFestSubEvents(prev => prev.filter(f => f.id !== targetId));
+                } else if (newRecord) {
+                    const item = mapFestSubEvent(newRecord);
+                    setFestSubEvents(prev => {
+                        const exists = prev.some(f => f.id === item.id);
+                        return exists ? prev.map(f => f.id === item.id ? item : f) : [item, ...prev];
+                    });
+                }
+                break;
+            }
+            case 'fest_galleries': {
+                if (newRecord?.id && newRecord?.gallery) {
+                    setFestGalleries(prev => ({ ...prev, [newRecord.id]: newRecord.gallery }));
+                }
+                break;
+            }
+            case 'toppers': {
+                if (eventType === 'DELETE') {
+                    const targetId = oldRecord?.id || newRecord?.id;
+                    if (targetId) setToppers(prev => prev.filter(t => t.id !== targetId));
+                } else if (newRecord) {
+                    const item = mapTopper(newRecord);
+                    setToppers(prev => {
+                        const exists = prev.some(t => t.id === item.id);
+                        return exists ? prev.map(t => t.id === item.id ? item : t) : [...prev, item];
+                    });
+                }
+                break;
+            }
+            case 'domain_awards': {
+                if (eventType === 'DELETE') {
+                    const targetId = oldRecord?.id || newRecord?.id;
+                    if (targetId) setDomainAwards(prev => prev.filter(d => d.id !== targetId));
+                } else if (newRecord) {
+                    const item = mapDomainAward(newRecord);
+                    setDomainAwards(prev => {
+                        const exists = prev.some(d => d.id === item.id);
+                        return exists ? prev.map(d => d.id === item.id ? item : d) : [...prev, item];
+                    });
+                }
+                break;
+            }
+            case 'home_config': {
+                if (newRecord) {
+                    setHomeConfig(newRecord as unknown as HomeConfig);
+                }
+                break;
             }
         }
-    };
+    }, []);
 
+    // Full collection setter for batch updates like reordering or full config save
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const applySetState = useCallback((table: string, data: any) => {
+        switch (table) {
+            case 'team':
+                if (Array.isArray(data)) setTeam(data);
+                break;
+            case 'staff':
+                if (Array.isArray(data)) setStaff(data);
+                break;
+            case 'home_config':
+                if (data) setHomeConfig(data);
+                break;
+            case 'fest_galleries':
+                if (data) setFestGalleries(prev => ({ ...prev, ...data }));
+                break;
+        }
+    }, []);
+
+    // Targeted single-table revalidation: only queries 1 table instead of 12!
+    const refreshSingleTable = useCallback(async (tableName: string) => {
+        if (!isSupabaseConfigured || !supabase) return;
+        try {
+            switch (tableName) {
+                case 'events': {
+                    const { data } = await supabase.from('events').select('*');
+                    if (data) setEvents(data.map(mapEvent));
+                    break;
+                }
+                case 'team': {
+                    const { data } = await supabase.from('team').select('*');
+                    if (data) {
+                        const mapped = data.map(mapTeam);
+                        mapped.sort((a, b) => (new Date(a.created_at || 0).getTime()) - (new Date(b.created_at || 0).getTime()));
+                        setTeam(mapped);
+                    }
+                    break;
+                }
+                case 'staff': {
+                    const { data } = await supabase.from('staff').select('*');
+                    if (data) {
+                        const mapped = data.map(mapStaff);
+                        mapped.sort((a, b) => (new Date(a.created_at || 0).getTime()) - (new Date(b.created_at || 0).getTime()));
+                        setStaff(mapped);
+                    }
+                    break;
+                }
+                case 'resources': {
+                    const { data } = await supabase.from('resources').select('*');
+                    if (data) setResources(data.map(mapResource));
+                    break;
+                }
+                case 'projects': {
+                    const { data } = await supabase.from('projects').select('*');
+                    if (data) setProjects(data.map(mapProject));
+                    break;
+                }
+                case 'nptel': {
+                    const { data } = await supabase.from('nptel').select('*');
+                    if (data) setNptel(data.map(mapNptel));
+                    break;
+                }
+                case 'highlights': {
+                    const { data } = await supabase.from('highlights').select('*');
+                    if (data) setHighlights(data.map(mapHighlight));
+                    break;
+                }
+                case 'fest_sub_events': {
+                    const { data } = await supabase.from('fest_sub_events').select('*');
+                    if (data) setFestSubEvents(data.map(mapFestSubEvent));
+                    break;
+                }
+                case 'fest_galleries': {
+                    const { data } = await supabase.from('fest_galleries').select('*');
+                    if (data) {
+                        const map: Record<string, string[]> = {};
+                        data.forEach((row: { id: string; gallery: string[] }) => { map[row.id] = row.gallery; });
+                        setFestGalleries(prev => ({ ...prev, ...map }));
+                    }
+                    break;
+                }
+                case 'toppers': {
+                    const { data } = await supabase.from('toppers').select('*');
+                    if (data) setToppers(data.map(mapTopper));
+                    break;
+                }
+                case 'domain_awards': {
+                    const { data } = await supabase.from('domain_awards').select('*');
+                    if (data) setDomainAwards(data.map(mapDomainAward));
+                    break;
+                }
+                case 'home_config': {
+                    const { data } = await supabase.from('home_config').select('*').single();
+                    if (data) setHomeConfig(data as unknown as HomeConfig);
+                    break;
+                }
+            }
+        } catch (err) {
+            console.warn(`Error refreshing single table [${tableName}]:`, err);
+        }
+    }, []);
+
+    // Debounced single-table revalidation scheduler (prevents query flood)
+    const scheduleSingleTableRefresh = useCallback((tableName: string) => {
+        if (singleTableTimers[tableName]) {
+            clearTimeout(singleTableTimers[tableName]);
+        }
+        singleTableTimers[tableName] = setTimeout(() => {
+            refreshSingleTable(tableName);
+            delete singleTableTimers[tableName];
+        }, 150);
+    }, [refreshSingleTable]);
+
+    // Full database sync with request deduplication
+    const refreshContent = useCallback(async () => {
+        if (!isSupabaseConfigured || !supabase) return;
+        if (inFlightRefreshPromise) return inFlightRefreshPromise;
+
+        inFlightRefreshPromise = (async () => {
+            try {
+                const [evRes, tmRes, stRes, rsRes, prRes, npRes, hlRes, fsRes, fgRes, tpRes, daRes, hcRes] = await Promise.all([
+                    supabase.from('events').select('*'),
+                    supabase.from('team').select('*'),
+                    supabase.from('staff').select('*'),
+                    supabase.from('resources').select('*'),
+                    supabase.from('projects').select('*'),
+                    supabase.from('nptel').select('*'),
+                    supabase.from('highlights').select('*'),
+                    supabase.from('fest_sub_events').select('*'),
+                    supabase.from('fest_galleries').select('*'),
+                    supabase.from('toppers').select('*'),
+                    supabase.from('domain_awards').select('*'),
+                    supabase.from('home_config').select('*').single()
+                ]);
+
+                if (evRes.data) setEvents(evRes.data.map(mapEvent));
+                if (tmRes.data) {
+                    const mapped = tmRes.data.map(mapTeam);
+                    mapped.sort((a, b) => (new Date(a.created_at || 0).getTime()) - (new Date(b.created_at || 0).getTime()));
+                    setTeam(mapped);
+                }
+                if (stRes.data) {
+                    const mapped = stRes.data.map(mapStaff);
+                    mapped.sort((a, b) => (new Date(a.created_at || 0).getTime()) - (new Date(b.created_at || 0).getTime()));
+                    setStaff(mapped);
+                }
+                if (rsRes.data) setResources(rsRes.data.map(mapResource));
+                if (prRes.data) setProjects(prRes.data.map(mapProject));
+                if (npRes.data) setNptel(npRes.data.map(mapNptel));
+                if (hlRes.data) setHighlights(hlRes.data.map(mapHighlight));
+                if (fsRes.data) setFestSubEvents(fsRes.data.map(mapFestSubEvent));
+                if (fgRes.data) {
+                    const map: Record<string, string[]> = {};
+                    fgRes.data.forEach((row: { id: string; gallery: string[] }) => { map[row.id] = row.gallery; });
+                    setFestGalleries(prev => ({ ...prev, ...map }));
+                }
+                if (tpRes.data) setToppers(tpRes.data.map(mapTopper));
+                if (daRes.data) setDomainAwards(daRes.data.map(mapDomainAward));
+                if (hcRes.data) setHomeConfig(hcRes.data as unknown as HomeConfig);
+
+                // Persist fresh cache for 0ms initial load on subsequent sessions
+                if (typeof window !== 'undefined') {
+                    try {
+                        window.localStorage.setItem(CACHE_KEY, JSON.stringify({
+                            events: evRes.data?.map(mapEvent),
+                            team: tmRes.data?.map(mapTeam),
+                            staff: stRes.data?.map(mapStaff),
+                            resources: rsRes.data?.map(mapResource),
+                            projects: prRes.data?.map(mapProject),
+                            nptel: npRes.data?.map(mapNptel),
+                            highlights: hlRes.data?.map(mapHighlight),
+                            festSubEvents: fsRes.data?.map(mapFestSubEvent),
+                            toppers: tpRes.data?.map(mapTopper),
+                            domainAwards: daRes.data?.map(mapDomainAward),
+                            homeConfig: hcRes.data
+                        }));
+                    } catch {
+                        // LocalStorage quota or restricted
+                    }
+                }
+            } catch (err: unknown) {
+                console.error('Supabase Live Refresh Error:', err);
+            } finally {
+                inFlightRefreshPromise = null;
+            }
+        })();
+
+        return inFlightRefreshPromise;
+    }, []);
+
+    // Setup Realtime WebSocket Stream, Cross-Tab Broadcast, and Instant Hydration
     useEffect(() => {
-        async function loadContent() {
+        let isMounted = true;
+
+        // Async initializer: reads local cache and fetches live Supabase data
+        const init = async () => {
+            if (typeof window !== 'undefined') {
+                try {
+                    const raw = window.localStorage.getItem(CACHE_KEY);
+                    if (raw && isMounted) {
+                        const cached = JSON.parse(raw);
+                        if (Array.isArray(cached.events) && cached.events.length > 0) setEvents(cached.events);
+                        if (Array.isArray(cached.team) && cached.team.length > 0) setTeam(cached.team);
+                        if (Array.isArray(cached.staff) && cached.staff.length > 0) setStaff(cached.staff);
+                        if (Array.isArray(cached.resources) && cached.resources.length > 0) setResources(cached.resources);
+                        if (Array.isArray(cached.projects) && cached.projects.length > 0) setProjects(cached.projects);
+                        if (Array.isArray(cached.nptel) && cached.nptel.length > 0) setNptel(cached.nptel);
+                        if (Array.isArray(cached.highlights) && cached.highlights.length > 0) setHighlights(cached.highlights);
+                        if (Array.isArray(cached.festSubEvents) && cached.festSubEvents.length > 0) setFestSubEvents(cached.festSubEvents);
+                        if (cached.festGalleries) setFestGalleries(cached.festGalleries);
+                        if (Array.isArray(cached.toppers) && cached.toppers.length > 0) setToppers(cached.toppers);
+                        if (Array.isArray(cached.domainAwards) && cached.domainAwards.length > 0) setDomainAwards(cached.domainAwards);
+                        if (cached.homeConfig) setHomeConfig(cached.homeConfig);
+                        setLoading(false);
+                    }
+                } catch {
+                    // Ignore cache read failures
+                }
+            }
+
             if (!isSupabaseConfigured || !supabase) {
-                toast.error('Live Supabase Database is not configured! Check NEXT_PUBLIC_SUPABASE_URL.');
-                setLoading(false);
+                if (isMounted) setLoading(false);
                 return;
             }
-            await refreshContent();
-            setLoading(false);
-        }
 
-        loadContent();
+            await refreshContent();
+            if (isMounted) setLoading(false);
+        };
+
+        // Queue in microtask to prevent cascading synchronous render during effect mounting
+        queueMicrotask(() => {
+            init();
+        });
+
+        // Cross-Tab Message Handlers
+        const handleSyncMessage = (msg: SyncMessage) => {
+            if (!msg) return;
+            if (msg.type === 'SYNC_REFRESH') {
+                refreshContent();
+            } else if (msg.type === 'PATCH') {
+                applyRealtimePatch(
+                    msg.table,
+                    msg.eventType,
+                    msg.item,
+                    msg.id ? { id: msg.id } : undefined
+                );
+            } else if (msg.type === 'SET_STATE') {
+                applySetState(msg.table, msg.data);
+            }
+        };
 
         let bc: BroadcastChannel | null = null;
         if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
             bc = new BroadcastChannel('shaids-live-sync');
             bc.onmessage = (event) => {
-                if (event.data === 'SYNC_REFRESH') {
-                    refreshContent();
-                }
+                handleSyncMessage(event.data);
             };
         }
 
+        const handleStorage = (e: StorageEvent) => {
+            if (e.key === 'shaids_live_signal' && e.newValue) {
+                try {
+                    const parsed = JSON.parse(e.newValue);
+                    handleSyncMessage(parsed);
+                } catch {
+                    // Ignore malformed storage events
+                }
+            }
+        };
+        window.addEventListener('storage', handleStorage);
+
+        // Supabase Realtime WebSocket Connection: Ultra-fast ~20ms push updates directly from Postgres
         let channel: ReturnType<NonNullable<typeof supabase>['channel']> | null = null;
         if (isSupabaseConfigured && supabase) {
-            const client = supabase;
-            channel = client
-                .channel('schema-db-changes')
-                .on('postgres_changes', { event: '*', schema: 'public' }, () => {
-                    refreshContent();
-                })
+            channel = supabase
+                .channel('shaids-realtime-ultra')
+                .on(
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    'postgres_changes' as any,
+                    { event: '*', schema: 'public' },
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    (payload: any) => {
+                        applyRealtimePatch(
+                            payload.table,
+                            payload.eventType as 'INSERT' | 'UPDATE' | 'DELETE',
+                            payload.new,
+                            payload.old
+                        );
+                        // Forward to other tabs for zero-network cross-tab parity
+                        broadcastSync({
+                            type: 'PATCH',
+                            table: payload.table,
+                            eventType: payload.eventType,
+                            item: payload.new,
+                            id: payload.old?.id || payload.new?.id
+                        });
+                        // Non-blocking targeted single-table consistency check
+                        scheduleSingleTableRefresh(payload.table);
+                    }
+                )
                 .subscribe();
         }
 
-        const pollInterval = setInterval(() => {
-            refreshContent();
-        }, 20000);
+        // Adaptive Heartbeat & Instant Tab Focus Revalidation
+        // Only polls when window is active & visible (saves 100% CPU & battery when in background)
+        let heartbeatInterval: ReturnType<typeof setInterval> | null = null;
+        let lastCheckTime = Date.now();
+
+        const triggerSmartCheck = () => {
+            if (typeof document !== 'undefined' && document.hidden) return;
+            const now = Date.now();
+            if (now - lastCheckTime > 3000) {
+                lastCheckTime = now;
+                refreshContent();
+            }
+        };
+
+        const handleVisibilityChange = () => {
+            if (typeof document !== 'undefined' && !document.hidden) {
+                triggerSmartCheck();
+                if (!heartbeatInterval) {
+                    heartbeatInterval = setInterval(triggerSmartCheck, 5000);
+                }
+            } else {
+                if (heartbeatInterval) {
+                    clearInterval(heartbeatInterval);
+                    heartbeatInterval = null;
+                }
+            }
+        };
+
+        if (typeof document !== 'undefined' && !document.hidden) {
+            heartbeatInterval = setInterval(triggerSmartCheck, 5000);
+        }
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        window.addEventListener('focus', triggerSmartCheck);
+        window.addEventListener('online', triggerSmartCheck);
 
         return () => {
+            isMounted = false;
             if (bc) bc.close();
+            window.removeEventListener('storage', handleStorage);
             if (channel && supabase) supabase.removeChannel(channel);
-            clearInterval(pollInterval);
+            if (heartbeatInterval) clearInterval(heartbeatInterval);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            window.removeEventListener('focus', triggerSmartCheck);
+            window.removeEventListener('online', triggerSmartCheck);
         };
-    }, [refreshContent]);
+    }, [refreshContent, applyRealtimePatch, applySetState, broadcastSync, scheduleSingleTableRefresh]);
 
-    // --- EVENTS OPERATIONS ---
+    // --- ULTRA-FAST OPTIMISTIC MUTATION OPERATIONS ---
+
+    // EVENTS
     const saveEvent = async (event: EventItem) => {
         try {
             if (!isSupabaseConfigured || !supabase) {
@@ -420,7 +885,11 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
                 }
             }
 
-            const eventToSave: EventItem = { ...event, id: validId };
+            const eventToSave: EventItem = { ...event, id: validId, academicYear: event.academicYear || '2026-27' };
+
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setEvents(prev => existingEvent ? prev.map(e => e.id === validId ? eventToSave : e) : [eventToSave, ...prev]);
+            broadcastSync({ type: 'PATCH', table: 'events', eventType: existingEvent ? 'UPDATE' : 'INSERT', item: eventToSave });
 
             const payload = {
                 id: eventToSave.id,
@@ -448,13 +917,16 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Events Save Error:', error);
                 toast.error(`Supabase DB Error: ${error.message}`);
+                refreshSingleTable('events');
                 return;
             }
 
-            const saved = data && data[0] ? ({ ...data[0], academicYear: data[0].academic_year || eventToSave.academicYear || '2026-27' } as unknown as EventItem) : eventToSave;
-            setEvents(prev => existingEvent ? prev.map(e => (e.id === saved.id ? saved : e)) : [saved, ...prev]);
-            await refreshContent();
-            toast.success('Event saved directly to live Supabase DB!');
+            if (data && data[0]) {
+                const saved = mapEvent(data[0]);
+                setEvents(prev => prev.map(e => e.id === saved.id ? saved : e));
+            }
+            toast.success('Event saved live!');
+            scheduleSingleTableRefresh('events');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to save event';
             console.error('Save Event Error:', err);
@@ -471,8 +943,11 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
                 if (target.gallery_images) target.gallery_images.forEach(img => deleteMediaFile(img));
             }
 
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setEvents(prev => prev.filter(e => e.id !== id));
+            broadcastSync({ type: 'PATCH', table: 'events', eventType: 'DELETE', id });
+
             if (!isValidUUID(id)) {
-                setEvents(prev => prev.filter(e => e.id !== id));
                 toast.success('Event deleted!');
                 return;
             }
@@ -487,19 +962,19 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Events Delete Error:', error);
                 toast.error(`Supabase Delete Error: ${error.message}`);
+                refreshSingleTable('events');
                 return;
             }
 
-            setEvents(prev => prev.filter(e => e.id !== id));
-            await refreshContent();
-            toast.success('Event deleted from live Supabase DB!');
+            toast.success('Event deleted live!');
+            scheduleSingleTableRefresh('events');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to delete event';
             toast.error(`Live DB Error: ${msg}`);
         }
     };
 
-    // --- TEAM OPERATIONS ---
+    // TEAM
     const saveTeamMember = async (member: TeamMember) => {
         try {
             if (!isSupabaseConfigured || !supabase) {
@@ -514,7 +989,11 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
                 deleteMediaFile(existingMember.image_url);
             }
 
-            const memberToSave: TeamMember = { ...member, id: validId };
+            const memberToSave: TeamMember = { ...member, id: validId, academicYear: member.academicYear || '2026-27' };
+
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setTeam(prev => existingMember ? prev.map(m => m.id === validId ? memberToSave : m) : [...prev, memberToSave]);
+            broadcastSync({ type: 'PATCH', table: 'team', eventType: existingMember ? 'UPDATE' : 'INSERT', item: memberToSave });
 
             const payload = {
                 id: memberToSave.id,
@@ -538,13 +1017,16 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Team Save Error:', error);
                 toast.error(`Supabase DB Error: ${error.message}`);
+                refreshSingleTable('team');
                 return;
             }
 
-            const saved = data && data[0] ? ({ ...data[0], academicYear: data[0].academic_year || memberToSave.academicYear } as unknown as TeamMember) : memberToSave;
-            setTeam(prev => existingMember ? prev.map(m => (m.id === saved.id ? saved : m)) : [...prev, saved]);
-            await refreshContent();
-            toast.success('Team member saved directly to live Supabase DB!');
+            if (data && data[0]) {
+                const saved = mapTeam(data[0]);
+                setTeam(prev => prev.map(m => m.id === saved.id ? saved : m));
+            }
+            toast.success('Team member saved live!');
+            scheduleSingleTableRefresh('team');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to save team member';
             toast.error(`Live DB Error: ${msg}`);
@@ -556,8 +1038,11 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             const target = team.find(m => m.id === id);
             if (target?.image_url) deleteMediaFile(target.image_url);
 
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setTeam(prev => prev.filter(m => m.id !== id));
+            broadcastSync({ type: 'PATCH', table: 'team', eventType: 'DELETE', id });
+
             if (!isValidUUID(id)) {
-                setTeam(prev => prev.filter(m => m.id !== id));
                 toast.success('Team member deleted!');
                 return;
             }
@@ -572,12 +1057,12 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Team Delete Error:', error);
                 toast.error(`Supabase Delete Error: ${error.message}`);
+                refreshSingleTable('team');
                 return;
             }
 
-            setTeam(prev => prev.filter(m => m.id !== id));
-            await refreshContent();
-            toast.success('Team member deleted from live Supabase DB!');
+            toast.success('Team member deleted live!');
+            scheduleSingleTableRefresh('team');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to delete team member';
             toast.error(`Live DB Error: ${msg}`);
@@ -592,8 +1077,10 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
                 display_order: idx + 1,
                 created_at: new Date(baseTime + idx * 1000).toISOString()
             }));
+
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
             setTeam(updated);
-            broadcastSync();
+            broadcastSync({ type: 'SET_STATE', table: 'team', data: updated });
 
             if (isSupabaseConfigured && supabase) {
                 const upsertData = updated.map(m => ({
@@ -617,10 +1104,10 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
                 if (error) {
                     console.error('Supabase Reorder Team Error:', error);
                     toast.error(`Reorder Error: ${error.message}`);
+                    refreshSingleTable('team');
                     return;
                 }
-                await refreshContent();
-                broadcastSync();
+                scheduleSingleTableRefresh('team');
             }
             toast.success('Team order updated and synced live!');
         } catch (err: unknown) {
@@ -628,7 +1115,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
         }
     };
 
-    // --- STAFF OPERATIONS ---
+    // STAFF
     const saveStaffMember = async (member: StaffMember) => {
         try {
             if (!isSupabaseConfigured || !supabase) {
@@ -644,6 +1131,10 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             }
 
             const memberToSave: StaffMember = { ...member, id: validId };
+
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setStaff(prev => existingMember ? prev.map(m => m.id === validId ? memberToSave : m) : [...prev, memberToSave]);
+            broadcastSync({ type: 'PATCH', table: 'staff', eventType: existingMember ? 'UPDATE' : 'INSERT', item: memberToSave });
 
             const payload = {
                 id: memberToSave.id,
@@ -662,14 +1153,16 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Staff Save Error:', error);
                 toast.error(`Supabase DB Error: ${error.message}`);
+                refreshSingleTable('staff');
                 return;
             }
 
-            const saved = data && data[0] ? (data[0] as unknown as StaffMember) : memberToSave;
-            setStaff(prev => existingMember ? prev.map(m => (m.id === saved.id ? saved : m)) : [...prev, saved]);
-            await refreshContent();
-            broadcastSync();
-            toast.success('Faculty member saved directly to live Supabase DB!');
+            if (data && data[0]) {
+                const saved = mapStaff(data[0]);
+                setStaff(prev => prev.map(m => m.id === saved.id ? saved : m));
+            }
+            toast.success('Faculty member saved live!');
+            scheduleSingleTableRefresh('staff');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to save faculty member';
             toast.error(`Live DB Error: ${msg}`);
@@ -681,8 +1174,11 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             const target = staff.find(m => m.id === id);
             if (target?.image_url) deleteMediaFile(target.image_url);
 
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setStaff(prev => prev.filter(s => s.id !== id));
+            broadcastSync({ type: 'PATCH', table: 'staff', eventType: 'DELETE', id });
+
             if (!isValidUUID(id)) {
-                setStaff(prev => prev.filter(m => m.id !== id));
                 toast.success('Faculty member deleted!');
                 return;
             }
@@ -697,13 +1193,12 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Staff Delete Error:', error);
                 toast.error(`Supabase Delete Error: ${error.message}`);
+                refreshSingleTable('staff');
                 return;
             }
 
-            setStaff(prev => prev.filter(m => m.id !== id));
-            await refreshContent();
-            broadcastSync();
-            toast.success('Faculty member deleted from live Supabase DB!');
+            toast.success('Faculty member deleted live!');
+            scheduleSingleTableRefresh('staff');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to delete faculty member';
             toast.error(`Live DB Error: ${msg}`);
@@ -718,8 +1213,10 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
                 display_order: idx + 1,
                 created_at: new Date(baseTime + idx * 1000).toISOString()
             }));
+
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
             setStaff(updated);
-            broadcastSync();
+            broadcastSync({ type: 'SET_STATE', table: 'staff', data: updated });
 
             if (isSupabaseConfigured && supabase) {
                 const upsertData = updated.map(m => ({
@@ -738,10 +1235,10 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
                 if (error) {
                     console.error('Supabase Reorder Staff Error:', error);
                     toast.error(`Reorder Error: ${error.message}`);
+                    refreshSingleTable('staff');
                     return;
                 }
-                await refreshContent();
-                broadcastSync();
+                scheduleSingleTableRefresh('staff');
             }
             toast.success('Faculty order updated and synced live!');
         } catch (err: unknown) {
@@ -749,7 +1246,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
         }
     };
 
-    // --- RESOURCE OPERATIONS ---
+    // RESOURCES
     const saveResource = async (resource: ResourceItem) => {
         try {
             if (!isSupabaseConfigured || !supabase) {
@@ -761,6 +1258,10 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             const validId = resource.id && isValidUUID(resource.id) ? resource.id : (existingResource ? existingResource.id : generateUUID());
 
             const resourceToSave: ResourceItem = { ...resource, id: validId };
+
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setResources(prev => existingResource ? prev.map(r => r.id === validId ? resourceToSave : r) : [resourceToSave, ...prev]);
+            broadcastSync({ type: 'PATCH', table: 'resources', eventType: existingResource ? 'UPDATE' : 'INSERT', item: resourceToSave });
 
             const payload = {
                 id: resourceToSave.id,
@@ -777,13 +1278,16 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Resource Save Error:', error);
                 toast.error(`Supabase DB Error: ${error.message}`);
+                refreshSingleTable('resources');
                 return;
             }
 
-            const saved = data && data[0] ? (data[0] as unknown as ResourceItem) : resourceToSave;
-            setResources(prev => existingResource ? prev.map(r => (r.id === saved.id ? saved : r)) : [saved, ...prev]);
-            await refreshContent();
-            toast.success('Resource saved directly to live Supabase DB!');
+            if (data && data[0]) {
+                const saved = mapResource(data[0]);
+                setResources(prev => prev.map(r => r.id === saved.id ? saved : r));
+            }
+            toast.success('Resource saved live!');
+            scheduleSingleTableRefresh('resources');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to save resource';
             toast.error(`Live DB Error: ${msg}`);
@@ -792,8 +1296,11 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
 
     const deleteResource = async (id: string) => {
         try {
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setResources(prev => prev.filter(r => r.id !== id));
+            broadcastSync({ type: 'PATCH', table: 'resources', eventType: 'DELETE', id });
+
             if (!isValidUUID(id)) {
-                setResources(prev => prev.filter(r => r.id !== id));
                 toast.success('Resource deleted!');
                 return;
             }
@@ -808,19 +1315,19 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Resource Delete Error:', error);
                 toast.error(`Supabase Delete Error: ${error.message}`);
+                refreshSingleTable('resources');
                 return;
             }
 
-            setResources(prev => prev.filter(r => r.id !== id));
-            await refreshContent();
-            toast.success('Resource deleted from live Supabase DB!');
+            toast.success('Resource deleted live!');
+            scheduleSingleTableRefresh('resources');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to delete resource';
             toast.error(`Live DB Error: ${msg}`);
         }
     };
 
-    // --- PROJECT OPERATIONS ---
+    // PROJECTS
     const saveProject = async (project: ProjectItem) => {
         try {
             if (!isSupabaseConfigured || !supabase) {
@@ -841,7 +1348,11 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
                 }
             }
 
-            const toSave = { ...project, id: validId };
+            const toSave: ProjectItem = { ...project, id: validId, academicYear: project.academicYear || '2026-27' };
+
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setProjects(prev => existing ? prev.map(p => p.id === validId ? toSave : p) : [toSave, ...prev]);
+            broadcastSync({ type: 'PATCH', table: 'projects', eventType: existing ? 'UPDATE' : 'INSERT', item: toSave });
 
             const payload = {
                 id: toSave.id,
@@ -863,13 +1374,16 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Project Save Error:', error);
                 toast.error(`Supabase DB Error: ${error.message}`);
+                refreshSingleTable('projects');
                 return;
             }
 
-            const saved = data && data[0] ? ({ ...data[0], academicYear: data[0].academic_year || toSave.academicYear || '2026-27', techStack: data[0].tech_stack } as unknown as ProjectItem) : toSave;
-            setProjects(prev => existing ? prev.map(p => (p.id === saved.id ? saved : p)) : [saved, ...prev]);
-            await refreshContent();
-            toast.success('Project saved directly to live Supabase DB!');
+            if (data && data[0]) {
+                const saved = mapProject(data[0]);
+                setProjects(prev => prev.map(p => p.id === saved.id ? saved : p));
+            }
+            toast.success('Project saved live!');
+            scheduleSingleTableRefresh('projects');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to save project';
             toast.error(`Live DB Error: ${msg}`);
@@ -884,8 +1398,11 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
                 if (target.gallery) target.gallery.forEach(img => deleteMediaFile(img));
             }
 
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setProjects(prev => prev.filter(p => p.id !== id));
+            broadcastSync({ type: 'PATCH', table: 'projects', eventType: 'DELETE', id });
+
             if (!isValidUUID(id)) {
-                setProjects(prev => prev.filter(p => p.id !== id));
                 toast.success('Project deleted!');
                 return;
             }
@@ -900,19 +1417,19 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Project Delete Error:', error);
                 toast.error(`Supabase Delete Error: ${error.message}`);
+                refreshSingleTable('projects');
                 return;
             }
 
-            setProjects(prev => prev.filter(p => p.id !== id));
-            await refreshContent();
-            toast.success('Project deleted from live Supabase DB!');
+            toast.success('Project deleted live!');
+            scheduleSingleTableRefresh('projects');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to delete project';
             toast.error(`Live DB Error: ${msg}`);
         }
     };
 
-    // --- NPTEL OPERATIONS ---
+    // NPTEL
     const saveNptel = async (item: NptelItem) => {
         try {
             if (!isSupabaseConfigured || !supabase) {
@@ -922,7 +1439,11 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
 
             const existing = nptel.find(n => n.id === item.id);
             const validId = item.id && isValidUUID(item.id) ? item.id : (existing ? existing.id : generateUUID());
-            const toSave = { ...item, id: validId };
+            const toSave: NptelItem = { ...item, id: validId, academicYear: item.academicYear || '2026-27' };
+
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setNptel(prev => existing ? prev.map(n => n.id === validId ? toSave : n) : [toSave, ...prev]);
+            broadcastSync({ type: 'PATCH', table: 'nptel', eventType: existing ? 'UPDATE' : 'INSERT', item: toSave });
 
             const payload = {
                 id: toSave.id,
@@ -940,13 +1461,16 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase NPTEL Save Error:', error);
                 toast.error(`Supabase DB Error: ${error.message}`);
+                refreshSingleTable('nptel');
                 return;
             }
 
-            const saved = data && data[0] ? ({ ...data[0], academicYear: data[0].academic_year || toSave.academicYear || '2026-27', isFaculty: data[0].is_faculty } as unknown as NptelItem) : toSave;
-            setNptel(prev => existing ? prev.map(n => (n.id === saved.id ? saved : n)) : [saved, ...prev]);
-            await refreshContent();
-            toast.success('NPTEL record saved directly to live Supabase DB!');
+            if (data && data[0]) {
+                const saved = mapNptel(data[0]);
+                setNptel(prev => prev.map(n => n.id === saved.id ? saved : n));
+            }
+            toast.success('NPTEL record saved live!');
+            scheduleSingleTableRefresh('nptel');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to save NPTEL record';
             toast.error(`Live DB Error: ${msg}`);
@@ -955,8 +1479,11 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
 
     const deleteNptel = async (id: string) => {
         try {
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setNptel(prev => prev.filter(n => n.id !== id));
+            broadcastSync({ type: 'PATCH', table: 'nptel', eventType: 'DELETE', id });
+
             if (!isValidUUID(id)) {
-                setNptel(prev => prev.filter(n => n.id !== id));
                 toast.success('NPTEL record deleted!');
                 return;
             }
@@ -971,19 +1498,19 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase NPTEL Delete Error:', error);
                 toast.error(`Supabase Delete Error: ${error.message}`);
+                refreshSingleTable('nptel');
                 return;
             }
 
-            setNptel(prev => prev.filter(n => n.id !== id));
-            await refreshContent();
-            toast.success('NPTEL record deleted from live Supabase DB!');
+            toast.success('NPTEL record deleted live!');
+            scheduleSingleTableRefresh('nptel');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to delete NPTEL record';
             toast.error(`Live DB Error: ${msg}`);
         }
     };
 
-    // --- HIGHLIGHT OPERATIONS ---
+    // HIGHLIGHTS
     const saveHighlight = async (item: HighlightItem) => {
         try {
             if (!isSupabaseConfigured || !supabase) {
@@ -1004,7 +1531,11 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
                 }
             }
 
-            const toSave = { ...item, id: validId };
+            const toSave: HighlightItem = { ...item, id: validId, academicYear: item.academicYear || '2026-27' };
+
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setHighlights(prev => existing ? prev.map(h => h.id === validId ? toSave : h) : [toSave, ...prev]);
+            broadcastSync({ type: 'PATCH', table: 'highlights', eventType: existing ? 'UPDATE' : 'INSERT', item: toSave });
 
             const payload = {
                 id: toSave.id,
@@ -1025,13 +1556,16 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Highlight Save Error:', error);
                 toast.error(`Supabase DB Error: ${error.message}`);
+                refreshSingleTable('highlights');
                 return;
             }
 
-            const saved = data && data[0] ? ({ ...data[0], academicYear: data[0].academic_year || toSave.academicYear || '2026-27' } as unknown as HighlightItem) : toSave;
-            setHighlights(prev => existing ? prev.map(h => (h.id === saved.id ? saved : h)) : [saved, ...prev]);
-            await refreshContent();
-            toast.success('Highlight record saved directly to live Supabase DB!');
+            if (data && data[0]) {
+                const saved = mapHighlight(data[0]);
+                setHighlights(prev => prev.map(h => h.id === saved.id ? saved : h));
+            }
+            toast.success('Highlight saved live!');
+            scheduleSingleTableRefresh('highlights');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to save highlight';
             toast.error(`Live DB Error: ${msg}`);
@@ -1046,9 +1580,12 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
                 if (target.gallery) target.gallery.forEach(img => deleteMediaFile(img));
             }
 
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setHighlights(prev => prev.filter(h => h.id !== id));
+            broadcastSync({ type: 'PATCH', table: 'highlights', eventType: 'DELETE', id });
+
             if (!isValidUUID(id)) {
-                setHighlights(prev => prev.filter(h => h.id !== id));
-                toast.success('Highlight record deleted!');
+                toast.success('Highlight deleted!');
                 return;
             }
 
@@ -1062,19 +1599,19 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Highlight Delete Error:', error);
                 toast.error(`Supabase Delete Error: ${error.message}`);
+                refreshSingleTable('highlights');
                 return;
             }
 
-            setHighlights(prev => prev.filter(h => h.id !== id));
-            await refreshContent();
-            toast.success('Highlight record deleted from live Supabase DB!');
+            toast.success('Highlight deleted live!');
+            scheduleSingleTableRefresh('highlights');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to delete highlight';
             toast.error(`Live DB Error: ${msg}`);
         }
     };
 
-    // --- FEST SUB EVENT OPERATIONS ---
+    // FEST SUB EVENTS
     const saveFestSubEvent = async (subEvent: FestSubEvent) => {
         try {
             if (!isSupabaseConfigured || !supabase) {
@@ -1095,7 +1632,11 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
                 }
             }
 
-            const toSave = { ...subEvent, id: validId };
+            const toSave: FestSubEvent = { ...subEvent, id: validId, academicYear: subEvent.academicYear || '2026-27' };
+
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setFestSubEvents(prev => existing ? prev.map(f => f.id === validId ? toSave : f) : [toSave, ...prev]);
+            broadcastSync({ type: 'PATCH', table: 'fest_sub_events', eventType: existing ? 'UPDATE' : 'INSERT', item: toSave });
 
             const payload = {
                 id: toSave.id,
@@ -1116,22 +1657,16 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Fest Sub Event Save Error:', error);
                 toast.error(`Supabase DB Error: ${error.message}`);
+                refreshSingleTable('fest_sub_events');
                 return;
             }
 
-            const saved = data && data[0] ? ({
-                ...data[0],
-                festId: data[0].fest_id,
-                runnerUp: data[0].runner_up,
-                desc: data[0].desc_text || data[0].desc,
-                detailedInfo: data[0].detailed_info,
-                academicYear: data[0].academic_year,
-                eventGallery: data[0].event_gallery
-            } as unknown as FestSubEvent) : toSave;
-
-            setFestSubEvents(prev => existing ? prev.map(f => (f.id === saved.id ? saved : f)) : [saved, ...prev]);
-            await refreshContent();
-            toast.success('Fest Sub-Event saved directly to live Supabase DB!');
+            if (data && data[0]) {
+                const saved = mapFestSubEvent(data[0]);
+                setFestSubEvents(prev => prev.map(f => f.id === saved.id ? saved : f));
+            }
+            toast.success('Fest sub-event saved live!');
+            scheduleSingleTableRefresh('fest_sub_events');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to save fest sub-event';
             toast.error(`Live DB Error: ${msg}`);
@@ -1146,9 +1681,12 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
                 if (target.eventGallery) target.eventGallery.forEach(img => deleteMediaFile(img));
             }
 
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setFestSubEvents(prev => prev.filter(f => f.id !== id));
+            broadcastSync({ type: 'PATCH', table: 'fest_sub_events', eventType: 'DELETE', id });
+
             if (!isValidUUID(id)) {
-                setFestSubEvents(prev => prev.filter(f => f.id !== id));
-                toast.success('Fest Sub-Event deleted!');
+                toast.success('Fest sub-event deleted!');
                 return;
             }
 
@@ -1162,12 +1700,12 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Fest Delete Error:', error);
                 toast.error(`Supabase Delete Error: ${error.message}`);
+                refreshSingleTable('fest_sub_events');
                 return;
             }
 
-            setFestSubEvents(prev => prev.filter(f => f.id !== id));
-            await refreshContent();
-            toast.success('Fest Sub-Event deleted from live Supabase DB!');
+            toast.success('Fest sub-event deleted live!');
+            scheduleSingleTableRefresh('fest_sub_events');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to delete fest sub-event';
             toast.error(`Live DB Error: ${msg}`);
@@ -1186,6 +1724,10 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
                 if (!gallery.includes(img)) deleteMediaFile(img);
             });
 
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setFestGalleries(prev => ({ ...prev, [festId]: gallery }));
+            broadcastSync({ type: 'PATCH', table: 'fest_galleries', eventType: 'UPDATE', item: { id: festId, gallery } });
+
             const { error } = await supabase.from('fest_galleries').upsert({
                 id: festId,
                 gallery
@@ -1194,19 +1736,19 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Fest Gallery Save Error:', error);
                 toast.error(`Supabase DB Error: ${error.message}`);
+                refreshSingleTable('fest_galleries');
                 return;
             }
 
-            setFestGalleries(prev => ({ ...prev, [festId]: gallery }));
-            await refreshContent();
-            toast.success(`${festId.toUpperCase()} fest gallery updated in live Supabase DB!`);
+            toast.success(`${festId.toUpperCase()} fest gallery updated live!`);
+            scheduleSingleTableRefresh('fest_galleries');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to save fest gallery';
             toast.error(`Live DB Error: ${msg}`);
         }
     };
 
-    // --- TOPPER OPERATIONS ---
+    // TOPPERS
     const saveTopper = async (item: TopperItem) => {
         try {
             if (!isSupabaseConfigured || !supabase) {
@@ -1216,7 +1758,11 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
 
             const existing = toppers.find(t => t.id === item.id);
             const validId = item.id && isValidUUID(item.id) ? item.id : (existing ? existing.id : generateUUID());
-            const toSave = { ...item, id: validId };
+            const toSave: TopperItem = { ...item, id: validId };
+
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setToppers(prev => existing ? prev.map(t => t.id === validId ? toSave : t) : [...prev, toSave]);
+            broadcastSync({ type: 'PATCH', table: 'toppers', eventType: existing ? 'UPDATE' : 'INSERT', item: toSave });
 
             const payload = {
                 id: toSave.id,
@@ -1232,13 +1778,16 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Topper Save Error:', error);
                 toast.error(`Supabase DB Error: ${error.message}`);
+                refreshSingleTable('toppers');
                 return;
             }
 
-            const saved = data && data[0] ? ({ ...data[0], semType: data[0].sem_type, yearBatch: data[0].year_batch } as unknown as TopperItem) : toSave;
-            setToppers(prev => existing ? prev.map(t => (t.id === saved.id ? saved : t)) : [...prev, saved]);
-            await refreshContent();
-            toast.success('Academic Topper saved directly to live Supabase DB!');
+            if (data && data[0]) {
+                const saved = mapTopper(data[0]);
+                setToppers(prev => prev.map(t => t.id === saved.id ? saved : t));
+            }
+            toast.success('Academic topper saved live!');
+            scheduleSingleTableRefresh('toppers');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to save topper record';
             toast.error(`Live DB Error: ${msg}`);
@@ -1247,8 +1796,11 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
 
     const deleteTopper = async (id: string) => {
         try {
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setToppers(prev => prev.filter(t => t.id !== id));
+            broadcastSync({ type: 'PATCH', table: 'toppers', eventType: 'DELETE', id });
+
             if (!isValidUUID(id)) {
-                setToppers(prev => prev.filter(t => t.id !== id));
                 toast.success('Topper record deleted!');
                 return;
             }
@@ -1263,19 +1815,19 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Topper Delete Error:', error);
                 toast.error(`Supabase Delete Error: ${error.message}`);
+                refreshSingleTable('toppers');
                 return;
             }
 
-            setToppers(prev => prev.filter(t => t.id !== id));
-            await refreshContent();
-            toast.success('Topper record deleted from live Supabase DB!');
+            toast.success('Topper record deleted live!');
+            scheduleSingleTableRefresh('toppers');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to delete topper record';
             toast.error(`Live DB Error: ${msg}`);
         }
     };
 
-    // --- DOMAIN AWARD OPERATIONS ---
+    // DOMAIN AWARDS
     const saveDomainAward = async (item: DomainAwardItem) => {
         try {
             if (!isSupabaseConfigured || !supabase) {
@@ -1285,7 +1837,11 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
 
             const existing = domainAwards.find(d => d.id === item.id);
             const validId = item.id && isValidUUID(item.id) ? item.id : (existing ? existing.id : generateUUID());
-            const toSave = { ...item, id: validId };
+            const toSave: DomainAwardItem = { ...item, id: validId };
+
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setDomainAwards(prev => existing ? prev.map(d => d.id === validId ? toSave : d) : [...prev, toSave]);
+            broadcastSync({ type: 'PATCH', table: 'domain_awards', eventType: existing ? 'UPDATE' : 'INSERT', item: toSave });
 
             const payload = {
                 id: toSave.id,
@@ -1299,13 +1855,16 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Domain Award Save Error:', error);
                 toast.error(`Supabase DB Error: ${error.message}`);
+                refreshSingleTable('domain_awards');
                 return;
             }
 
-            const saved = data && data[0] ? (data[0] as unknown as DomainAwardItem) : toSave;
-            setDomainAwards(prev => existing ? prev.map(d => (d.id === saved.id ? saved : d)) : [...prev, saved]);
-            await refreshContent();
-            toast.success('Domain Award saved directly to live Supabase DB!');
+            if (data && data[0]) {
+                const saved = mapDomainAward(data[0]);
+                setDomainAwards(prev => prev.map(d => d.id === saved.id ? saved : d));
+            }
+            toast.success('Domain award saved live!');
+            scheduleSingleTableRefresh('domain_awards');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to save domain award';
             toast.error(`Live DB Error: ${msg}`);
@@ -1314,9 +1873,12 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
 
     const deleteDomainAward = async (id: string) => {
         try {
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setDomainAwards(prev => prev.filter(d => d.id !== id));
+            broadcastSync({ type: 'PATCH', table: 'domain_awards', eventType: 'DELETE', id });
+
             if (!isValidUUID(id)) {
-                setDomainAwards(prev => prev.filter(d => d.id !== id));
-                toast.success('Domain Award deleted!');
+                toast.success('Domain award deleted!');
                 return;
             }
 
@@ -1330,19 +1892,19 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Domain Award Delete Error:', error);
                 toast.error(`Supabase Delete Error: ${error.message}`);
+                refreshSingleTable('domain_awards');
                 return;
             }
 
-            setDomainAwards(prev => prev.filter(d => d.id !== id));
-            await refreshContent();
-            toast.success('Domain Award deleted from live Supabase DB!');
+            toast.success('Domain award deleted live!');
+            scheduleSingleTableRefresh('domain_awards');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to delete domain award';
             toast.error(`Live DB Error: ${msg}`);
         }
     };
 
-    // --- HOME CONFIG OPERATIONS ---
+    // HOME CONFIG
     const updateHomeConfig = async (config: HomeConfig) => {
         try {
             if (!isSupabaseConfigured || !supabase) {
@@ -1354,6 +1916,10 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (homeConfig.image_team && homeConfig.image_team !== config.image_team) deleteMediaFile(homeConfig.image_team);
             if (homeConfig.image_resources && homeConfig.image_resources !== config.image_resources) deleteMediaFile(homeConfig.image_resources);
             if (homeConfig.image_staff && homeConfig.image_staff !== config.image_staff) deleteMediaFile(homeConfig.image_staff);
+
+            // 1. Instant 0ms Optimistic Update & Cross-Tab Broadcast
+            setHomeConfig(config);
+            broadcastSync({ type: 'SET_STATE', table: 'home_config', data: config });
 
             const payload = {
                 id: 'main',
@@ -1375,12 +1941,15 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (error) {
                 console.error('Supabase Home Config Error:', error);
                 toast.error(`Supabase DB Error: ${error.message}`);
+                refreshSingleTable('home_config');
                 return;
             }
 
-            setHomeConfig(data && data[0] ? (data[0] as unknown as HomeConfig) : config);
-            await refreshContent();
-            toast.success('Homepage details updated directly in live Supabase DB!');
+            if (data && data[0]) {
+                setHomeConfig(data[0] as unknown as HomeConfig);
+            }
+            toast.success('Homepage details updated live!');
+            scheduleSingleTableRefresh('home_config');
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : 'Failed to update homepage config';
             toast.error(`Live DB Error: ${msg}`);
