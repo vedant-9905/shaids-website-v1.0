@@ -1,7 +1,8 @@
 'use client';
-import Image from 'next/image';
 
+import Image from 'next/image';
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Quote, UserCheck, Shield, HeartHandshake, Crown } from 'lucide-react';
 
 export default function LeadershipMessagesPage() {
@@ -54,19 +55,29 @@ export default function LeadershipMessagesPage() {
                 {messages.map((item, idx) => {
                     const Icon = item.icon;
                     return (
-                        <div key={idx} className="p-8 rounded-[2.5rem] border border-white/10 bg-[#060609]/90 backdrop-blur-xl space-y-6 relative overflow-hidden group hover:border-white/20 transition-all shadow-2xl">
+                        <motion.div
+                            key={idx}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: idx * 0.12, ease: "easeOut" }}
+                            whileHover={{ y: -6, transition: { duration: 0.25 } }}
+                            className="p-8 rounded-[2.5rem] border border-white/10 bg-[#060609]/90 backdrop-blur-xl space-y-6 relative overflow-hidden group hover:border-white/20 transition-all shadow-2xl"
+                        >
+                            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10" />
+
                             <div className="flex items-center justify-between">
                                 <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border ${item.badgeBg}`}>
                                     {item.badge}
                                 </span>
-                                <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center text-muted-foreground">
+                                <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-muted-foreground group-hover:text-white group-hover:bg-white/10 group-hover:scale-110 transition-all">
                                     <Icon size={20} />
                                 </div>
                             </div>
 
                             <div className="flex items-center gap-4 pt-2">
-                                <div className="relative w-16 h-16 rounded-2xl overflow-hidden border border-white/10 shrink-0">
-                                    <Image fill src={item.image} alt={item.name} sizes="64px" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <div className="relative w-16 h-16 rounded-2xl overflow-hidden border border-white/10 shrink-0 shadow-md">
+                                    <Image fill src={item.image} alt={item.name} sizes="64px" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div>
                                     <h3 className="text-xl font-black text-white tracking-tight">{item.name}</h3>
@@ -76,12 +87,12 @@ export default function LeadershipMessagesPage() {
                             </div>
 
                             <div className="relative pt-2 border-t border-white/5">
-                                <Quote className="w-8 h-8 text-white/10 absolute -top-3 -left-2 pointer-events-none" />
-                                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed italic pl-6 relative z-10 font-medium">
+                                <Quote className="w-8 h-8 text-white/10 absolute -top-3 -left-2 pointer-events-none group-hover:text-primary/20 transition-colors" />
+                                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed italic pl-6 relative z-10 font-medium group-hover:text-slate-200 transition-colors">
                                     &ldquo;{item.quote}&rdquo;
                                 </p>
                             </div>
-                        </div>
+                        </motion.div>
                     );
                 })}
             </div>
