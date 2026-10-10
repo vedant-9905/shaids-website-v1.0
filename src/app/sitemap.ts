@@ -8,14 +8,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/about',
         '/about/overview',
         '/about/messages',
+        '/about/achievements',
+        '/about/achievements/highlights',
+        '/about/achievements/nptel',
+        '/about/achievements/projects',
         '/events',
         '/events/fests/vectors',
         '/events/fests/kurukshetra',
         '/events/fests/rhythms',
-        '/team',
-        '/projects',
         '/resources',
-        '/magazine',
+        '/team',
+        '/staff',
     ];
 
     return routes.map((route) => ({

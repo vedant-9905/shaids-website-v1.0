@@ -43,86 +43,85 @@ SHAIDS is a full-stack, real-time web platform that serves as the digital hub fo
 
 | Layer | Technology |
 |---|---|
-| **Framework** | Next.js 16.1.6 (App Router, Turbopack) |
+| **Framework** | Next.js 16.4.0 (App Router, Turbopack) |
 | **Language** | TypeScript 5.x |
-| **UI Library** | React 19.2.3 |
-| **Styling** | Tailwind CSS 4.x, tailwindcss-animate |
-| **Animations** | Framer Motion 12.x |
+| **UI Library** | React 19.3.0 |
+| **Styling** | Tailwind CSS 4.3.3, tailwindcss-animate |
+| **Animations** | Framer Motion 14.0.0 |
 | **Database** | Supabase (PostgreSQL) |
 | **Storage** | Supabase Storage (shaids-assets bucket) |
 | **Real-Time** | Supabase Realtime + BroadcastChannel API |
 | **State** | React Context + useCallback memoization |
 | **Icons** | Lucide React |
-| **Forms** | React Hook Form + Zod validation |
+| **Forms** | React Hook Form + Zod 4.6.5 validation |
 | **Toasts** | Sonner |
 | **Theme** | next-themes (dark/light/system) |
 | **Markdown** | react-markdown + remark-gfm |
-| **Smooth Scroll** | Lenis |
+| **Smooth Scroll** | Lenis 1.3.26 |
 
 ---
 
 ## Repository Structure
 
 ```
-shaids-website/
-└── v1.0/
-    ├── public/
-    │   └── images/              # Static logos (shaids-logo.png, acpce-logo-v2.png)
-    ├── src/
-    │   ├── app/
-    │   │   ├── (public)/        # All public-facing pages
-    │   │   │   ├── page.tsx              # Homepage (Hero + About + Feature Showcase)
-    │   │   │   ├── about/                # About section (overview, messages, achievements)
-    │   │   │   │   ├── overview/
-    │   │   │   │   ├── messages/
-    │   │   │   │   └── achievements/
-    │   │   │   │       ├── highlights/
-    │   │   │   │       ├── nptel/
-    │   │   │   │       └── projects/
-    │   │   │   ├── events/               # Events listing + fest sub-pages
-    │   │   │   │   ├── [id]/             # Dynamic event detail
-    │   │   │   │   └── fests/
-    │   │   │   │       ├── vectors/
-    │   │   │   │       ├── kurukshetra/
-    │   │   │   │       └── rhythms/
-    │   │   │   ├── resources/            # Resources listing + detail
-    │   │   │   ├── team/                 # Team listing + profiles
-    │   │   │   │   ├── [id]/
-    │   │   │   │   └── individual/[id]/
-    │   │   │   └── staff/                # Staff listing + profiles
-    │   │   │       └── [id]/
-    │   │   ├── admin/                    # Admin dashboard (login + CRUD panel)
-    │   │   │   ├── login/
-    │   │   │   └── page.tsx
-    │   │   ├── globals.css               # Design system (SHAIDS Deep Space Theme)
-    │   │   ├── layout.tsx                # Root layout (providers, navbar, footer)
-    │   │   ├── robots.ts                 # SEO robots.txt generation
-    │   │   └── sitemap.ts                # SEO sitemap.xml generation
-    │   ├── components/
-    │   │   ├── client-views/             # Client-side page wrappers (8 files)
-    │   │   ├── events/                   # EventCard, SaveButton
-    │   │   ├── home/                     # Hero, About, FeatureShowcase
-    │   │   ├── resources/                # ResourceCard
-    │   │   ├── team/                     # TeamCard, StaffCard
-    │   │   ├── providers/                # QueryProvider (TanStack)
-    │   │   └── ui/                       # Navbar, Footer, Button, Card, Badge, Tabs,
-    │   │                                 # ImageLightbox, ImageCropper, FestGalleryMarquee,
-    │   │                                 # ShareModal, Tooltip, Calendar, etc.
-    │   ├── context/
-    │   │   └── content-context.tsx        # Central state provider (1444 lines)
-    │   │                                 # - All CRUD operations
-    │   │                                 # - Supabase Realtime subscriptions
-    │   │                                 # - BroadcastChannel cross-tab sync
-    │   │                                 # - 2s background polling
-    │   │                                 # - Drag-to-reorder via created_at mapping
-    │   └── lib/
-    │       ├── supabase.ts               # Supabase client, UUID utils, media upload/delete
-    │       ├── supabase-schema.sql        # Complete database DDL (268 lines)
-    │       ├── content-moderation.ts      # Input sanitization
-    │       └── utils.ts                  # cn() utility (clsx + tailwind-merge)
-    ├── next.config.ts                    # Image domains, remote patterns
-    ├── package.json
-    └── tsconfig.json
+shaids-website-v1.0/
+├── public/
+│   └── images/                   # Static logos (shaids-logo.png, acpce-logo-v2.png)
+├── src/
+│   ├── app/
+│   │   ├── (public)/             # All public-facing pages
+│   │   │   ├── page.tsx          # Homepage (Hero + About + Feature Showcase)
+│   │   │   ├── about/            # About section (overview, messages, achievements)
+│   │   │   │   ├── overview/
+│   │   │   │   ├── messages/
+│   │   │   │   └── achievements/
+│   │   │   │       ├── highlights/
+│   │   │   │       ├── nptel/
+│   │   │   │       └── projects/
+│   │   │   ├── events/           # Events listing + fest sub-pages
+│   │   │   │   ├── [id]/         # Dynamic event detail
+│   │   │   │   └── fests/
+│   │   │   │       ├── vectors/
+│   │   │   │       ├── kurukshetra/
+│   │   │   │       └── rhythms/
+│   │   │   ├── resources/        # Resources listing + detail
+│   │   │   ├── team/             # Team listing + profiles
+│   │   │   │   ├── [id]/
+│   │   │   │   └── individual/[id]/
+│   │   │   └── staff/            # Staff listing + profiles
+│   │   │       └── [id]/
+│   │   ├── admin/                # Admin dashboard (login + CRUD panel)
+│   │   │   ├── login/
+│   │   │   └── page.tsx
+│   │   ├── globals.css           # Design system (SHAIDS Deep Space Theme)
+│   │   ├── layout.tsx            # Root layout (providers, navbar, footer)
+│   │   ├── robots.ts             # SEO robots.txt generation
+│   │   └── sitemap.ts            # SEO sitemap.xml generation
+│   ├── components/
+│   │   ├── client-views/         # Client-side page wrappers (8 views)
+│   │   ├── events/               # EventCard
+│   │   ├── home/                 # Hero, About, FeatureShowcase
+│   │   ├── resources/            # ResourceCard
+│   │   ├── team/                 # TeamCard, StaffCard
+│   │   ├── providers/            # QueryProvider (TanStack)
+│   │   └── ui/                   # Navbar, Footer, Button, Card, Badge, Tabs,
+│   │                             # ImageLightbox, ImageCropper, FestGalleryMarquee,
+│   │                             # ShareModal, Tooltip, Calendar, etc.
+│   ├── context/
+│   │   └── content-context.tsx    # Central state provider
+│   │                             # - All CRUD operations
+│   │                             # - Supabase Realtime subscriptions
+│   │                             # - BroadcastChannel cross-tab sync
+│   │                             # - 2s background polling
+│   │                             # - Drag-to-reorder via created_at mapping
+│   └── lib/
+│       ├── supabase.ts           # Supabase client, UUID utils, media upload/delete
+│       ├── supabase-schema.sql    # Complete database DDL (268 lines)
+│       ├── content-moderation.ts  # Input sanitization
+│       └── utils.ts              # cn() utility (clsx + tailwind-merge)
+├── next.config.ts                # Image domains, remote patterns, origins
+├── package.json
+└── tsconfig.json
 ```
 
 ---
@@ -255,26 +254,39 @@ Accessible at `/admin` with credential-based authentication.
 ### Core Components
 | Component | File | Purpose |
 |---|---|---|
-| `Navbar` | `ui/navbar.tsx` | Floating glassmorphic navigation with mobile drawer |
-| `Footer` | `ui/footer.tsx` | Minimal footer with branding and social links |
-| `Hero` | `home/hero.tsx` | Full-screen hero with animated logo morph |
-| `About` | `home/about.tsx` | Three-column feature cards with scroll animations |
-| `FeatureShowcase` | `home/feature-showcase.tsx` | Alternating image+text sections with hover shimmer |
-| `EventCard` | `events/event-card.tsx` | Event preview card with registration CTA |
-| `TeamCard` | `team/team-card.tsx` | Team member card with avatar and social links |
-| `StaffCard` | `team/staff-card.tsx` | Faculty card with designation and expertise |
-| `ResourceCard` | `resources/resource-card.tsx` | Resource card with icon mapping and download link |
-| `ImageLightbox` | `ui/image-lightbox.tsx` | Full-screen gallery viewer with keyboard navigation |
-| `ImageCropper` | `ui/image-cropper-modal.tsx` | In-admin image crop/resize tool |
-| `FestGalleryMarquee` | `ui/fest-gallery-marquee.tsx` | Auto-scrolling photo carousel (pause on hover) |
-| `AcademicYearToggle` | `academic-year-toggle.tsx` | Pill-style year switcher |
+| `Navbar` | `ui/navbar.tsx` | Floating glassmorphic navigation with mobile drawer and active link pill |
+| `Footer` | `ui/footer.tsx` | Minimal footer with branding, department links, and social channels |
+| `Hero` | `home/hero.tsx` | Full-screen hero with animated ACPCE/SHAIDS logo cycle & CTA buttons |
+| `About` | `home/about.tsx` | Three-column feature cards with scroll animations and glow effects |
+| `FeatureShowcase` | `home/feature-showcase.tsx` | Alternating image+text sections with hover shimmer & deep-space aesthetics |
+| `EventCard` | `events/event-card.tsx` | Event preview card with registration CTA and category badges |
+| `TeamCard` | `team/team-card.tsx` | Team member card with avatar, roles, skills, and social links |
+| `StaffCard` | `team/staff-card.tsx` | Faculty card with designation, qualifications, and research domains |
+| `ResourceCard` | `resources/resource-card.tsx` | Resource card with icon mapping, tags, and direct download/visit link |
+| `ImageLightbox` | `ui/image-lightbox.tsx` | Full-screen gallery viewer with keyboard navigation and zoom |
+| `ImageCropper` | `ui/image-cropper-modal.tsx` | In-admin image crop/resize tool with canvas aspect ratio locking |
+| `FestGalleryMarquee` | `ui/fest-gallery-marquee.tsx` | Auto-scrolling photo carousel with pause-on-hover interaction |
+| `AcademicYearToggle` | `academic-year-toggle.tsx` | Pill-style year switcher (`2026-27` / `2025-26`) |
 | `ModeToggle` | `mode-toggle.tsx` | Dark/light/system theme toggle |
 
-### Design Patterns
-- All cards share a consistent visual language: `rounded-[2.5rem]`, `backdrop-blur-3xl`, `glass` styling
-- Hover effects: `y: -5px` lift, border glow, scale-up avatars, shimmer overlays
-- Motion: `whileInView` scroll triggers, `layoutId` navbar indicator spring animation
-- Typography: Geist Sans + Geist Mono via `next/font/google`
+### Client-Side Page Views (`src/components/client-views/`)
+| View Component | Corresponding Route | Features |
+|---|---|---|
+| `AchievementsClient` | `/about/achievements/*` | Tabbed views for highlights, NPTEL toppers, and Capstone projects |
+| `EventsClient` | `/events` | Category filter pills, status filters (upcoming/completed), search |
+| `EventsDetailClient` | `/events/[id]` | Event overview, timing, location, brochure download, snapshot gallery |
+| `ResourcesClient` | `/resources` | Category segmentation, search, tags, direct external links |
+| `StaffClient` | `/staff` | Faculty directory grid with designation filtering and search |
+| `StaffDetailClient` | `/staff/[id]` | Faculty profile, qualifications, research domains, email contact |
+| `TeamClient` | `/team` | Student committee segmented by academic year and role category |
+| `TeamDetailClient` | `/team/[id]`, `/team/individual/[id]` | Detailed student profile with skills, portfolio, and social links |
+
+### Motion & Interaction Engine (Framer Motion 14)
+- **Interactive Hover Lifts**: Cards feature smooth `whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}` lift physics.
+- **Ambient Spotlights**: Subtle radial gradient spotlights respond to card focus and hover states across Events and Fest showcases.
+- **Avatar & Media Scales**: Profile avatars gently scale on card hover (`scale: 1.05`) with border glow illumination.
+- **Scroll Triggers**: Sections animate via `whileInView` with viewport thresholds (`viewport={{ once: true, amount: 0.1 }}`) preventing layout reflow.
+- **Marquee Interaction**: Fest photo galleries loop smoothly with CSS hardware-accelerated transforms and pause immediately when hovered.
 
 ---
 
@@ -291,7 +303,7 @@ Accessible at `/admin` with credential-based authentication.
 | **CSS Containment** | `contain: layout style` on `<body>` to isolate layout recalculations |
 | **Font Optimization** | `next/font/google` for zero-layout-shift font loading |
 | **Smooth Rendering** | `text-rendering: optimizeLegibility`, `-webkit-font-smoothing: antialiased` |
-| **Turbopack** | Next.js 16 Turbopack for 10x faster HMR and build |
+| **Turbopack** | Next.js 16 Turbopack for fast HMR and build times |
 | **Static Pre-rendering** | 22 pages statically generated at build time |
 
 ---
@@ -326,7 +338,7 @@ Accessible at `/admin` with credential-based authentication.
 
 - **Structured Data** (JSON-LD) for `EducationalOrganization` schema
 - **OpenGraph** + **Twitter Card** meta tags
-- **Dynamic robots.txt** and **sitemap.xml** generation
+- **Dynamic robots.txt** and **sitemap.xml** generation with verified public routes
 - **Semantic HTML** – Proper heading hierarchy, `<section>`, `<nav>`, `<main>`, `<footer>`
 - **Focus Visible** – Custom `:focus-visible` ring for keyboard navigation
 - **Selection Color** – Branded purple text selection
@@ -337,7 +349,7 @@ Accessible at `/admin` with credential-based authentication.
 
 ## Environment Variables
 
-Create a `.env.local` file in the `v1.0/` directory:
+Create a `.env.local` file in the project root directory:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
@@ -350,9 +362,11 @@ NEXT_PUBLIC_ADMIN_PASSWORD=your-admin-password
 ## Local Development
 
 ```bash
-cd v1.0
+# Install dependencies
 npm install
-npm run dev        # Starts on http://localhost:3000
+
+# Start development server with Turbopack on port 3000
+npm run dev
 ```
 
 ---
@@ -364,7 +378,7 @@ npm run build      # Production build (Turbopack)
 npm run start      # Serve production build locally
 ```
 
-Static export is supported by Vercel, Netlify, or any Node.js hosting platform.
+Static export and serverless deployment are fully supported on Vercel, Netlify, or any Node.js hosting environment.
 
 ---
 
@@ -377,6 +391,7 @@ Static export is supported by Vercel, Netlify, or any Node.js hosting platform.
 | **v1.2** | `v1.2` | Jul 2026 | About section, fest sub-events, marquees, toppers, NPTEL hub, domain awards, lightbox, admin restoration |
 | **v1.3** | `v1.3` | Aug 2026 | Academic year segmentation, UI refinements, failproof Supabase sync |
 | **v1.4** | `v1.4` | Aug 2026 | Performance optimization, UI/UX polish, dead code removal, full documentation, production-ready cleanup |
+| **v1.5** | `main` | Oct 2026 | Framer Motion 14 interactive hover lifts & ambient spotlights; residual file cleanup (`src/app/page.tsx`, `public/images/acpce-logo.png`, `public/grid.svg`, `save-button.tsx`); route & sitemap synchronization; Next.js 16.4 Turbopack verification |
 
 ---
 
