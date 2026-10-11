@@ -1,15 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    optimizePackageImports: [
-      'lucide-react',
-      'date-fns',
-      'framer-motion',
-      '@tanstack/react-query',
-      'sonner',
-    ],
-  },
   images: {
     remotePatterns: [
       // Google OAuth profile pictures

@@ -294,7 +294,6 @@ Accessible at `/admin` with credential-based authentication.
 
 | Optimization | Implementation |
 |---|---|
-| **Tree-Shaking & Package Imports** | `experimental.optimizePackageImports` for `lucide-react`, `date-fns`, `framer-motion`, `@tanstack/react-query`, `sonner` |
 | **Network & Polling Throttling** | Heartbeat polling throttled from 5s to 30s + 15s debounced tab focus revalidation, reducing background query volume by 85% |
 | **State Memoization** | `ContentContext.Provider` value wrapped in `useMemo` to prevent cascading full-tree re-renders |
 | **Route Code-Splitting** | Heavy modals (`ImageLightbox`, `ImageCropperModal`, `ShareModal`) dynamically loaded on demand |
@@ -391,7 +390,7 @@ Static export and serverless deployment are fully supported on Vercel, Netlify, 
 | **v1.3** | `v1.3` | Aug 2026 | Academic year segmentation, UI refinements, failproof Supabase sync |
 | **v1.4** | `v1.4` | Aug 2026 | Performance optimization, UI/UX polish, dead code removal, full documentation, production-ready cleanup |
 | **v1.5** | `main` | Oct 2026 | Framer Motion 14 interactive hover lifts & ambient spotlights; residual file cleanup (`src/app/page.tsx`, `public/images/acpce-logo.png`, `public/grid.svg`, `save-button.tsx`); route & sitemap synchronization; Next.js 16.4 Turbopack verification |
-| **v1.6** | `main` | Oct 2026 | Full website optimization: compiler package tree-shaking (`experimental.optimizePackageImports`), 85% network query reduction via throttled heartbeat polling & debounced focus revalidation, `ContentContext` `useMemo` state memoization, comprehensive server component metadata across all 27 canonical routes, dynamic code-splitting for heavy modals (`ImageLightbox`, `ImageCropperModal`, `ShareModal`), Google Geist `display: swap`, GPU spring physics, and lean configuration with zero cache pollution |
+| **v1.6** | `main` | Oct 2026 | Full website optimization: 85% network query reduction via throttled heartbeat polling & debounced focus revalidation, `ContentContext` `useMemo` state memoization, comprehensive server component metadata across all 27 canonical routes, dynamic code-splitting for heavy modals (`ImageLightbox`, `ImageCropperModal`, `ShareModal`), Google Geist `display: swap`, GPU spring physics, clean vanilla Next.js configuration, and zero cache pollution |
 
 ---
 
