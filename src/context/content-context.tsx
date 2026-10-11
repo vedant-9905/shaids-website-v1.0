@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { supabase, isSupabaseConfigured, isValidUUID, generateUUID, deleteMediaFile } from '@/lib/supabase';
 import { toast } from 'sonner';
 
@@ -817,7 +817,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
         const triggerSmartCheck = () => {
             if (typeof document !== 'undefined' && document.hidden) return;
             const now = Date.now();
-            if (now - lastCheckTime > 3000) {
+            if (now - lastCheckTime > 15000) {
                 lastCheckTime = now;
                 refreshContent();
             }
@@ -827,7 +827,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
             if (typeof document !== 'undefined' && !document.hidden) {
                 triggerSmartCheck();
                 if (!heartbeatInterval) {
-                    heartbeatInterval = setInterval(triggerSmartCheck, 5000);
+                    heartbeatInterval = setInterval(triggerSmartCheck, 30000);
                 }
             } else {
                 if (heartbeatInterval) {
@@ -838,7 +838,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
         };
 
         if (typeof document !== 'undefined' && !document.hidden) {
-            heartbeatInterval = setInterval(triggerSmartCheck, 5000);
+            heartbeatInterval = setInterval(triggerSmartCheck, 30000);
         }
 
         document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -1956,50 +1956,65 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
         }
     };
 
+    const contextValue = useMemo<ContentContextType>(() => ({
+        events,
+        team,
+        staff,
+        resources,
+        projects,
+        nptel,
+        highlights,
+        festSubEvents,
+        festGalleries,
+        toppers,
+        domainAwards,
+        homeConfig,
+        academicYear,
+        setAcademicYear,
+        loading,
+        saveEvent,
+        deleteEvent,
+        saveTeamMember,
+        deleteTeamMember,
+        reorderTeamMembers,
+        saveStaffMember,
+        deleteStaffMember,
+        reorderStaffMembers,
+        saveResource,
+        deleteResource,
+        saveProject,
+        deleteProject,
+        saveNptel,
+        deleteNptel,
+        saveHighlight,
+        deleteHighlight,
+        saveFestSubEvent,
+        deleteFestSubEvent,
+        saveFestGallery,
+        saveTopper,
+        deleteTopper,
+        saveDomainAward,
+        deleteDomainAward,
+        updateHomeConfig
+    }), [
+        events,
+        team,
+        staff,
+        resources,
+        projects,
+        nptel,
+        highlights,
+        festSubEvents,
+        festGalleries,
+        toppers,
+        domainAwards,
+        homeConfig,
+        academicYear,
+        loading
+    ]);
+
     return (
-        <ContentContext.Provider
-            value={{
-                events,
-                team,
-                staff,
-                resources,
-                projects,
-                nptel,
-                highlights,
-                festSubEvents,
-                festGalleries,
-                toppers,
-                domainAwards,
-                homeConfig,
-                academicYear,
-                setAcademicYear,
-                loading,
-                saveEvent,
-                deleteEvent,
-                saveTeamMember,
-                deleteTeamMember,
-                reorderTeamMembers,
-                saveStaffMember,
-                deleteStaffMember,
-                reorderStaffMembers,
-                saveResource,
-                deleteResource,
-                saveProject,
-                deleteProject,
-                saveNptel,
-                deleteNptel,
-                saveHighlight,
-                deleteHighlight,
-                saveFestSubEvent,
-                deleteFestSubEvent,
-                saveFestGallery,
-                saveTopper,
-                deleteTopper,
-                saveDomainAward,
-                deleteDomainAward,
-                updateHomeConfig
-            }}
-        >
+        <ContentContext.Provider value={contextValue}>
             {children}
         </ContentContext.Provider>
     );

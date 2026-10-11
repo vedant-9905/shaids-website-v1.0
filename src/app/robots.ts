@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
         rules: {
             userAgent: '*',
             allow: '/',
-            disallow: ['/admin/', '/api/'],
+            disallow: ['/admin', '/admin/', '/api/'],
         },
         sitemap: 'https://shaids-acpce.org/sitemap.xml',
     };

@@ -21,8 +21,8 @@ export function StaffCard({ id, name, designation, image, email, department }: S
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            whileHover={{ y: -5 }}
-            className="flex flex-col rounded-[2.5rem] border border-black/5 dark:border-white/10 bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-2xl relative overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(56,189,248,0.15)] hover:border-white/20 p-8 items-center text-center group"
+            whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+            className="flex flex-col rounded-[2.5rem] border border-black/5 dark:border-white/10 bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-2xl relative overflow-hidden transition-colors duration-300 hover:shadow-[0_0_30px_rgba(56,189,248,0.15)] hover:border-white/20 p-8 items-center text-center group"
         >
             {/* Subtle top glare */}
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10" />

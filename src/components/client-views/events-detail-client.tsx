@@ -6,9 +6,14 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, Clock, MapPin, Share2, Download, ExternalLink, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { format } from 'date-fns';
 import { useContent } from '@/context/content-context';
-import { ShareModal } from '@/components/ui/share-modal';
+
+const ShareModal = dynamic(
+    () => import('@/components/ui/share-modal').then(mod => mod.ShareModal),
+    { ssr: false }
+);
 
 export function EventsDetailClient({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);

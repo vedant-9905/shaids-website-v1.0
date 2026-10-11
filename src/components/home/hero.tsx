@@ -112,6 +112,11 @@ function LogoMorph() {
                     </div>
                 </motion.div>
             </AnimatePresence>
+            {/* Preload both logos to eliminate any decode stutter on morph */}
+            <div className="hidden pointer-events-none" aria-hidden="true">
+                <Image src="/images/shaids-logo.png" alt="" width={340} height={340} priority />
+                <Image src="/images/acpce-logo-v2.png" alt="" width={260} height={260} priority />
+            </div>
         </div>
     );
 }

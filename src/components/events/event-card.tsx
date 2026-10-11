@@ -29,9 +29,9 @@ export function EventCard({
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            whileHover={{ y: -5 }}
+            whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
             className={cn(
-                "flex flex-col rounded-[2.5rem] border border-black/5 dark:border-white/10 bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-2xl relative overflow-hidden transition-all duration-500 hover:-translate-y-2",
+                "flex flex-col rounded-[2.5rem] border border-black/5 dark:border-white/10 bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-2xl relative overflow-hidden transition-colors duration-300",
                 !isPast && "hover:shadow-[0_0_30px_rgba(217,70,239,0.15)] hover:border-white/20"
             )}
         >

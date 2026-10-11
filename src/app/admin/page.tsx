@@ -13,8 +13,13 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { toast } from 'sonner';
-import { ImageCropperModal } from '@/components/ui/image-cropper-modal';
+
+const ImageCropperModal = dynamic(
+    () => import('@/components/ui/image-cropper-modal').then(mod => mod.ImageCropperModal),
+    { ssr: false }
+);
 
 export default function AdminDashboardPage() {
     const {
