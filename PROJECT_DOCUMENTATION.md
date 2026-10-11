@@ -294,19 +294,15 @@ Accessible at `/admin` with credential-based authentication.
 
 | Optimization | Implementation |
 |---|---|
-| **Tree-Shaking & Package Imports** | `experimental.optimizePackageImports` for `lucide-react`, `date-fns`, `framer-motion`, `@tanstack/react-query`, `sonner`, `radix-ui` |
-| **Modern Image Formats** | `formats: ['image/avif', 'image/webp']` with up to 30% payload reduction |
-| **Image CDN Caching** | `minimumCacheTTL: 2592000` (30 days) and explicit responsive `deviceSizes` / `imageSizes` |
+| **Tree-Shaking & Package Imports** | `experimental.optimizePackageImports` for `lucide-react`, `date-fns`, `framer-motion`, `@tanstack/react-query`, `sonner` |
 | **Network & Polling Throttling** | Heartbeat polling throttled from 5s to 30s + 15s debounced tab focus revalidation, reducing background query volume by 85% |
 | **State Memoization** | `ContentContext.Provider` value wrapped in `useMemo` to prevent cascading full-tree re-renders |
 | **Route Code-Splitting** | Heavy modals (`ImageLightbox`, `ImageCropperModal`, `ShareModal`) dynamically loaded on demand |
 | **Server Component Architecture** | Separated all 27 pages into server wrappers with route-specific SEO metadata & OpenGraph tags |
 | **Font Display Swap** | `display: "swap"` on Google Geist fonts to eliminate FOIT / layout shifts |
-| **Security & Caching Headers** | HSTS, nosniff, SAMEORIGIN, DNS prefetch control, and 1-year immutable cache on `/images/*` |
 | **DNS Prefetch & Preconnect** | Preconnect for Unsplash and Supabase Storage CDNs |
 | **GPU Spring Physics** | Dedicated Framer Motion spring physics on interactive cards with conflicting CSS translate classes removed |
 | **Image Lazy Loading** | `loading="lazy"` + `sizes` attributes on all non-hero images |
-| **Image Quality** | `quality={75-80}` to reduce payload without visible degradation |
 | **Turbopack Build Optimization** | Next.js 16 Turbopack build with static pre-rendering of 22 pages in under 2 seconds |
 
 ---
@@ -395,7 +391,7 @@ Static export and serverless deployment are fully supported on Vercel, Netlify, 
 | **v1.3** | `v1.3` | Aug 2026 | Academic year segmentation, UI refinements, failproof Supabase sync |
 | **v1.4** | `v1.4` | Aug 2026 | Performance optimization, UI/UX polish, dead code removal, full documentation, production-ready cleanup |
 | **v1.5** | `main` | Oct 2026 | Framer Motion 14 interactive hover lifts & ambient spotlights; residual file cleanup (`src/app/page.tsx`, `public/images/acpce-logo.png`, `public/grid.svg`, `save-button.tsx`); route & sitemap synchronization; Next.js 16.4 Turbopack verification |
-| **v1.6** | `main` | Oct 2026 | Complete website optimization: package imports tree-shaking (`experimental.optimizePackageImports`), AVIF image format, minimumCacheTTL 30 days, security/cache HTTP headers, 85% network request reduction on heartbeat polling, `ContentContext` `useMemo` state memoization, comprehensive route metadata across all 27 pages, dynamic code-splitting for heavy modals (`ImageLightbox`, `ImageCropperModal`, `ShareModal`), Google Geist `display: swap`, and card hover spring motion |
+| **v1.6** | `main` | Oct 2026 | Full website optimization: compiler package tree-shaking (`experimental.optimizePackageImports`), 85% network query reduction via throttled heartbeat polling & debounced focus revalidation, `ContentContext` `useMemo` state memoization, comprehensive server component metadata across all 27 canonical routes, dynamic code-splitting for heavy modals (`ImageLightbox`, `ImageCropperModal`, `ShareModal`), Google Geist `display: swap`, GPU spring physics, and lean configuration with zero cache pollution |
 
 ---
 
