@@ -114,8 +114,8 @@ export function FeatureShowcase() {
 
                             {/* Image Container */}
                             <div className="flex-1 w-full">
-                                <div className="relative aspect-video w-full overflow-hidden rounded-[2.5rem] border border-black/5 dark:border-white/10 bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-2xl transition-all duration-500 group-hover:-translate-y-2 group-hover:border-white/20">
-                                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10 pointer-events-none" />
+                                <div className="relative aspect-video w-full overflow-hidden rounded-[2.5rem] border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/80 backdrop-blur-2xl shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] transition-all duration-500 group-hover:-translate-y-2 hover:border-black/20 dark:hover:border-white/30">
+                                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/20 to-transparent z-10 pointer-events-none" />
 
                                     <Image
                                         fill

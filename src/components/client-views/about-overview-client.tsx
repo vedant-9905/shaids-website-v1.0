@@ -103,7 +103,7 @@ export function AboutOverviewClient() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
                     whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-                    className="p-8 md:p-10 rounded-[2.5rem] border border-primary/30 bg-white/80 dark:bg-gradient-to-br dark:from-primary/20 dark:via-[#07070e] dark:to-black space-y-5 shadow-xl dark:shadow-2xl relative overflow-hidden group"
+                    className="p-8 md:p-10 rounded-[2.5rem] border border-primary/30 bg-white/90 dark:bg-[#0c0919]/90 dark:bg-gradient-to-br dark:from-primary/20 dark:to-transparent space-y-5 shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] relative overflow-hidden group"
                 >
                     <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
                     <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center text-primary border border-primary/30 group-hover:scale-110 transition-transform duration-300">
@@ -122,7 +122,7 @@ export function AboutOverviewClient() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
                     whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-                    className="p-8 md:p-10 rounded-[2.5rem] border border-secondary/30 bg-white/80 dark:bg-gradient-to-br dark:from-secondary/20 dark:via-[#07070e] dark:to-black space-y-5 shadow-xl dark:shadow-2xl relative overflow-hidden group"
+                    className="p-8 md:p-10 rounded-[2.5rem] border border-secondary/30 bg-white/90 dark:bg-[#0c0919]/90 dark:bg-gradient-to-br dark:from-secondary/20 dark:to-transparent space-y-5 shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] relative overflow-hidden group"
                 >
                     <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary/40 to-transparent" />
                     <div className="w-14 h-14 rounded-2xl bg-secondary/20 flex items-center justify-center text-secondary border border-secondary/30 group-hover:scale-110 transition-transform duration-300">
@@ -190,7 +190,7 @@ export function AboutOverviewClient() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
-                    className="p-8 md:p-10 rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#06060c]/90 backdrop-blur-xl space-y-6 shadow-xl dark:shadow-2xl relative overflow-hidden"
+                    className="p-8 md:p-10 rounded-[2.5rem] border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/90 backdrop-blur-2xl space-y-6 shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] relative overflow-hidden"
                 >
                     <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
                     <h2 className="text-2xl font-black flex items-center gap-3 text-foreground">
@@ -225,7 +225,7 @@ export function AboutOverviewClient() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.1 }}
-                    className="p-8 md:p-10 rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#06060c]/90 backdrop-blur-xl space-y-6 shadow-xl dark:shadow-2xl relative overflow-hidden"
+                    className="p-8 md:p-10 rounded-[2.5rem] border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/90 backdrop-blur-2xl space-y-6 shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] relative overflow-hidden"
                 >
                     <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary/30 to-transparent" />
                     <h2 className="text-2xl font-black flex items-center gap-3 text-foreground">

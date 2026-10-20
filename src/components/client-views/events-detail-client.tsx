@@ -68,7 +68,7 @@ export function EventsDetailClient({ params }: { params: Promise<{ id: string }>
                     transition={{ duration: 0.6, ease: "easeOut" }}
                     className="lg:col-span-2 space-y-8"
                 >
-                    <div className="rounded-[2.5rem] overflow-hidden border border-white/10 bg-[#050505] shadow-2xl relative aspect-[16/9] group">
+                    <div className="rounded-[2.5rem] overflow-hidden border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/90 shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] relative aspect-[16/9] group">
                         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10" />
                         {event.image_url ? (
                             <Image fill src={event.image_url} alt={event.title} sizes="(max-width: 1024px) 100vw, 66vw" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
@@ -113,7 +113,7 @@ export function EventsDetailClient({ params }: { params: Promise<{ id: string }>
                     </div>
 
                     {/* About the Event */}
-                    <div className="p-8 rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#07070a]/90 backdrop-blur-xl shadow-xl dark:shadow-2xl space-y-6">
+                    <div className="p-8 rounded-[2.5rem] border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/90 backdrop-blur-2xl shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] space-y-6">
                         <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
                             <span className="w-2 h-6 bg-primary rounded-full" />
                             About the Event
@@ -156,7 +156,7 @@ export function EventsDetailClient({ params }: { params: Promise<{ id: string }>
                                 <span className="w-2 h-6 bg-secondary rounded-full" />
                                 Event Snapshot Gallery
                             </h2>
-                            <div className="rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#07070a] p-4 shadow-xl space-y-4">
+                            <div className="rounded-[2.5rem] border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/90 p-4 shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] space-y-4">
                                 <div className="aspect-[16/9] w-full rounded-2xl overflow-hidden relative border border-black/10 dark:border-white/10">
                                     <Image fill src={event.gallery_images[activeGalleryIndex]} alt={`Event Photo ${activeGalleryIndex + 1}`} sizes="(max-width: 1024px) 100vw, 66vw" className="w-full h-full object-cover transition-all duration-500" />
                                 </div>
@@ -185,7 +185,7 @@ export function EventsDetailClient({ params }: { params: Promise<{ id: string }>
                     transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
                     className="space-y-6"
                 >
-                    <div className="p-8 rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#07070e]/90 backdrop-blur-xl shadow-xl dark:shadow-2xl space-y-6 sticky top-32">
+                    <div className="p-8 rounded-[2.5rem] border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/90 backdrop-blur-2xl shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] space-y-6 sticky top-32">
                         <div className="space-y-2">
                             <span className="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 text-muted-foreground text-[10px] font-black uppercase tracking-wider border border-black/10 dark:border-white/10">
                                 Registration Status

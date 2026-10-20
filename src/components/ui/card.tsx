@@ -8,13 +8,13 @@ function Card({ className, children, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card"
       className={cn(
-        "bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl border border-black/5 dark:border-white/10 text-card-foreground flex flex-col gap-6 rounded-3xl py-6 shadow-2xl relative overflow-hidden transition-all duration-300",
+        "bg-white/90 dark:bg-[#0c0919]/80 backdrop-blur-2xl border border-black/[0.08] dark:border-white/15 text-card-foreground flex flex-col gap-6 rounded-3xl py-6 shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] relative overflow-hidden transition-all duration-300 hover:border-black/20 dark:hover:border-white/30",
         className
       )}
       {...props}
     >
       {/* Glare line for premium feel on all cards */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/20 to-transparent z-10 pointer-events-none" />
       {children}
     </div>
   )

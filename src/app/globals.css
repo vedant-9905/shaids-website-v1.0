@@ -146,15 +146,15 @@
   --radius: 0.625rem;
 
   /* Glass Vars */
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(0, 0, 0, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.08);
 
   /* Gradients */
-  --bg-gradient-1: radial-gradient(circle at 50% 0%, rgba(120, 50, 255, 0.1), transparent 70%);
-  --bg-gradient-2: radial-gradient(circle at 100% 100%, rgba(50, 150, 255, 0.1), transparent 70%);
-  --bg-conic: conic-gradient(from 90deg at 50% 50%, #fff 0%, #f0f0ff 50%, #fff 100%);
-  --ribbon-1: conic-gradient(from 90deg at 50% 50%, #fff 0%, #f0f0ff 50%, #fff 100%);
-  --ribbon-2: linear-gradient(135deg, transparent 40%, rgba(120, 50, 255, 0.05) 50%, transparent 60%);
+  --bg-gradient-1: radial-gradient(circle at 50% 0%, rgba(120, 50, 255, 0.08), transparent 70%);
+  --bg-gradient-2: radial-gradient(circle at 100% 100%, rgba(50, 150, 255, 0.08), transparent 70%);
+  --bg-conic: conic-gradient(from 90deg at 50% 50%, #ffffff 0%, #f4f4fe 50%, #ffffff 100%);
+  --ribbon-1: conic-gradient(from 90deg at 50% 50%, #ffffff 0%, #f0f0ff 50%, #ffffff 100%);
+  --ribbon-2: linear-gradient(135deg, transparent 40%, rgba(120, 50, 255, 0.04) 50%, transparent 60%);
 
   /* Chart Colors */
   --chart-1: oklch(0.646 0.222 41.116);
@@ -211,17 +211,17 @@
   --destructive: oklch(0.6 0.25 20);
   --destructive-foreground: oklch(1 0 0);
 
-  /* Glass Vars - Frosted Violet */
-  --glass-bg: rgba(20, 10, 40, 0.4);
-  --glass-border: rgba(180, 100, 255, 0.1);
+  /* Glass Vars - Frosted Cosmic Violet */
+  --glass-bg: rgba(14, 10, 26, 0.7);
+  --glass-border: rgba(180, 100, 255, 0.15);
 
   /* Deep Space Gradients - Unified & Minimal */
-  --bg-gradient-1: radial-gradient(at 0% 0%, rgba(120, 50, 255, 0.08), transparent 50%);
-  --bg-gradient-2: radial-gradient(at 100% 100%, rgba(50, 150, 255, 0.08), transparent 50%);
-  --bg-conic: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.2), transparent 80%);
+  --bg-gradient-1: radial-gradient(at 0% 0%, rgba(120, 50, 255, 0.12), transparent 50%);
+  --bg-gradient-2: radial-gradient(at 100% 100%, rgba(50, 150, 255, 0.12), transparent 50%);
+  --bg-conic: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.3), transparent 80%);
 
   --ribbon-1: linear-gradient(to right, rgba(0,0,0,1), rgba(15,5,32,0.8), rgba(0,0,0,1));
-  --ribbon-2: linear-gradient(135deg, transparent 40%, rgba(139, 92, 246, 0.03) 50%, transparent 60%);
+  --ribbon-2: linear-gradient(135deg, transparent 40%, rgba(139, 92, 246, 0.05) 50%, transparent 60%);
 
   /* Chart Colors (Bright for dark mode) */
   --chart-1: oklch(0.65 0.3 290);

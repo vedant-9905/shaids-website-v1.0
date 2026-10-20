@@ -18,7 +18,7 @@ export function AchievementsClient() {
             href: '/events/fests/vectors',
             icon: Cpu,
             badgeBg: 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border-cyan-500/30',
-            bg: 'border-cyan-500/20 bg-white/80 dark:bg-gradient-to-br dark:from-cyan-500/10 dark:via-black dark:to-black hover:border-cyan-500/60 hover:shadow-[0_0_35px_rgba(6,182,212,0.25)]'
+            bg: 'border-cyan-500/20 bg-white/90 dark:bg-[#0c0919]/90 dark:bg-gradient-to-br dark:from-cyan-500/15 dark:to-transparent hover:border-cyan-500/50 hover:shadow-xl dark:hover:shadow-[0_0_35px_rgba(6,182,212,0.25)]'
         },
         {
             title: 'KURUKSHETRA 2026',
@@ -27,7 +27,7 @@ export function AchievementsClient() {
             href: '/events/fests/kurukshetra',
             icon: Flame,
             badgeBg: 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30',
-            bg: 'border-emerald-500/20 bg-white/80 dark:bg-gradient-to-br dark:from-emerald-500/10 dark:via-black dark:to-black hover:border-emerald-500/60 hover:shadow-[0_0_35px_rgba(16,185,129,0.25)]'
+            bg: 'border-emerald-500/20 bg-white/90 dark:bg-[#0c0919]/90 dark:bg-gradient-to-br dark:from-emerald-500/15 dark:to-transparent hover:border-emerald-500/50 hover:shadow-xl dark:hover:shadow-[0_0_35px_rgba(16,185,129,0.25)]'
         },
         {
             title: 'RHYTHMS 2026',
@@ -36,7 +36,7 @@ export function AchievementsClient() {
             href: '/events/fests/rhythms',
             icon: Music,
             badgeBg: 'bg-pink-500/20 text-pink-600 dark:text-pink-400 border-pink-500/30',
-            bg: 'border-pink-500/20 bg-white/80 dark:bg-gradient-to-br dark:from-pink-500/10 dark:via-black dark:to-black hover:border-pink-500/60 hover:shadow-[0_0_35px_rgba(236,72,153,0.25)]'
+            bg: 'border-pink-500/20 bg-white/90 dark:bg-[#0c0919]/90 dark:bg-gradient-to-br dark:from-pink-500/15 dark:to-transparent hover:border-pink-500/50 hover:shadow-xl dark:hover:shadow-[0_0_35px_rgba(236,72,153,0.25)]'
         }
     ];
 
@@ -48,7 +48,7 @@ export function AchievementsClient() {
             href: '/about/achievements/nptel',
             icon: Award,
             color: 'text-amber-500 dark:text-amber-400',
-            bg: 'border-amber-500/20 bg-white/80 dark:bg-gradient-to-br dark:from-amber-500/10 dark:via-black dark:to-black hover:border-amber-500/60 hover:shadow-[0_0_35px_rgba(245,158,11,0.25)]'
+            bg: 'border-amber-500/20 bg-white/90 dark:bg-[#0c0919]/90 dark:bg-gradient-to-br dark:from-amber-500/15 dark:to-transparent hover:border-amber-500/50 hover:shadow-xl dark:hover:shadow-[0_0_35px_rgba(245,158,11,0.25)]'
         },
         {
             title: 'National & Intercollegiate Highlights',
@@ -57,7 +57,7 @@ export function AchievementsClient() {
             href: '/about/achievements/highlights',
             icon: Trophy,
             color: 'text-primary',
-            bg: 'border-primary/20 bg-white/80 dark:bg-gradient-to-br dark:from-primary/10 dark:via-black dark:to-black hover:border-primary/60 hover:shadow-[0_0_35px_rgba(168,85,247,0.25)]'
+            bg: 'border-primary/20 bg-white/90 dark:bg-[#0c0919]/90 dark:bg-gradient-to-br dark:from-primary/15 dark:to-transparent hover:border-primary/50 hover:shadow-xl dark:hover:shadow-[0_0_35px_rgba(168,85,247,0.25)]'
         },
         {
             title: 'Best Capstone Projects',
@@ -66,7 +66,7 @@ export function AchievementsClient() {
             href: '/about/achievements/projects',
             icon: Sparkles,
             color: 'text-cyan-500 dark:text-cyan-400',
-            bg: 'border-cyan-500/20 bg-white/80 dark:bg-gradient-to-br dark:from-cyan-500/10 dark:via-black dark:to-black hover:border-cyan-500/60 hover:shadow-[0_0_35px_rgba(6,182,212,0.25)]'
+            bg: 'border-cyan-500/20 bg-white/90 dark:bg-[#0c0919]/90 dark:bg-gradient-to-br dark:from-cyan-500/15 dark:to-transparent hover:border-cyan-500/50 hover:shadow-xl dark:hover:shadow-[0_0_35px_rgba(6,182,212,0.25)]'
         }
     ];
 
@@ -296,7 +296,7 @@ export function AchievementsClient() {
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.45, delay: idx * 0.1 }}
                                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                                className="p-6 rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#07070a]/90 backdrop-blur-xl space-y-4 shadow-lg dark:shadow-xl hover:border-black/20 dark:hover:border-white/20 transition-all relative overflow-hidden"
+                                className="p-6 rounded-[2.5rem] border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/90 backdrop-blur-2xl space-y-4 shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] hover:border-black/20 dark:hover:border-white/30 transition-all relative overflow-hidden"
                             >
                                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/20 to-transparent" />
                                 <div>

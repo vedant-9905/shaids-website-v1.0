@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
     const year = new Date().getFullYear();
     return (
-        <main className="min-h-screen pt-32 pb-20 px-4">
+        <article className="min-h-screen pt-32 pb-20 px-4">
             <div className="container mx-auto max-w-3xl prose dark:prose-invert prose-sm md:prose-base text-foreground">
                 <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-2 text-foreground">Privacy Policy</h1>
                 <p className="text-muted-foreground text-sm mb-8">Last updated: October {year}</p>
@@ -89,6 +89,6 @@ export default function PrivacyPage() {
                     &copy; {year} Vedant Mahamunkar. Developed for SHAIDS, Department of AI &amp; DS, ACPCE, Navi Mumbai.
                 </p>
             </div>
-        </main>
+        </article>
     );
 }

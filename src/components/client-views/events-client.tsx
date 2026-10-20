@@ -151,7 +151,7 @@ export function EventsClient() {
                             >
                                 <Link
                                     href={fest.href}
-                                    className={`block h-full p-7 rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-gradient-to-b dark:from-white/5 dark:to-black/40 backdrop-blur-xl space-y-4 shadow-xl dark:shadow-2xl relative overflow-hidden group transition-all duration-300 ${fest.glowColor}`}
+                                    className={`block h-full p-7 rounded-[2.5rem] border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/90 dark:bg-gradient-to-b dark:from-white/[0.06] dark:to-transparent backdrop-blur-2xl space-y-4 shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] relative overflow-hidden group transition-all duration-300 hover:border-black/20 dark:hover:border-white/30 ${fest.glowColor}`}
                                 >
                                     <div className={`absolute top-0 right-0 w-36 h-36 bg-gradient-to-br ${fest.accent} rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-700`} />
                                     <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/20 to-transparent z-10" />

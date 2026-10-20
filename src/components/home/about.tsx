@@ -25,7 +25,7 @@ const features = [
 
 export function About() {
     return (
-        <section className="pt-20 pb-32 relative overflow-hidden bg-gradient-to-b from-black/5 dark:from-black/80 to-background/50 dark:bg-black/40 backdrop-blur-3xl shadow-[inset_0_0_100px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]">
+        <section className="pt-20 pb-32 relative overflow-hidden bg-gradient-to-b from-black/[0.02] dark:from-black/60 to-background/50 dark:bg-[#070512]/60 backdrop-blur-3xl shadow-[inset_0_0_100px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-16">
                     <motion.h2
@@ -41,7 +41,7 @@ export function About() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
-                        className="text-muted-foreground max-w-2xl mx-auto"
+                        className="text-muted-foreground max-w-2xl mx-auto text-base leading-relaxed"
                     >
                         SHAIDS is the vibrant heart of Department of Artificial Intelligence and Data Science at ACPCE. We bridge the gap between academic learning and industry demands.
                     </motion.p>
@@ -55,9 +55,9 @@ export function About() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
-                            className="p-8 rounded-[2.5rem] border border-black/5 dark:border-white/10 bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-2xl relative overflow-hidden hover:border-white/20 transition-all duration-500 hover:-translate-y-2 group"
+                            className="p-8 rounded-[2.5rem] border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/80 backdrop-blur-2xl shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] relative overflow-hidden hover:border-black/20 dark:hover:border-white/30 transition-all duration-500 hover:-translate-y-2 group"
                         >
-                            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10 pointer-events-none" />
+                            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/20 to-transparent z-10 pointer-events-none" />
                             <div className="mb-4 p-3 rounded-lg bg-primary/10 w-fit group-hover:scale-110 transition-transform duration-300">
                                 {feature.icon}
                             </div>

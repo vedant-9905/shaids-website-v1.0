@@ -68,12 +68,18 @@ export function TeamClient() {
                 </div>
             ) : (
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
+                    initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}
-                    className="p-20 text-center border border-dashed rounded-[2.5rem] border-black/10 dark:border-white/10 text-muted-foreground italic bg-black/[0.02] dark:bg-white/[0.02]"
+                    className="p-16 md:p-20 text-center border border-dashed rounded-[2.5rem] border-sky-500/20 bg-white/70 dark:bg-sky-500/[0.03] backdrop-blur-xl shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] max-w-2xl mx-auto space-y-3"
                 >
-                    No student committee records found at this time.
+                    <div className="w-14 h-14 rounded-2xl bg-sky-500/10 text-sky-600 dark:text-sky-400 mx-auto flex items-center justify-center border border-sky-500/20">
+                        <Users size={26} />
+                    </div>
+                    <h3 className="text-lg font-bold text-foreground">Student Committee Updating</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                        The student council profile directory is currently being synchronized for the current academic session. Stay tuned!
+                    </p>
                 </motion.div>
             )}
         </div>

@@ -53,7 +53,7 @@ export function StaffDetailClient({ params }: { params: Promise<{ id: string }> 
                         initial={{ opacity: 0, y: 25 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, ease: "easeOut" }}
-                        className="md:col-span-1 p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl text-center space-y-4 relative overflow-hidden"
+                        className="md:col-span-1 p-6 rounded-3xl border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/90 backdrop-blur-2xl shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] text-center space-y-4 relative overflow-hidden"
                     >
                         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-400/40 to-transparent" />
 
@@ -92,7 +92,7 @@ export function StaffDetailClient({ params }: { params: Promise<{ id: string }> 
                             initial={{ opacity: 0, y: 25 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-                            className="p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl space-y-3 relative overflow-hidden"
+                            className="p-6 rounded-3xl border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/90 backdrop-blur-2xl shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] space-y-3 relative overflow-hidden"
                         >
                             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/20 to-transparent" />
                             <h2 className="text-sm font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
@@ -109,7 +109,7 @@ export function StaffDetailClient({ params }: { params: Promise<{ id: string }> 
                                 initial={{ opacity: 0, y: 25 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-                                className="p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl space-y-4 relative overflow-hidden"
+                                className="p-6 rounded-3xl border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/90 backdrop-blur-2xl shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] space-y-4 relative overflow-hidden"
                             >
                                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-400/20 to-transparent" />
                                 <h3 className="text-sm font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">

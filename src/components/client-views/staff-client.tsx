@@ -64,12 +64,18 @@ export function StaffClient() {
                 </div>
             ) : (
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
+                    initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}
-                    className="p-20 text-center border border-dashed rounded-[2.5rem] border-white/10 text-muted-foreground italic bg-white/[0.02]"
+                    className="p-16 md:p-20 text-center border border-dashed rounded-[2.5rem] border-primary/20 bg-white/70 dark:bg-primary/[0.03] backdrop-blur-xl shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] max-w-2xl mx-auto space-y-3"
                 >
-                    The faculty list is being updated for the new academic year. Stay tuned!
+                    <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary mx-auto flex items-center justify-center border border-primary/20">
+                        <GraduationCap size={26} />
+                    </div>
+                    <h3 className="text-lg font-bold text-foreground">Faculty Roster Updating</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                        The faculty &amp; staff roster is currently being synchronized for the current academic session. Stay tuned!
+                    </p>
                 </motion.div>
             )}
         </div>

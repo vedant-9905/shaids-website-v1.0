@@ -56,7 +56,7 @@ export function TeamIndividualClient({ params }: { params: Promise<{ id: string 
                         transition={{ duration: 0.6, ease: "easeOut" }}
                         className="lg:col-span-1 space-y-6"
                     >
-                        <div className="rounded-[3rem] border border-white/10 bg-[#050505] p-10 shadow-[0_0_100px_-20px_rgba(56,189,248,0.2)] relative overflow-hidden group text-center">
+                        <div className="rounded-[3rem] border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/90 backdrop-blur-2xl p-10 shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] relative overflow-hidden group text-center">
                             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sky-400/40 to-transparent shadow-[0_0_15px_rgba(56,189,248,0.5)]" />
                             
                             <div className="relative w-44 h-44 mx-auto mb-6">
@@ -73,7 +73,7 @@ export function TeamIndividualClient({ params }: { params: Promise<{ id: string 
                             <h1 className="text-2xl font-bold tracking-tight mb-1">{member.name}</h1>
                             <p className="text-sky-400 font-bold uppercase text-xs tracking-wider mb-6">{member.role}</p>
                             
-                            <div className="flex justify-center gap-3 pt-6 border-t border-white/10">
+                            <div className="flex justify-center gap-3 pt-6 border-t border-black/10 dark:border-white/10">
                                 {member.github && (
                                     <motion.a 
                                         whileHover={{ scale: 1.15, y: -2 }}
@@ -149,7 +149,7 @@ export function TeamIndividualClient({ params }: { params: Promise<{ id: string 
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
                                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                                className="p-6 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-3xl relative overflow-hidden"
+                                className="p-6 rounded-3xl border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/90 backdrop-blur-2xl shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] relative overflow-hidden"
                             >
                                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sky-400/20 to-transparent" />
                                 <h3 className="text-xs font-bold text-sky-400 uppercase tracking-wider flex items-center gap-2 mb-4">
@@ -167,7 +167,7 @@ export function TeamIndividualClient({ params }: { params: Promise<{ id: string 
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.6, delay: 0.25, ease: "easeOut" }}
                                     whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                                    className="p-6 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-3xl relative overflow-hidden"
+                                    className="p-6 rounded-3xl border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/90 backdrop-blur-2xl shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] relative overflow-hidden"
                                 >
                                     <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sky-400/20 to-transparent" />
                                     <h3 className="text-xs font-bold text-sky-400 uppercase tracking-wider flex items-center gap-2 mb-4">
@@ -193,7 +193,7 @@ export function TeamIndividualClient({ params }: { params: Promise<{ id: string 
                                 initial={{ opacity: 0, y: 25 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-                                className="p-8 rounded-3xl bg-white/5 border border-white/10 relative overflow-hidden"
+                                className="p-8 rounded-3xl border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/90 backdrop-blur-2xl shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] relative overflow-hidden"
                             >
                                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-400/20 to-transparent" />
                                 <h4 className="text-xs font-bold text-sky-400 uppercase tracking-wider mb-4 flex items-center gap-2">

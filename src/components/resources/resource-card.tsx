@@ -32,7 +32,7 @@ export function ResourceCard({ id, title, description, category, link, author }:
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-            className="flex flex-col rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl dark:shadow-2xl relative overflow-hidden transition-colors duration-300 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:border-emerald-500/30 p-8 group"
+            className="flex flex-col rounded-[2.5rem] border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/80 backdrop-blur-2xl shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] relative overflow-hidden transition-all duration-300 hover:border-emerald-500/40 hover:shadow-xl dark:hover:shadow-[0_0_35px_rgba(16,185,129,0.25)] p-8 group"
         >
             {/* Subtle top glare */}
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/20 to-transparent z-10" />

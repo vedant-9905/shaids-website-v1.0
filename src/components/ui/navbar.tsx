@@ -24,7 +24,7 @@ export function Navbar() {
 
     return (
         <header className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
-            <div className="w-full container mx-auto rounded-full glass-nav bg-white/20 dark:bg-black/30 backdrop-blur-3xl border border-black/10 dark:border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex items-center justify-between px-6 py-3 transition-all duration-300 hover:bg-white/30 dark:hover:bg-black/40 hover:border-black/20 dark:hover:border-white/25">
+            <div className="w-full container mx-auto rounded-full glass-nav bg-white/80 dark:bg-[#070512]/80 backdrop-blur-3xl border border-black/[0.08] dark:border-white/20 shadow-[0_8px_30px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] flex items-center justify-between px-6 py-3 transition-all duration-300 hover:bg-white/90 dark:hover:bg-[#070512]/90 hover:border-black/20 dark:hover:border-white/30">
 
                 {/* Left group: Logo + Separator + Nav */}
                 <div className="flex items-center gap-4">
@@ -104,7 +104,7 @@ export function Navbar() {
             <motion.div
                 initial={false}
                 animate={isOpen ? { height: 'auto', opacity: 1, scale: 1 } : { height: 0, opacity: 0, scale: 0.97 }}
-                className="md:hidden absolute top-20 left-4 right-4 rounded-2xl overflow-hidden glass bg-white/80 dark:bg-black/60 backdrop-blur-3xl border border-black/10 dark:border-white/10 shadow-2xl origin-top z-40"
+                className="md:hidden absolute top-20 left-4 right-4 rounded-2xl overflow-hidden glass bg-white/95 dark:bg-[#0c0919]/95 backdrop-blur-3xl border border-black/[0.08] dark:border-white/20 shadow-2xl origin-top z-40"
             >
                 <nav className="flex flex-col p-4 gap-1">
                     {navLinks.map(link => (

@@ -122,7 +122,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="min-h-screen bg-background text-foreground flex flex-col pt-24 md:pt-28">
             {/* Top Admin Sub-Header Bar (Aligned with main Navbar) */}
             <div className="w-full px-4 mb-6 z-30">
-                <header className="container mx-auto rounded-full bg-white/10 dark:bg-black/40 backdrop-blur-3xl border border-black/10 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.2)] px-6 py-3 flex items-center justify-between transition-all">
+                <header className="container mx-auto rounded-full bg-white/90 dark:bg-[#0c0919]/80 backdrop-blur-3xl border border-black/10 dark:border-white/10 shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)] px-6 py-3 flex items-center justify-between transition-all">
                     <div className="flex items-center gap-4">
                         <Link href="/admin" className="flex items-center gap-2.5 font-bold text-base md:text-lg">
                             <div className="p-1.5 rounded-xl bg-primary/10 border border-primary/20 text-primary">
@@ -132,22 +132,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         </Link>
 
                         <div className="hidden md:flex items-center gap-3 ml-2">
-                            <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold uppercase tracking-wider text-[10px]">
+                            <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 dark:text-emerald-400 font-bold uppercase tracking-wider text-[10px]">
                                 {isSupabaseConfigured ? 'Connected to Supabase DB' : 'Local Storage Mode'}
                             </span>
-                            <span className="flex items-center gap-1 text-[11px] text-muted-foreground font-medium bg-white/5 px-2.5 py-1 rounded-full border border-white/5">
-                                <Clock size={12} className="text-amber-400" /> Auto logout: 3m inactivity
+                            <span className="flex items-center gap-1 text-[11px] text-muted-foreground font-medium bg-black/5 dark:bg-white/5 px-2.5 py-1 rounded-full border border-black/5 dark:border-white/5">
+                                <Clock size={12} className="text-amber-500 dark:text-amber-400" /> Auto logout: 3m inactivity
                             </span>
                         </div>
                     </div>
 
                     <div className="flex items-center gap-2 sm:gap-3">
-                        <Button variant="outline" size="sm" className="rounded-full text-xs gap-1.5 border-white/10 bg-white/5 hover:bg-white/10" asChild>
+                        <Button variant="outline" size="sm" className="rounded-full text-xs gap-1.5 border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 hover:bg-black/10 hover:dark:bg-white/10" asChild>
                             <Link href="/" target="_blank">
                                 <ExternalLink size={14} /> View Live Site
                             </Link>
                         </Button>
-                        <Button variant="ghost" size="sm" onClick={() => handleLogout(false)} className="rounded-full text-xs gap-1.5 text-red-400 hover:text-red-300 hover:bg-red-500/10">
+                        <Button variant="ghost" size="sm" onClick={() => handleLogout(false)} className="rounded-full text-xs gap-1.5 text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 hover:bg-red-500/10">
                             <LogOut size={14} /> Sign Out
                         </Button>
                     </div>

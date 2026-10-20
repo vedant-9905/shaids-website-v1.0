@@ -31,8 +31,8 @@ export function EventCard({
             viewport={{ once: true }}
             whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
             className={cn(
-                "flex flex-col rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl dark:shadow-2xl relative overflow-hidden transition-colors duration-300",
-                !isPast && "hover:shadow-[0_0_30px_rgba(217,70,239,0.15)] hover:border-fuchsia-500/30"
+                "flex flex-col rounded-[2.5rem] border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/80 backdrop-blur-2xl shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)] relative overflow-hidden transition-all duration-300 hover:border-black/20 dark:hover:border-white/30",
+                !isPast && "hover:shadow-xl dark:hover:shadow-[0_0_35px_rgba(217,70,239,0.25)] hover:border-fuchsia-500/40"
             )}
         >
             {/* Top glare */}

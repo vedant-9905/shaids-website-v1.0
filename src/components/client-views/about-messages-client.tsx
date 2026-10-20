@@ -62,7 +62,7 @@ export function AboutMessagesClient() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: idx * 0.12, ease: "easeOut" }}
                             whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-                            className="p-8 rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#060609]/90 backdrop-blur-xl space-y-6 relative overflow-hidden group hover:border-black/20 dark:hover:border-white/20 transition-colors shadow-xl dark:shadow-2xl"
+                            className="p-8 rounded-[2.5rem] border border-black/[0.08] dark:border-white/15 bg-white/90 dark:bg-[#0c0919]/90 backdrop-blur-2xl space-y-6 relative overflow-hidden group hover:border-black/20 dark:hover:border-white/30 transition-all shadow-lg dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)]"
                         >
                             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/20 to-transparent z-10" />
 
