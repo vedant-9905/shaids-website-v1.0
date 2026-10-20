@@ -7,9 +7,9 @@ import { AcademicYearToggle } from '@/components/academic-year-toggle';
 import { Users } from 'lucide-react';
 
 export function TeamClient() {
-    const { team, academicYear } = useContent();
+    const { team } = useContent();
 
-    const filteredTeam = team ? team.filter(member => !member.academicYear || member.academicYear === academicYear) : [];
+    const filteredTeam = team || [];
 
     return (
         <div className="relative container mx-auto px-4 pt-32 pb-24 overflow-hidden">
@@ -21,7 +21,7 @@ export function TeamClient() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}
-                    className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/10 text-sky-400 text-xs font-black uppercase tracking-widest border border-sky-500/20 mb-2"
+                    className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 text-xs font-black uppercase tracking-widest border border-sky-500/20 mb-2"
                 >
                     <Users size={14} /> Student Leadership
                 </motion.div>
@@ -30,7 +30,7 @@ export function TeamClient() {
                     initial={{ opacity: 0, y: 25 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-                    className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1]"
+                    className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-foreground"
                 >
                     Meet the minds behind <span className="text-gradient">SHAIDS</span>
                 </motion.h1>
@@ -43,15 +43,6 @@ export function TeamClient() {
                 >
                     Working together to build a thriving ecosystem for the next generation of AI &amp; Data Science innovators.
                 </motion.p>
-
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    className="pt-2 flex justify-center"
-                >
-                    <AcademicYearToggle />
-                </motion.div>
             </div>
 
             {filteredTeam.length > 0 ? (
@@ -80,9 +71,9 @@ export function TeamClient() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}
-                    className="p-20 text-center border border-dashed rounded-[2.5rem] border-white/10 text-muted-foreground italic bg-white/[0.02]"
+                    className="p-20 text-center border border-dashed rounded-[2.5rem] border-black/10 dark:border-white/10 text-muted-foreground italic bg-black/[0.02] dark:bg-white/[0.02]"
                 >
-                    No student committee records found for {academicYear}.
+                    No student committee records found at this time.
                 </motion.div>
             )}
         </div>

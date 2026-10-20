@@ -1,7 +1,9 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Lightbulb, Users, Trophy } from 'lucide-react';
+import { Lightbulb, Users, Trophy, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const features = [
     {
@@ -64,6 +66,24 @@ export function About() {
                         </motion.div>
                     ))}
                 </div>
+
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.35 }}
+                    className="flex justify-center mt-12 md:mt-16"
+                >
+                    <Link href="/about">
+                        <Button
+                            size="lg"
+                            className="rounded-full px-8 h-12 text-base font-semibold border border-primary/40 bg-primary/10 hover:bg-primary/20 text-foreground dark:text-white backdrop-blur-md transition-all duration-300 hover:scale-105 shadow-[0_0_25px_rgba(168,85,247,0.25)] hover:shadow-[0_0_35px_rgba(168,85,247,0.45)] cursor-pointer gap-2 group"
+                        >
+                            <span>Learn more about us</span>
+                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                    </Link>
+                </motion.div>
             </div>
         </section>
     );

@@ -72,14 +72,13 @@ export default function AdminDashboardPage() {
         onSuccess: (url: string) => void;
     } | null>(null);
 
-    // Current Academic Year (2026-27) Student Committee Members
-    const currentYearTeam = team.filter(m => !m.academicYear || m.academicYear === '2026-27');
+    // All Lively Student Committee Members
+    const currentYearTeam = team;
 
-    // Current Academic Year Events (Excluding Annual Flagship Fests)
+    // All Standard Events (Excluding Annual Flagship Fests)
     const currentYearStandardEvents = events.filter(e => {
-        const isCurrentYear = !e.academicYear || e.academicYear === '2026-27';
         const isFlagship = e.category === 'Flagship Fest' || e.category === 'Fest' || e.type === 'Fest' || e.type === 'Flagship';
-        return isCurrentYear && !isFlagship;
+        return !isFlagship;
     });
 
     if (loading) {
@@ -466,46 +465,46 @@ export default function AdminDashboardPage() {
     return (
         <div className="space-y-8 pb-16">
             {/* Navigation Tabs */}
-            <div className="flex flex-wrap gap-2 p-1.5 rounded-2xl bg-white/5 border border-white/10">
+            <div className="flex flex-wrap gap-2 p-1.5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10">
                 <button
                     onClick={() => setActiveTab('overview')}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'overview' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-muted-foreground hover:text-white hover:bg-white/5'}`}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'overview' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'}`}
                 >
                     <Info size={15} /> Overview &amp; Home Gallery
                 </button>
                 <button
                     onClick={() => setActiveTab('events')}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'events' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-muted-foreground hover:text-white hover:bg-white/5'}`}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'events' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'}`}
                 >
                     <Calendar size={15} /> Events ({currentYearStandardEvents.length})
                 </button>
                 <button
                     onClick={() => setActiveTab('fests')}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'fests' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-muted-foreground hover:text-white hover:bg-white/5'}`}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'fests' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'}`}
                 >
                     <Sparkles size={15} /> College Fests &amp; Sub-Events ({festSubEvents.length})
                 </button>
                 <button
                     onClick={() => setActiveTab('achievements')}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'achievements' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-muted-foreground hover:text-white hover:bg-white/5'}`}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'achievements' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'}`}
                 >
                     <Award size={15} /> Achievements &amp; Projects
                 </button>
                 <button
                     onClick={() => setActiveTab('team')}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'team' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-muted-foreground hover:text-white hover:bg-white/5'}`}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'team' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'}`}
                 >
                     <Users size={15} /> Student Committee ({currentYearTeam.length})
                 </button>
                 <button
                     onClick={() => setActiveTab('staff')}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'staff' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-muted-foreground hover:text-white hover:bg-white/5'}`}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'staff' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'}`}
                 >
                     <GraduationCap size={15} /> Faculty ({staff.length})
                 </button>
                 <button
                     onClick={() => setActiveTab('resources')}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'resources' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-muted-foreground hover:text-white hover:bg-white/5'}`}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'resources' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'}`}
                 >
                     <FileText size={15} /> Resources ({resources.length})
                 </button>
@@ -516,21 +515,21 @@ export default function AdminDashboardPage() {
                 <div className="space-y-8">
                     {/* Summary Counters */}
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <div className="p-5 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl">
+                        <div className="p-5 rounded-3xl border border-black/10 dark:border-white/10 bg-card/60 backdrop-blur-xl">
                             <div className="text-xs text-muted-foreground font-bold uppercase">Total Events</div>
                             <div className="text-3xl font-black mt-2 text-primary">{currentYearStandardEvents.length}</div>
                         </div>
-                        <div className="p-5 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl">
+                        <div className="p-5 rounded-3xl border border-black/10 dark:border-white/10 bg-card/60 backdrop-blur-xl">
                             <div className="text-xs text-muted-foreground font-bold uppercase">Student Committee</div>
                             <div className="text-3xl font-black mt-2 text-secondary">{currentYearTeam.length}</div>
                         </div>
-                        <div className="p-5 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl">
+                        <div className="p-5 rounded-3xl border border-black/10 dark:border-white/10 bg-card/60 backdrop-blur-xl">
                             <div className="text-xs text-muted-foreground font-bold uppercase">Faculty &amp; Staff</div>
-                            <div className="text-3xl font-black mt-2 text-emerald-400">{staff.length}</div>
+                            <div className="text-3xl font-black mt-2 text-emerald-500">{staff.length}</div>
                         </div>
-                        <div className="p-5 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl">
+                        <div className="p-5 rounded-3xl border border-black/10 dark:border-white/10 bg-card/60 backdrop-blur-xl">
                             <div className="text-xs text-muted-foreground font-bold uppercase">Learning Resources</div>
-                            <div className="text-3xl font-black mt-2 text-sky-400">{resources.length}</div>
+                            <div className="text-3xl font-black mt-2 text-sky-500">{resources.length}</div>
                         </div>
                     </div>
 
@@ -743,9 +742,6 @@ export default function AdminDashboardPage() {
                                                 {evt.category || evt.type}
                                             </span>
                                             <div className="flex items-center gap-1.5">
-                                                <span className="px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold">
-                                                    {evt.academicYear || '2026-27'}
-                                                </span>
                                                 {completed ? (
                                                     <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold uppercase">
                                                         Completed
@@ -811,9 +807,6 @@ export default function AdminDashboardPage() {
                                         <div className="flex items-center justify-between gap-2">
                                             <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-primary/20 text-primary border border-primary/30">
                                                 {evt.festId.toUpperCase()} Fest Sub-Event
-                                            </span>
-                                            <span className="px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold">
-                                                {evt.academicYear || '2026-27'}
                                             </span>
                                         </div>
                                         <h3 className="text-lg font-bold text-white">{evt.title}</h3>
@@ -973,9 +966,6 @@ export default function AdminDashboardPage() {
                                         </div>
                                         <div className="flex items-center justify-between gap-2">
                                             <span className="px-2.5 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 text-[10px] font-bold uppercase">{proj.category}</span>
-                                            <span className="px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold">
-                                                {proj.academicYear || '2026-27'}
-                                            </span>
                                         </div>
                                         <h3 className="font-bold text-base text-white">{proj.title}</h3>
                                         <p className="text-xs text-muted-foreground line-clamp-2">{proj.abstract}</p>
@@ -1014,9 +1004,6 @@ export default function AdminDashboardPage() {
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between gap-2">
                                             <span className="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 text-[10px] font-bold uppercase">{item.cert}</span>
-                                            <span className="px-2 py-0.5 rounded-md bg-white/10 text-slate-300 text-[10px] font-bold">
-                                                {item.academicYear || '2026-27'}
-                                            </span>
                                         </div>
                                         <h3 className="font-bold text-base text-white">{item.name}</h3>
                                         <p className="text-xs text-primary font-semibold">{item.course}</p>
@@ -1055,9 +1042,6 @@ export default function AdminDashboardPage() {
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between gap-2">
                                             <span className="px-2.5 py-1 rounded-lg bg-primary/20 text-primary text-[10px] font-bold uppercase">{item.category}</span>
-                                            <span className="px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold">
-                                                {item.academicYear || '2026-27'}
-                                            </span>
                                         </div>
                                         <h3 className="font-bold text-base text-white">{item.title}</h3>
                                         <p className="text-xs text-muted-foreground line-clamp-2">{item.description}</p>
@@ -1210,8 +1194,7 @@ export default function AdminDashboardPage() {
                                         <div className="space-y-1 flex-1 min-w-0 pr-6">
                                             <div className="flex items-center gap-1.5 flex-wrap">
                                                 <span className="px-2 py-0.5 rounded-md bg-primary/20 text-primary text-[10px] font-bold uppercase tracking-wider">{m.category || 'Core Team'}</span>
-                                                <span className="px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-bold">{m.academicYear || '2026-27'}</span>
-                                                {m.graduation_year && <span className="px-2 py-0.5 rounded-md bg-white/10 text-slate-300 text-[10px] font-bold">Class of &apos;{m.graduation_year.slice(-2)}</span>}
+                                                {m.graduation_year && <span className="px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/10 text-muted-foreground text-[10px] font-bold">Class of &apos;{m.graduation_year.slice(-2)}</span>}
                                             </div>
                                             <h3 className="font-bold text-base text-white truncate">{m.name}</h3>
                                             <p className="text-xs text-cyan-400 font-semibold">{m.role}</p>
@@ -1418,17 +1401,10 @@ export default function AdminDashboardPage() {
                                 <input type="text" required value={eventModal.title || ''} onChange={(e) => setEventModal({ ...eventModal, title: e.target.value })} className="w-full px-4 py-2 rounded-xl bg-white/5 border border-white/10" />
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                <div>
-                                    <label className="font-bold text-muted-foreground block mb-1">Academic Session *</label>
-                                    <select value={eventModal.academicYear || '2026-27'} onChange={(e) => setEventModal({ ...eventModal, academicYear: e.target.value as AcademicYear })} className="w-full px-4 py-2 rounded-xl bg-[#111] border border-white/10 text-xs font-bold text-amber-300">
-                                        <option value="2026-27">A.Y. 2026–27 (Current)</option>
-                                        <option value="2025-26">A.Y. 2025–26 (Previous)</option>
-                                    </select>
-                                </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
                                     <label className="font-bold text-muted-foreground block mb-1">Main Event Category *</label>
-                                    <select value={eventModal.category || 'Technical Event'} onChange={(e) => setEventModal({ ...eventModal, category: e.target.value })} className="w-full px-4 py-2 rounded-xl bg-[#111] border border-white/10 text-xs">
+                                    <select value={eventModal.category || 'Technical Event'} onChange={(e) => setEventModal({ ...eventModal, category: e.target.value })} className="w-full px-4 py-2 rounded-xl bg-black/40 dark:bg-black/60 border border-white/10 text-xs text-white">
                                         <option value="Technical Event">Technical Event</option>
                                         <option value="Non-Technical Event">Non-Technical Event</option>
                                         <option value="Industrial Visit">Industrial Visit</option>
@@ -1436,7 +1412,7 @@ export default function AdminDashboardPage() {
                                 </div>
                                 <div>
                                     <label className="font-bold text-muted-foreground block mb-1">Event Type</label>
-                                    <select value={eventModal.type || 'Workshop'} onChange={(e) => setEventModal({ ...eventModal, type: e.target.value })} className="w-full px-4 py-2 rounded-xl bg-[#111] border border-white/10 text-xs">
+                                    <select value={eventModal.type || 'Workshop'} onChange={(e) => setEventModal({ ...eventModal, type: e.target.value })} className="w-full px-4 py-2 rounded-xl bg-black/40 dark:bg-black/60 border border-white/10 text-xs text-white">
                                         <option value="Workshop">Workshop</option>
                                         <option value="Seminar">Seminar</option>
                                         <option value="Bootcamp">Bootcamp</option>
@@ -1597,22 +1573,13 @@ export default function AdminDashboardPage() {
                             <button onClick={() => setFestModal(null)} className="p-2 text-muted-foreground hover:text-white"><X size={18} /></button>
                         </div>
                         <form onSubmit={handleSaveFestSubEvent} className="space-y-4 overflow-y-auto pr-2 max-h-[72vh] custom-scrollbar text-xs">
-                            <div className="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label className="font-bold text-muted-foreground block mb-1">Flagship Fest Category</label>
-                                    <select value={festModal.festId || 'vectors'} onChange={(e) => setFestModal({ ...festModal, festId: e.target.value as 'vectors' | 'kurukshetra' | 'rhythms' })} className="w-full px-4 py-2 rounded-xl bg-[#111] border border-white/10 text-xs">
-                                        <option value="vectors">VECTORS (Technical Fest)</option>
-                                        <option value="kurukshetra">KURUKSHETRA (Sports Fest)</option>
-                                        <option value="rhythms">RHYTHMS (Cultural Fest)</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="font-bold text-muted-foreground block mb-1">Academic Session *</label>
-                                    <select value={festModal.academicYear || '2026-27'} onChange={(e) => setFestModal({ ...festModal, academicYear: e.target.value as AcademicYear })} className="w-full px-4 py-2 rounded-xl bg-[#111] border border-white/10 text-xs font-bold text-amber-300">
-                                        <option value="2026-27">A.Y. 2026–27 (Current)</option>
-                                        <option value="2025-26">A.Y. 2025–26 (Previous)</option>
-                                    </select>
-                                </div>
+                            <div>
+                                <label className="font-bold text-muted-foreground block mb-1">Flagship Fest Category</label>
+                                <select value={festModal.festId || 'vectors'} onChange={(e) => setFestModal({ ...festModal, festId: e.target.value as 'vectors' | 'kurukshetra' | 'rhythms' })} className="w-full px-4 py-2 rounded-xl bg-black/40 dark:bg-black/60 border border-white/10 text-xs text-white">
+                                    <option value="vectors">VECTORS (Technical Fest)</option>
+                                    <option value="kurukshetra">KURUKSHETRA (Sports Fest)</option>
+                                    <option value="rhythms">RHYTHMS (Cultural Fest)</option>
+                                </select>
                             </div>
 
                             {/* Banner Photo Upload */}
@@ -1761,14 +1728,7 @@ export default function AdminDashboardPage() {
                                 <label className="font-bold text-muted-foreground block mb-1">Project Title *</label>
                                 <input type="text" required value={projectModal.title || ''} onChange={(e) => setProjectModal({ ...projectModal, title: e.target.value })} className="w-full px-4 py-2 rounded-xl bg-white/5 border border-white/10" />
                             </div>
-                            <div className="grid grid-cols-3 gap-3">
-                                <div>
-                                    <label className="font-bold text-muted-foreground block mb-1">Academic Session *</label>
-                                    <select value={projectModal.academicYear || '2026-27'} onChange={(e) => setProjectModal({ ...projectModal, academicYear: e.target.value as AcademicYear })} className="w-full px-4 py-2 rounded-xl bg-[#111] border border-white/10 text-xs font-bold text-amber-300">
-                                        <option value="2026-27">A.Y. 2026–27 (Current)</option>
-                                        <option value="2025-26">A.Y. 2025–26 (Previous)</option>
-                                    </select>
-                                </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
                                     <label className="font-bold text-muted-foreground block mb-1">Category</label>
                                     <input type="text" placeholder="Healthcare & Deep Learning" value={projectModal.category || ''} onChange={(e) => setProjectModal({ ...projectModal, category: e.target.value })} className="w-full px-4 py-2 rounded-xl bg-white/5 border border-white/10" />
@@ -1900,14 +1860,7 @@ export default function AdminDashboardPage() {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-3 gap-3">
-                                <div>
-                                    <label className="font-bold text-muted-foreground block mb-1">Academic Session *</label>
-                                    <select value={teamModal.academicYear || '2026-27'} onChange={(e) => setTeamModal({ ...teamModal, academicYear: e.target.value as AcademicYear })} className="w-full px-4 py-2 rounded-xl bg-[#111] border border-white/10 text-xs font-bold text-amber-300">
-                                        <option value="2026-27">A.Y. 2026–27 (Current)</option>
-                                        <option value="2025-26">A.Y. 2025–26 (Previous)</option>
-                                    </select>
-                                </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
                                     <label className="font-bold text-muted-foreground block mb-1">Graduation Year</label>
                                     <input type="text" placeholder="2026" value={teamModal.graduation_year || ''} onChange={(e) => setTeamModal({ ...teamModal, graduation_year: e.target.value })} className="w-full px-4 py-2 rounded-xl bg-white/5 border border-white/10" />
@@ -2100,14 +2053,7 @@ export default function AdminDashboardPage() {
                                 <label className="font-bold text-muted-foreground block mb-1">Course Title *</label>
                                 <input type="text" required value={nptelModal.course || ''} onChange={(e) => setNptelModal({ ...nptelModal, course: e.target.value })} className="w-full px-4 py-2 rounded-xl bg-white/5 border border-white/10" />
                             </div>
-                            <div className="grid grid-cols-3 gap-3">
-                                <div>
-                                    <label className="font-bold text-muted-foreground block mb-1">Academic Session *</label>
-                                    <select value={nptelModal.academicYear || '2026-27'} onChange={(e) => setNptelModal({ ...nptelModal, academicYear: e.target.value as AcademicYear })} className="w-full px-3 py-2 rounded-xl bg-[#111] border border-white/10 text-[11px] font-bold text-amber-300">
-                                        <option value="2026-27">2026–27</option>
-                                        <option value="2025-26">2025–26</option>
-                                    </select>
-                                </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
                                     <label className="font-bold text-muted-foreground block mb-1">Certificate Badge</label>
                                     <input type="text" placeholder="NPTEL Elite" value={nptelModal.cert || ''} onChange={(e) => setNptelModal({ ...nptelModal, cert: e.target.value })} className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[11px]" />
@@ -2145,14 +2091,7 @@ export default function AdminDashboardPage() {
                                 <label className="font-bold text-muted-foreground block mb-1">Accolade Title *</label>
                                 <input type="text" required value={highlightModal.title || ''} onChange={(e) => setHighlightModal({ ...highlightModal, title: e.target.value })} className="w-full px-4 py-2 rounded-xl bg-white/5 border border-white/10" />
                             </div>
-                            <div className="grid grid-cols-3 gap-3">
-                                <div>
-                                    <label className="font-bold text-muted-foreground block mb-1">Academic Session *</label>
-                                    <select value={highlightModal.academicYear || '2026-27'} onChange={(e) => setHighlightModal({ ...highlightModal, academicYear: e.target.value as AcademicYear })} className="w-full px-3 py-2 rounded-xl bg-[#111] border border-white/10 text-[11px] font-bold text-amber-300">
-                                        <option value="2026-27">2026–27</option>
-                                        <option value="2025-26">2025–26</option>
-                                    </select>
-                                </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
                                     <label className="font-bold text-muted-foreground block mb-1">Category</label>
                                     <input type="text" placeholder="National Level Hackathon" value={highlightModal.category || ''} onChange={(e) => setHighlightModal({ ...highlightModal, category: e.target.value })} className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[11px]" />

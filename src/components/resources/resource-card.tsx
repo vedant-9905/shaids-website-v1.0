@@ -32,16 +32,16 @@ export function ResourceCard({ id, title, description, category, link, author }:
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-            className="flex flex-col rounded-[2.5rem] border border-black/5 dark:border-white/10 bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-2xl relative overflow-hidden transition-colors duration-300 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:border-white/20 p-8 group"
+            className="flex flex-col rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl dark:shadow-2xl relative overflow-hidden transition-colors duration-300 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:border-emerald-500/30 p-8 group"
         >
             {/* Subtle top glare */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/20 to-transparent z-10" />
 
             <div className="flex items-center justify-between mb-4">
-                <div className="p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                <div className="p-3 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 backdrop-blur-sm">
                     {icon}
                 </div>
-                <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                <span className="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-bold text-muted-foreground uppercase tracking-wider">
                     {category || 'Resource'}
                 </span>
             </div>
@@ -55,8 +55,8 @@ export function ResourceCard({ id, title, description, category, link, author }:
             </p>
 
             {author && (
-                <div className="mb-4 text-[11px] font-medium text-muted-foreground/80">
-                    Shared by: <span className="text-white font-bold">{author}</span>
+                <div className="mb-4 text-[11px] font-medium text-muted-foreground">
+                    Shared by: <span className="text-foreground font-bold">{author}</span>
                 </div>
             )}
 
@@ -64,7 +64,7 @@ export function ResourceCard({ id, title, description, category, link, author }:
                 <Button
                     variant="outline"
                     size="sm"
-                    className="w-full justify-between group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-300 rounded-2xl h-11 text-xs font-bold"
+                    className="w-full justify-between border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 text-foreground group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-300 rounded-2xl h-11 text-xs font-bold"
                     asChild
                 >
                     <a href={link} target="_blank" rel="noopener noreferrer">

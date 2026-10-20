@@ -53,11 +53,11 @@ export function TeamDetailClient({ params }: { params: Promise<{ id: string }> }
                         initial={{ opacity: 0, y: 25 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, ease: "easeOut" }}
-                        className="md:col-span-1 p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl text-center space-y-4 relative overflow-hidden"
+                        className="md:col-span-1 p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl text-center space-y-4 relative overflow-hidden"
                     >
                         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sky-400/40 to-transparent" />
                         
-                        <div className="relative w-40 h-40 mx-auto rounded-full border-2 border-sky-400/20 overflow-hidden bg-white/5 flex items-center justify-center shadow-md group">
+                        <div className="relative w-40 h-40 mx-auto rounded-full border-2 border-sky-400/20 overflow-hidden bg-black/5 dark:bg-white/5 flex items-center justify-center shadow-md group">
                             {member.image_url ? (
                                 <Image fill src={member.image_url} alt={member.name} sizes="160px" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                             ) : (
@@ -67,10 +67,10 @@ export function TeamDetailClient({ params }: { params: Promise<{ id: string }> }
 
                         <div>
                             <h1 className="text-xl font-bold tracking-tight text-foreground">{member.name}</h1>
-                            <p className="text-sky-400 font-semibold text-xs uppercase tracking-wider mt-1">{member.role}</p>
+                            <p className="text-sky-600 dark:text-sky-400 font-semibold text-xs uppercase tracking-wider mt-1">{member.role}</p>
                         </div>
 
-                        <div className="flex justify-center items-center gap-3 pt-4 border-t border-white/10">
+                        <div className="flex justify-center items-center gap-3 pt-4 border-t border-black/10 dark:border-white/10">
                             {member.github && (
                                 <motion.a 
                                     whileHover={{ scale: 1.15, y: -2 }}
@@ -78,7 +78,7 @@ export function TeamDetailClient({ params }: { params: Promise<{ id: string }> }
                                     href={member.github} 
                                     target="_blank" 
                                     rel="noopener noreferrer" 
-                                    className="p-2 rounded-xl bg-white/5 hover:bg-sky-400/10 text-muted-foreground hover:text-sky-400 transition-colors"
+                                    className="p-2 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-sky-400/10 text-muted-foreground hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
                                 >
                                     <Github size={18} />
                                 </motion.a>
@@ -90,7 +90,7 @@ export function TeamDetailClient({ params }: { params: Promise<{ id: string }> }
                                     href={member.linkedin} 
                                     target="_blank" 
                                     rel="noopener noreferrer" 
-                                    className="p-2 rounded-xl bg-white/5 hover:bg-sky-400/10 text-muted-foreground hover:text-sky-400 transition-colors"
+                                    className="p-2 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-sky-400/10 text-muted-foreground hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
                                 >
                                     <Linkedin size={18} />
                                 </motion.a>
@@ -102,7 +102,7 @@ export function TeamDetailClient({ params }: { params: Promise<{ id: string }> }
                                     href={member.instagram} 
                                     target="_blank" 
                                     rel="noopener noreferrer" 
-                                    className="p-2 rounded-xl bg-white/5 hover:bg-sky-400/10 text-muted-foreground hover:text-sky-400 transition-colors"
+                                    className="p-2 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-sky-400/10 text-muted-foreground hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
                                 >
                                     <Instagram size={18} />
                                 </motion.a>
@@ -112,7 +112,7 @@ export function TeamDetailClient({ params }: { params: Promise<{ id: string }> }
                                     whileHover={{ scale: 1.15, y: -2 }}
                                     whileTap={{ scale: 0.95 }}
                                     href={`mailto:${member.email}`} 
-                                    className="p-2 rounded-xl bg-white/5 hover:bg-sky-400/10 text-muted-foreground hover:text-sky-400 transition-colors"
+                                    className="p-2 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-sky-400/10 text-muted-foreground hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
                                 >
                                     <Mail size={18} />
                                 </motion.a>
@@ -127,11 +127,11 @@ export function TeamDetailClient({ params }: { params: Promise<{ id: string }> }
                             initial={{ opacity: 0, y: 25 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-                            className="p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl space-y-3 relative overflow-hidden"
+                            className="p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl space-y-3 relative overflow-hidden"
                         >
-                            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/20 to-transparent" />
                             <h2 className="text-sm font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
-                                <User size={16} className="text-sky-400" /> Overview
+                                <User size={16} className="text-sky-600 dark:text-sky-400" /> Overview
                             </h2>
                             <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
                                 {member.bio || `Core student council member at SHAIDS.`}
@@ -144,18 +144,18 @@ export function TeamDetailClient({ params }: { params: Promise<{ id: string }> }
                                 initial={{ opacity: 0, y: 25 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-                                className="p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl space-y-3 relative overflow-hidden"
+                                className="p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl space-y-3 relative overflow-hidden"
                             >
                                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sky-400/20 to-transparent" />
                                 <h3 className="text-sm font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
-                                    <Sparkles size={16} className="text-sky-400" /> Skills & Technical Focus
+                                    <Sparkles size={16} className="text-sky-600 dark:text-sky-400" /> Skills & Technical Focus
                                 </h3>
                                 <div className="flex flex-wrap gap-2">
                                     {member.skills.map((skill: string) => (
                                         <motion.span 
                                             key={skill} 
                                             whileHover={{ scale: 1.05 }}
-                                            className="px-3 py-1.5 rounded-xl bg-sky-500/10 border border-sky-500/20 text-xs font-semibold text-sky-300 inline-block cursor-default"
+                                            className="px-3 py-1.5 rounded-xl bg-sky-500/10 border border-sky-500/20 text-xs font-semibold text-sky-700 dark:text-sky-300 inline-block cursor-default"
                                         >
                                             {skill}
                                         </motion.span>
@@ -170,16 +170,16 @@ export function TeamDetailClient({ params }: { params: Promise<{ id: string }> }
                                 initial={{ opacity: 0, y: 25 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-                                className="p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl space-y-3 relative overflow-hidden"
+                                className="p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl space-y-3 relative overflow-hidden"
                             >
                                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-400/20 to-transparent" />
                                 <h3 className="text-sm font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
-                                    <Award size={16} className="text-sky-400" /> Interests & Achievements
+                                    <Award size={16} className="text-sky-600 dark:text-sky-400" /> Interests & Achievements
                                 </h3>
                                 <ul className="space-y-2 text-xs text-muted-foreground">
                                     {member.achievements.map((ach: string) => (
                                         <li key={ach} className="flex items-start gap-2.5">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-sky-400 mt-1.5 shrink-0" />
+                                            <span className="w-1.5 h-1.5 rounded-full bg-sky-500 mt-1.5 shrink-0" />
                                             <span>{ach}</span>
                                         </li>
                                     ))}

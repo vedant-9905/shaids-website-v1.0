@@ -24,12 +24,12 @@ export function TeamCard({ id, name, role, image, github, linkedin, instagram, e
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-            className="flex flex-col rounded-[2.5rem] border border-black/5 dark:border-white/10 bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-2xl relative overflow-hidden transition-colors duration-300 hover:shadow-[0_0_30px_rgba(56,189,248,0.15)] hover:border-white/20 p-8 items-center text-center group"
+            className="flex flex-col rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl dark:shadow-2xl relative overflow-hidden transition-colors duration-300 hover:shadow-[0_0_30px_rgba(56,189,248,0.15)] hover:border-sky-500/30 p-8 items-center text-center group"
         >
             {/* Subtle top glare */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/20 to-transparent z-10" />
 
-            <div className="w-32 h-32 rounded-full mb-6 overflow-hidden relative border-2 border-sky-400/20 flex items-center justify-center bg-white/10 shadow-lg group-hover:scale-105 transition-transform duration-500">
+            <div className="w-32 h-32 rounded-full mb-6 overflow-hidden relative border-2 border-sky-400/20 flex items-center justify-center bg-black/5 dark:bg-white/10 shadow-lg group-hover:scale-105 transition-transform duration-500">
                 {image ? (
                     <Image src={image} alt={name} fill sizes="128px" className="object-cover" />
                 ) : (
@@ -42,10 +42,10 @@ export function TeamCard({ id, name, role, image, github, linkedin, instagram, e
                     {name}
                 </Link>
             </h3>
-            <p className="text-sky-400 font-semibold text-xs uppercase tracking-wider mb-6">{role}</p>
+            <p className="text-sky-600 dark:text-sky-400 font-semibold text-xs uppercase tracking-wider mb-6">{role}</p>
 
             <Link href={`/team/${id}`} className="w-full mb-6">
-                <Button variant="outline" className="w-full rounded-2xl border-white/5 bg-white/5 hover:bg-white/10 text-xs h-10 gap-1.5 font-bold">
+                <Button variant="outline" className="w-full rounded-2xl border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-foreground text-xs h-10 gap-1.5 font-bold transition-all">
                     View Profile <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                 </Button>
             </Link>

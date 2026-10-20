@@ -17,10 +17,9 @@ const ImageLightbox = dynamic(
 );
 
 export function RhythmsClient() {
-    const { festSubEvents, festGalleries, academicYear } = useContent();
+    const { festSubEvents, festGalleries } = useContent();
 
-    const filteredSubEvents = festSubEvents.filter(e => e.festId === 'rhythms' && (!e.academicYear || e.academicYear === academicYear));
-    const rhythmsSubEvents = filteredSubEvents.length > 0 ? filteredSubEvents : festSubEvents.filter(e => e.festId === 'rhythms');
+    const rhythmsSubEvents = festSubEvents.filter(e => e.festId === 'rhythms');
     const rhythmsGallery = festGalleries.rhythms || [];
 
     const [selectedSubEvent, setSelectedSubEvent] = useState<FestSubEvent | null>(null);
@@ -35,11 +34,10 @@ export function RhythmsClient() {
                 transition={{ duration: 0.4 }}
                 className="flex items-center justify-between"
             >
-                <Link href="/events" className="inline-flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-pink-400 transition-colors group font-medium">
+                <Link href="/events" className="inline-flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-pink-500 transition-colors group font-medium">
                     <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
                     Back to Events
                 </Link>
-                <AcademicYearToggle />
             </motion.div>
 
             {/* Banner Section */}
@@ -65,7 +63,7 @@ export function RhythmsClient() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.15 }}
-                        className="text-4xl md:text-6xl font-black tracking-tighter text-white leading-tight"
+                        className="text-4xl md:text-6xl font-black tracking-tighter text-foreground leading-tight"
                     >
                         RHYTHMS <span className="text-pink-400">2026</span>
                     </motion.h1>
@@ -99,8 +97,8 @@ export function RhythmsClient() {
                     viewport={{ once: true }}
                     className="flex items-center gap-3"
                 >
-                    <span className="w-2 h-8 bg-pink-400 rounded-full" />
-                    <h2 className="text-2xl md:text-3xl font-bold text-white">
+                    <span className="w-2 h-8 bg-pink-500 rounded-full" />
+                    <h2 className="text-2xl md:text-3xl font-bold text-foreground">
                         Departmental RHYTHMS Events &amp; Winners
                     </h2>
                 </motion.div>
@@ -114,31 +112,31 @@ export function RhythmsClient() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: idx * 0.1, ease: "easeOut" }}
                             whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-                            className="p-6 rounded-[2.5rem] border border-pink-500/20 bg-[#12050b]/90 backdrop-blur-xl space-y-4 flex flex-col justify-between shadow-2xl group hover:border-pink-500/50 hover:shadow-[0_0_35px_rgba(236,72,153,0.2)] transition-colors relative overflow-hidden"
+                            className="p-6 rounded-[2.5rem] border border-pink-500/20 bg-white/80 dark:bg-[#12050b]/90 backdrop-blur-xl space-y-4 flex flex-col justify-between shadow-xl dark:shadow-2xl group hover:border-pink-500/50 hover:shadow-[0_0_35px_rgba(236,72,153,0.2)] transition-colors relative overflow-hidden"
                         >
                             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-pink-400/20 to-transparent" />
                             <div className="space-y-4">
                                 <div
                                     onClick={() => setLightboxState({ images: [evt.image, ...(evt.eventGallery || [])], index: 0 })}
-                                    className="aspect-[16/9] rounded-2xl overflow-hidden border border-white/10 relative cursor-pointer group/img"
+                                    className="aspect-[16/9] rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 relative cursor-pointer group/img"
                                 >
                                     <Image fill src={evt.image} alt={evt.title} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500" />
                                     <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
                                         <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-xs font-bold text-white border border-white/20">Expand Image</span>
                                     </div>
                                 </div>
-                                <h3 className="text-xl font-black text-white tracking-tight">{evt.title}</h3>
+                                <h3 className="text-xl font-black text-foreground tracking-tight">{evt.title}</h3>
                                 <p className="text-xs text-muted-foreground leading-relaxed">{evt.desc}</p>
 
-                                <div className="space-y-2 pt-2 border-t border-white/5 text-xs">
-                                    <div className="flex items-center gap-2 text-amber-400 font-bold">
+                                <div className="space-y-2 pt-2 border-t border-black/5 dark:border-white/5 text-xs">
+                                    <div className="flex items-center gap-2 text-amber-500 dark:text-amber-400 font-bold">
                                         <Crown size={14} /> Winner: {evt.winner}
                                     </div>
                                     <div className="flex items-center gap-2 text-muted-foreground font-semibold">
                                         <Trophy size={14} className="text-slate-400" /> Runner-Up: {evt.runnerUp}
                                     </div>
                                     <div className="text-[11px] text-muted-foreground flex items-center gap-1 pt-1">
-                                        <UserCheck size={12} className="text-pink-400" /> Organizers: {evt.organizer}
+                                        <UserCheck size={12} className="text-pink-500 dark:text-pink-400" /> Organizers: {evt.organizer}
                                     </div>
                                 </div>
                             </div>
@@ -152,18 +150,18 @@ export function RhythmsClient() {
             </div>
 
             {/* Gallery */}
-            <div className="space-y-6 pt-6 border-t border-white/10">
+            <div className="space-y-6 pt-6 border-t border-black/10 dark:border-white/10">
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     className="flex items-center justify-between"
                 >
-                    <h2 className="text-2xl font-bold flex items-center gap-3 text-white">
-                        <span className="w-2 h-6 bg-pink-400 rounded-full" />
+                    <h2 className="text-2xl font-bold flex items-center gap-3 text-foreground">
+                        <span className="w-2 h-6 bg-pink-500 rounded-full" />
                         RHYTHMS Captured Moments
                     </h2>
-                    <span className="text-xs text-pink-400 font-semibold">{rhythmsGallery.length} Photos</span>
+                    <span className="text-xs text-pink-600 dark:text-pink-400 font-semibold">{rhythmsGallery.length} Photos</span>
                 </motion.div>
 
                 {rhythmsGallery.length > 0 ? (
@@ -176,7 +174,7 @@ export function RhythmsClient() {
                         <FestGalleryMarquee images={rhythmsGallery} onImageClick={(idx) => setLightboxState({ images: rhythmsGallery, index: idx })} />
                     </motion.div>
                 ) : (
-                    <div className="p-12 text-center rounded-[2.5rem] border border-dashed border-white/10 text-muted-foreground text-xs italic">
+                    <div className="p-12 text-center rounded-[2.5rem] border border-dashed border-black/10 dark:border-white/10 text-muted-foreground text-xs italic">
                         Gallery highlights will be uploaded following the conclusion of RHYTHMS.
                     </div>
                 )}
@@ -185,44 +183,44 @@ export function RhythmsClient() {
             {/* Event Detail Modal with AnimatePresence */}
             <AnimatePresence>
                 {selectedSubEvent && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 20 }}
                             transition={{ duration: 0.3 }}
-                            className="relative w-full max-w-3xl max-h-[90vh] flex flex-col p-6 md:p-8 rounded-[2.5rem] border border-pink-500/30 bg-[#14060d] text-white shadow-2xl overflow-y-auto space-y-6"
+                            className="relative w-full max-w-3xl max-h-[90vh] flex flex-col p-6 md:p-8 rounded-[2.5rem] border border-pink-500/30 bg-white dark:bg-[#14060d] text-foreground dark:text-white shadow-2xl overflow-y-auto space-y-6"
                         >
-                            <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                                <span className="px-3.5 py-1 rounded-xl bg-pink-500/20 text-pink-400 text-[10px] font-black uppercase tracking-wider border border-pink-500/30">
+                            <div className="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-4">
+                                <span className="px-3.5 py-1 rounded-xl bg-pink-500/10 dark:bg-pink-500/20 text-pink-600 dark:text-pink-400 text-[10px] font-black uppercase tracking-wider border border-pink-500/30">
                                     RHYTHMS Departmental Sub-Event
                                 </span>
-                                <button onClick={() => setSelectedSubEvent(null)} className="p-2 text-muted-foreground hover:text-white rounded-xl hover:bg-white/5 cursor-pointer">✕</button>
+                                <button onClick={() => setSelectedSubEvent(null)} className="p-2 text-muted-foreground hover:text-foreground rounded-xl hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer">✕</button>
                             </div>
 
-                            <h2 className="text-2xl md:text-3xl font-black text-white">{selectedSubEvent.title}</h2>
-                            <p className="text-xs md:text-sm text-slate-300 leading-relaxed font-medium">{selectedSubEvent.detailedInfo || selectedSubEvent.desc}</p>
+                            <h2 className="text-2xl md:text-3xl font-black text-foreground dark:text-white">{selectedSubEvent.title}</h2>
+                            <p className="text-xs md:text-sm text-muted-foreground leading-relaxed font-medium">{selectedSubEvent.detailedInfo || selectedSubEvent.desc}</p>
 
-                            <div className="grid grid-cols-2 gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 text-xs">
+                            <div className="grid grid-cols-2 gap-4 p-4 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs">
                                 <div>
                                     <span className="text-[10px] text-muted-foreground uppercase font-black tracking-wider block">Winner</span>
-                                    <span className="text-amber-400 font-bold text-sm">{selectedSubEvent.winner}</span>
+                                    <span className="text-amber-500 dark:text-amber-400 font-bold text-sm">{selectedSubEvent.winner}</span>
                                 </div>
                                 <div>
                                     <span className="text-[10px] text-muted-foreground uppercase font-black tracking-wider block">Runner-Up</span>
-                                    <span className="text-slate-300 font-semibold text-sm">{selectedSubEvent.runnerUp}</span>
+                                    <span className="text-foreground dark:text-slate-300 font-semibold text-sm">{selectedSubEvent.runnerUp}</span>
                                 </div>
                             </div>
 
                             {selectedSubEvent.eventGallery && selectedSubEvent.eventGallery.length > 0 && (
                                 <div className="space-y-3 pt-2">
-                                    <h4 className="text-xs font-bold uppercase tracking-wider text-pink-400">Event Snapshot Gallery</h4>
+                                    <h4 className="text-xs font-bold uppercase tracking-wider text-pink-600 dark:text-pink-400">Event Snapshot Gallery</h4>
                                     <div className="grid grid-cols-3 gap-2">
                                         {selectedSubEvent.eventGallery.map((imgUrl, i) => (
                                             <div
                                                 key={i}
                                                 onClick={() => setLightboxState({ images: selectedSubEvent.eventGallery, index: i })}
-                                                className="aspect-[16/9] rounded-xl overflow-hidden border border-white/10 relative cursor-pointer hover:border-pink-400/50 transition-all"
+                                                className="aspect-[16/9] rounded-xl overflow-hidden border border-black/10 dark:border-white/10 relative cursor-pointer hover:border-pink-400/50 transition-all"
                                             >
                                                 <Image fill src={imgUrl} alt={`Gallery ${i}`} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-full object-cover" />
                                             </div>

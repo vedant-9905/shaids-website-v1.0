@@ -20,7 +20,7 @@ export default function AboutLayout({ children }: { children: React.ReactNode })
         <div className="container mx-auto px-4 pt-32 pb-24 max-w-6xl">
             {/* About Section Header */}
             <div className="mb-10 text-center space-y-3">
-                <h1 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
+                <h1 className="text-2xl md:text-4xl lg:text-5xl font-black tracking-tight text-foreground leading-tight">
                     Department of <br />
                     <span className="text-gradient">Artificial Intelligence </span>
                     &amp; <span className="text-gradient">Data Science</span>

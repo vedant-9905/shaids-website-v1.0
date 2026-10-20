@@ -31,12 +31,12 @@ export function EventCard({
             viewport={{ once: true }}
             whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
             className={cn(
-                "flex flex-col rounded-[2.5rem] border border-black/5 dark:border-white/10 bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-2xl relative overflow-hidden transition-colors duration-300",
-                !isPast && "hover:shadow-[0_0_30px_rgba(217,70,239,0.15)] hover:border-white/20"
+                "flex flex-col rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl dark:shadow-2xl relative overflow-hidden transition-colors duration-300",
+                !isPast && "hover:shadow-[0_0_30px_rgba(217,70,239,0.15)] hover:border-fuchsia-500/30"
             )}
         >
             {/* Top glare */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent z-10" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/20 to-transparent z-10" />
 
             <div className="h-48 bg-muted relative overflow-hidden group">
                 <Link href={`/events/${id}`} className="absolute inset-0 z-20" />
@@ -51,7 +51,7 @@ export function EventCard({
                     </>
                 )}
                 <div className="absolute top-3 left-4 z-20">
-                    <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-primary text-[10px] font-black uppercase tracking-wider border border-white/10">
+                    <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-wider border border-white/20">
                         {type}
                     </span>
                 </div>
@@ -76,7 +76,7 @@ export function EventCard({
 
                 <div className={cn("grid gap-3 mt-auto", has_registration && !isPast ? "grid-cols-2" : "grid-cols-1")}>
                     <Link href={`/events/${id}`} className="w-full">
-                        <Button variant="outline" className="w-full rounded-2xl text-xs h-10 border-white/5 bg-white/5 hover:bg-white/10">
+                        <Button variant="outline" className="w-full rounded-2xl text-xs h-10 border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-foreground font-bold transition-all">
                             Details
                         </Button>
                     </Link>

@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import Image from 'next/image';
 
 export function Hero() {
@@ -38,19 +36,6 @@ export function Hero() {
                         The official student community of <strong className="text-foreground font-semibold">Department of Artificial Intelligence & Data Science at ACPCE</strong>.
                         We are the bridge between academic theory and the cutting-edge reality of <span className="text-foreground font-semibold">AI & Data Science.</span>
                     </motion.p>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
-                        className="flex flex-col sm:flex-row items-start justify-start gap-6"
-                    >
-                        <Link href="/events">
-                            <Button size="lg" className="h-12 px-8 text-base rounded-full border border-primary/50 bg-primary/20 hover:bg-primary/30 text-foreground dark:text-purple-100 backdrop-blur-md transition-all duration-300 hover:scale-105 shadow-[0_0_25px_rgba(168,85,247,0.4)] hover:shadow-[0_0_35px_rgba(168,85,247,0.7)] cursor-pointer font-bold gap-2">
-                                Explore Events
-                            </Button>
-                        </Link>
-                    </motion.div>
                 </div>
 
                 {/* Right Content - Morphing Logos */}

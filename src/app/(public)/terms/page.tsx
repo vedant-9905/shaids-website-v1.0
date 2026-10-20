@@ -10,8 +10,8 @@ export default function TermsPage() {
     const year = new Date().getFullYear();
     return (
         <main className="min-h-screen pt-32 pb-20 px-4">
-            <div className="container mx-auto max-w-3xl prose prose-invert prose-sm md:prose-base">
-                <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-2">Terms of Use</h1>
+            <div className="container mx-auto max-w-3xl prose dark:prose-invert prose-sm md:prose-base text-foreground">
+                <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-2 text-foreground">Terms of Use</h1>
                 <p className="text-muted-foreground text-sm mb-8">Last updated: October {year}</p>
 
                 <h2>1. Acceptance</h2>

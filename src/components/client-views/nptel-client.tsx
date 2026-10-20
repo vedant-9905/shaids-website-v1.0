@@ -8,9 +8,9 @@ import { useContent } from '@/context/content-context';
 import { AcademicYearToggle } from '@/components/academic-year-toggle';
 
 export function NptelClient() {
-    const { nptel, academicYear } = useContent();
+    const { nptel } = useContent();
 
-    const filteredNptel = nptel ? nptel.filter(item => !item.academicYear || item.academicYear === academicYear) : [];
+    const filteredNptel = nptel || [];
 
     const studentAchievers = filteredNptel.filter((item) => !item.isFaculty);
     const facultyAchievers = filteredNptel.filter((item) => item.isFaculty);
@@ -25,7 +25,7 @@ export function NptelClient() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.4 }}
             >
-                <Link href="/about/achievements" className="inline-flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-amber-400 transition-colors group font-medium">
+                <Link href="/about/achievements" className="inline-flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-amber-500 transition-colors group font-medium">
                     <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
                     Back to Achievements
                 </Link>
@@ -37,7 +37,7 @@ export function NptelClient() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.5 }}
-                        className="inline-block px-3.5 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-black border border-amber-500/30 uppercase tracking-[0.2em]"
+                        className="inline-block px-3.5 py-1 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-300 text-xs font-black border border-amber-500/30 uppercase tracking-[0.2em]"
                     >
                         SWAYAM NPTEL
                     </motion.span>
@@ -45,9 +45,9 @@ export function NptelClient() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.1 }}
-                        className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight"
+                        className="text-3xl md:text-5xl font-black text-foreground tracking-tight leading-tight"
                     >
-                        NPTEL Elite <span className="text-amber-400">Certifications</span>
+                        NPTEL Elite <span className="text-amber-500 dark:text-amber-400">Certifications</span>
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
@@ -58,14 +58,6 @@ export function NptelClient() {
                         SWAYAM NPTEL National Level Certifications earned by our students and faculty members.
                     </motion.p>
                 </div>
-
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 0.25 }}
-                >
-                    <AcademicYearToggle />
-                </motion.div>
             </div>
 
             {/* Student Achievers List */}
@@ -76,11 +68,11 @@ export function NptelClient() {
                     viewport={{ once: true }}
                     className="flex items-center gap-3"
                 >
-                    <h2 className="text-2xl font-bold tracking-tight flex items-center gap-2 text-white">
-                        <Award className="text-amber-400" size={24} />
+                    <h2 className="text-2xl font-bold tracking-tight flex items-center gap-2 text-foreground">
+                        <Award className="text-amber-500 dark:text-amber-400" size={24} />
                         Student NPTEL Achievers
                     </h2>
-                    <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+                    <div className="h-px flex-1 bg-gradient-to-r from-black/10 dark:from-white/10 to-transparent" />
                 </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -92,39 +84,39 @@ export function NptelClient() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.45, delay: i * 0.06 }}
                             whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-                            className="p-6 rounded-3xl border border-amber-500/20 bg-[#07080d]/90 backdrop-blur-xl space-y-3 shadow-xl hover:border-amber-500/50 hover:shadow-[0_0_30px_rgba(245,158,11,0.2)] transition-colors flex flex-col justify-between relative overflow-hidden"
+                            className="p-6 rounded-3xl border border-amber-500/20 bg-white/80 dark:bg-[#07080d]/90 backdrop-blur-xl space-y-3 shadow-lg dark:shadow-xl hover:border-amber-500/50 hover:shadow-[0_0_30px_rgba(245,158,11,0.2)] transition-colors flex flex-col justify-between relative overflow-hidden"
                         >
                             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-400/20 to-transparent" />
                             <div className="space-y-1">
-                                <h3 className="font-bold text-lg text-white">{st.name}</h3>
+                                <h3 className="font-bold text-lg text-foreground">{st.name}</h3>
                                 <p className="text-xs text-muted-foreground">{st.year}</p>
                             </div>
-                            <div className="pt-3 border-t border-white/5 text-xs text-amber-300 font-semibold">
+                            <div className="pt-3 border-t border-black/5 dark:border-white/5 text-xs text-amber-600 dark:text-amber-300 font-semibold">
                                 Course: {st.course}
                             </div>
                         </motion.div>
                     ))}
                     {studentAchievers.length === 0 && (
-                        <div className="col-span-3 p-12 text-center rounded-[2.5rem] border border-dashed border-white/10 text-muted-foreground italic">
-                            No student certification records recorded yet for {academicYear}.
+                        <div className="col-span-3 p-12 text-center rounded-[2.5rem] border border-dashed border-black/10 dark:border-white/10 text-muted-foreground italic">
+                            No student certification records recorded yet.
                         </div>
                     )}
                 </div>
             </div>
 
             {/* Faculty Achievers List */}
-            <div className="space-y-6 pt-6 border-t border-white/10">
+            <div className="space-y-6 pt-6 border-t border-black/10 dark:border-white/10">
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     className="flex items-center gap-3"
                 >
-                    <h2 className="text-2xl font-bold tracking-tight flex items-center gap-2 text-white">
-                        <UserCheck className="text-amber-400" size={24} />
+                    <h2 className="text-2xl font-bold tracking-tight flex items-center gap-2 text-foreground">
+                        <UserCheck className="text-amber-500 dark:text-amber-400" size={24} />
                         Faculty NPTEL Achievers
                     </h2>
-                    <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+                    <div className="h-px flex-1 bg-gradient-to-r from-black/10 dark:from-white/10 to-transparent" />
                 </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -136,14 +128,14 @@ export function NptelClient() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.45, delay: i * 0.08 }}
                             whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-                            className="p-6 rounded-3xl border border-amber-500/20 bg-[#08070d]/90 backdrop-blur-xl space-y-3 shadow-xl hover:border-amber-500/50 hover:shadow-[0_0_30px_rgba(245,158,11,0.2)] transition-colors flex flex-col justify-between relative overflow-hidden"
+                            className="p-6 rounded-3xl border border-amber-500/20 bg-white/80 dark:bg-[#08070d]/90 backdrop-blur-xl space-y-3 shadow-lg dark:shadow-xl hover:border-amber-500/50 hover:shadow-[0_0_30px_rgba(245,158,11,0.2)] transition-colors flex flex-col justify-between relative overflow-hidden"
                         >
                             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-400/20 to-transparent" />
                             <div className="space-y-1">
-                                <h3 className="font-bold text-lg text-white">{fac.name}</h3>
+                                <h3 className="font-bold text-lg text-foreground">{fac.name}</h3>
                                 <p className="text-xs text-muted-foreground">{fac.year || 'Faculty Member'}</p>
                             </div>
-                            <div className="pt-3 border-t border-white/5 text-xs text-amber-300 font-semibold">
+                            <div className="pt-3 border-t border-black/5 dark:border-white/5 text-xs text-amber-600 dark:text-amber-300 font-semibold">
                                 Course: {fac.course}
                             </div>
                         </motion.div>

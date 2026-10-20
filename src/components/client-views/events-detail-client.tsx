@@ -93,38 +93,38 @@ export function EventsDetailClient({ params }: { params: Promise<{ id: string }>
                     </div>
 
                     <div className="space-y-4">
-                        <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-tight text-white">
+                        <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-tight text-foreground">
                             {event.title}
                         </h1>
 
                         <div className="flex flex-wrap items-center gap-4 text-xs md:text-sm text-muted-foreground pt-1">
-                            <span className="flex items-center gap-1.5 text-white font-medium">
+                            <span className="flex items-center gap-1.5 text-foreground font-medium">
                                 <Calendar size={15} className="text-primary" /> {formattedDate}
                             </span>
                             {event.time && (
-                                <span className="flex items-center gap-1.5 text-white font-medium">
+                                <span className="flex items-center gap-1.5 text-foreground font-medium">
                                     <Clock size={15} className="text-secondary" /> {event.time}
                                 </span>
                             )}
-                            <span className="flex items-center gap-1.5 text-white font-medium">
-                                <MapPin size={15} className="text-pink-400" /> {event.location}
+                            <span className="flex items-center gap-1.5 text-foreground font-medium">
+                                <MapPin size={15} className="text-pink-500" /> {event.location}
                             </span>
                         </div>
                     </div>
 
                     {/* About the Event */}
-                    <div className="p-8 rounded-[2.5rem] border border-white/10 bg-[#07070a]/90 backdrop-blur-xl shadow-2xl space-y-6">
-                        <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                    <div className="p-8 rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#07070a]/90 backdrop-blur-xl shadow-xl dark:shadow-2xl space-y-6">
+                        <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
                             <span className="w-2 h-6 bg-primary rounded-full" />
                             About the Event
                         </h2>
-                        <div className="text-slate-300 text-sm md:text-base leading-relaxed whitespace-pre-wrap font-normal">
+                        <div className="text-muted-foreground text-sm md:text-base leading-relaxed whitespace-pre-wrap font-normal">
                             {event.long_description || event.description}
                         </div>
 
                         {event.organizer && (
-                            <div className="pt-4 border-t border-white/5 flex items-center gap-2 text-xs text-muted-foreground">
-                                <span className="font-bold text-white">Organized by:</span> {event.organizer}
+                            <div className="pt-4 border-t border-black/5 dark:border-white/5 flex items-center gap-2 text-xs text-muted-foreground">
+                                <span className="font-bold text-foreground">Organized by:</span> {event.organizer}
                             </div>
                         )}
                     </div>
@@ -133,15 +133,15 @@ export function EventsDetailClient({ params }: { params: Promise<{ id: string }>
                     {event.brochure_url && (
                         <div className="p-6 rounded-[2rem] border border-cyan-500/20 bg-cyan-500/5 backdrop-blur-xl flex items-center justify-between gap-4">
                             <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center">
+                                <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 flex items-center justify-center">
                                     <Download size={22} />
                                 </div>
                                 <div>
-                                    <h4 className="text-sm font-bold text-white">Event Brochure</h4>
+                                    <h4 className="text-sm font-bold text-foreground">Event Brochure</h4>
                                     <p className="text-xs text-muted-foreground">Download the official event flyer and guidelines</p>
                                 </div>
                             </div>
-                            <Button variant="outline" asChild className="rounded-2xl border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/10 text-xs">
+                            <Button variant="outline" asChild className="rounded-2xl border-cyan-500/30 text-cyan-600 dark:text-cyan-300 hover:bg-cyan-500/10 text-xs">
                                 <a href={event.brochure_url} target="_blank" rel="noopener noreferrer">
                                     Download Brochure
                                 </a>
@@ -152,12 +152,12 @@ export function EventsDetailClient({ params }: { params: Promise<{ id: string }>
                     {/* Event Photo Gallery */}
                     {event.gallery_images && event.gallery_images.length > 0 && (
                         <div className="space-y-4">
-                            <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                            <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
                                 <span className="w-2 h-6 bg-secondary rounded-full" />
                                 Event Snapshot Gallery
                             </h2>
-                            <div className="rounded-[2.5rem] border border-white/10 bg-[#07070a] p-4 shadow-xl space-y-4">
-                                <div className="aspect-[16/9] w-full rounded-2xl overflow-hidden relative border border-white/10">
+                            <div className="rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#07070a] p-4 shadow-xl space-y-4">
+                                <div className="aspect-[16/9] w-full rounded-2xl overflow-hidden relative border border-black/10 dark:border-white/10">
                                     <Image fill src={event.gallery_images[activeGalleryIndex]} alt={`Event Photo ${activeGalleryIndex + 1}`} sizes="(max-width: 1024px) 100vw, 66vw" className="w-full h-full object-cover transition-all duration-500" />
                                 </div>
                                 <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
@@ -166,7 +166,7 @@ export function EventsDetailClient({ params }: { params: Promise<{ id: string }>
                                             key={idx}
                                             onClick={() => setActiveGalleryIndex(idx)}
                                             className={`relative w-20 h-14 rounded-xl overflow-hidden border shrink-0 transition-all cursor-pointer ${
-                                                activeGalleryIndex === idx ? 'border-primary ring-2 ring-primary/50 scale-105' : 'border-white/10 opacity-60 hover:opacity-100'
+                                                activeGalleryIndex === idx ? 'border-primary ring-2 ring-primary/50 scale-105' : 'border-black/10 dark:border-white/10 opacity-60 hover:opacity-100'
                                             }`}
                                         >
                                             <Image fill src={img} alt={`Thumb ${idx}`} sizes="80px" className="w-full h-full object-cover" />
@@ -185,12 +185,12 @@ export function EventsDetailClient({ params }: { params: Promise<{ id: string }>
                     transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
                     className="space-y-6"
                 >
-                    <div className="p-8 rounded-[2.5rem] border border-white/10 bg-[#07070e]/90 backdrop-blur-xl shadow-2xl space-y-6 sticky top-32">
+                    <div className="p-8 rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#07070e]/90 backdrop-blur-xl shadow-xl dark:shadow-2xl space-y-6 sticky top-32">
                         <div className="space-y-2">
-                            <span className="px-3 py-1 rounded-full bg-white/5 text-muted-foreground text-[10px] font-black uppercase tracking-wider border border-white/10">
+                            <span className="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 text-muted-foreground text-[10px] font-black uppercase tracking-wider border border-black/10 dark:border-white/10">
                                 Registration Status
                             </span>
-                            <h3 className="text-xl font-bold text-white">
+                            <h3 className="text-xl font-bold text-foreground">
                                 {event.is_past ? 'Event Concluded' : (event.has_registration ? 'Open for Registrations' : 'Open Entry')}
                             </h3>
                             <p className="text-xs text-muted-foreground leading-relaxed">
@@ -217,14 +217,14 @@ export function EventsDetailClient({ params }: { params: Promise<{ id: string }>
                             )
                         )}
 
-                        <div className="pt-4 border-t border-white/10 space-y-3">
-                            <Button onClick={() => setShareOpen(true)} variant="outline" className="w-full h-11 rounded-2xl text-xs font-bold gap-2 border-white/10 bg-white/5 hover:bg-white/10">
+                        <div className="pt-4 border-t border-black/10 dark:border-white/10 space-y-3">
+                            <Button onClick={() => setShareOpen(true)} variant="outline" className="w-full h-11 rounded-2xl text-xs font-bold gap-2 border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-foreground">
                                 <Share2 size={14} /> Share Event Details
                             </Button>
                         </div>
 
                         <div className="pt-2 flex items-center gap-2 text-[11px] text-muted-foreground/70">
-                            <ShieldCheck size={14} className="text-emerald-400 shrink-0" /> Official Departmental Activity
+                            <ShieldCheck size={14} className="text-emerald-500 shrink-0" /> Official Departmental Activity
                         </div>
                     </div>
                 </motion.div>

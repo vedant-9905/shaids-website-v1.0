@@ -53,11 +53,11 @@ export function StaffDetailClient({ params }: { params: Promise<{ id: string }> 
                         initial={{ opacity: 0, y: 25 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, ease: "easeOut" }}
-                        className="md:col-span-1 p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl text-center space-y-4 relative overflow-hidden"
+                        className="md:col-span-1 p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl text-center space-y-4 relative overflow-hidden"
                     >
                         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-400/40 to-transparent" />
 
-                        <div className="relative w-40 h-40 mx-auto rounded-full border-2 border-sky-400/20 overflow-hidden bg-white/5 flex items-center justify-center shadow-md group">
+                        <div className="relative w-40 h-40 mx-auto rounded-full border-2 border-sky-400/20 overflow-hidden bg-black/5 dark:bg-white/5 flex items-center justify-center shadow-md group">
                             {member.image_url ? (
                                 <Image fill src={member.image_url} alt={member.name} sizes="160px" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                             ) : (
@@ -67,16 +67,16 @@ export function StaffDetailClient({ params }: { params: Promise<{ id: string }> 
 
                         <div>
                             <h1 className="text-xl font-bold tracking-tight text-foreground">{member.name}</h1>
-                            <p className="text-sky-400 font-semibold text-xs uppercase tracking-wider mt-1">{member.designation}</p>
+                            <p className="text-sky-600 dark:text-sky-400 font-semibold text-xs uppercase tracking-wider mt-1">{member.designation}</p>
                         </div>
 
-                        <div className="flex justify-center items-center gap-3 pt-4 border-t border-white/10">
+                        <div className="flex justify-center items-center gap-3 pt-4 border-t border-black/10 dark:border-white/10">
                             {member.email && (
                                 <motion.a 
                                     whileHover={{ scale: 1.15, y: -2 }}
                                     whileTap={{ scale: 0.95 }}
                                     href={`mailto:${member.email}`} 
-                                    className="p-2.5 rounded-xl bg-white/5 hover:bg-sky-400/10 text-muted-foreground hover:text-sky-400 transition-colors" 
+                                    className="p-2.5 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-sky-400/10 text-muted-foreground hover:text-sky-600 dark:hover:text-sky-400 transition-colors" 
                                     title="Send Email"
                                 >
                                     <Mail size={18} />
@@ -92,11 +92,11 @@ export function StaffDetailClient({ params }: { params: Promise<{ id: string }> 
                             initial={{ opacity: 0, y: 25 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-                            className="p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl space-y-3 relative overflow-hidden"
+                            className="p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl space-y-3 relative overflow-hidden"
                         >
-                            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/20 to-transparent" />
                             <h2 className="text-sm font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
-                                <User size={16} className="text-sky-400" /> Overview
+                                <User size={16} className="text-sky-600 dark:text-sky-400" /> Overview
                             </h2>
                             <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
                                 {member.bio || `Faculty member at ACPCE Artificial Intelligence & Data Science department.`}
@@ -109,18 +109,18 @@ export function StaffDetailClient({ params }: { params: Promise<{ id: string }> 
                                 initial={{ opacity: 0, y: 25 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-                                className="p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl space-y-4 relative overflow-hidden"
+                                className="p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#050505]/40 backdrop-blur-3xl shadow-xl space-y-4 relative overflow-hidden"
                             >
                                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-400/20 to-transparent" />
                                 <h3 className="text-sm font-bold text-foreground flex items-center gap-2 uppercase tracking-wider">
-                                    <Award size={16} className="text-sky-400" /> Qualifications & Background
+                                    <Award size={16} className="text-sky-600 dark:text-sky-400" /> Qualifications & Background
                                 </h3>
 
                                 {/* Qualification in one line */}
                                 {member.qualification && (
                                     <div>
                                         <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block mb-1.5">Qualification</span>
-                                        <div className="px-3.5 py-2 rounded-xl bg-sky-500/10 border border-sky-500/20 text-xs font-semibold text-sky-300 inline-block">
+                                        <div className="px-3.5 py-2 rounded-xl bg-sky-500/10 border border-sky-500/20 text-xs font-semibold text-sky-700 dark:text-sky-300 inline-block">
                                             {member.qualification}
                                         </div>
                                     </div>
@@ -128,16 +128,16 @@ export function StaffDetailClient({ params }: { params: Promise<{ id: string }> 
 
                                 {/* Expertise topics / skills in the next line */}
                                 {member.expertise && member.expertise.length > 0 && (
-                                    <div className="pt-2 border-t border-white/5">
+                                    <div className="pt-2 border-t border-black/5 dark:border-white/5">
                                         <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block mb-2 flex items-center gap-1.5">
-                                            <Sparkles size={13} className="text-sky-400" /> Key Expertise & Topics
+                                            <Sparkles size={13} className="text-sky-600 dark:text-sky-400" /> Key Expertise & Topics
                                         </span>
                                         <div className="flex flex-wrap gap-2">
                                             {member.expertise.map((item, idx) => (
                                                 <motion.span 
                                                     key={idx} 
                                                     whileHover={{ scale: 1.05 }}
-                                                    className="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-medium text-foreground/90 shadow-sm cursor-default"
+                                                    className="px-3 py-1.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-medium text-foreground shadow-sm cursor-default"
                                                 >
                                                     {item}
                                                 </motion.span>

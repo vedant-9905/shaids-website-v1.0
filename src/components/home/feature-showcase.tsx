@@ -17,7 +17,9 @@ export function FeatureShowcase() {
             description: "Stay updated with the latest news, events, and activities. From coding competitions to expert seminars, there's something for everyone.",
             link: "/events",
             icon: <Calendar className="w-6 h-6" />,
-            color: "from-fuchsia-500 to-purple-600",
+            color: "from-pink-500 to-rose-600",
+            buttonText: "Explore events",
+            buttonStyle: "border-pink-500/40 bg-pink-500/10 text-pink-600 dark:text-pink-300 hover:bg-pink-500 hover:text-white dark:hover:text-white hover:border-pink-400 hover:shadow-[0_0_35px_rgba(236,72,153,0.7)]",
             image: homeConfig?.image_events || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80",
             delay: 0
         },
@@ -27,6 +29,8 @@ export function FeatureShowcase() {
             link: "/team",
             icon: <Users className="w-6 h-6" />,
             color: "from-blue-500 to-cyan-500",
+            buttonText: "Meet the team",
+            buttonStyle: "border-cyan-500/40 bg-cyan-500/10 text-cyan-600 dark:text-cyan-300 hover:bg-cyan-500 hover:text-white dark:hover:text-white hover:border-cyan-400 hover:shadow-[0_0_35px_rgba(6,182,212,0.7)]",
             image: homeConfig?.image_team || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80",
             delay: 0.2
         },
@@ -36,6 +40,8 @@ export function FeatureShowcase() {
             link: "/resources",
             icon: <BookOpen className="w-6 h-6" />,
             color: "from-emerald-500 to-green-500",
+            buttonText: "Explore resources",
+            buttonStyle: "border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-500 hover:text-white dark:hover:text-white hover:border-emerald-400 hover:shadow-[0_0_35px_rgba(16,185,129,0.7)]",
             image: homeConfig?.image_resources || "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&q=80",
             delay: 0.4
         },
@@ -45,13 +51,15 @@ export function FeatureShowcase() {
             link: "/staff",
             icon: <UserCheck className="w-6 h-6" />,
             color: "from-orange-500 to-amber-500",
+            buttonText: "Meet our faculty",
+            buttonStyle: "border-amber-500/40 bg-amber-500/10 text-amber-600 dark:text-amber-300 hover:bg-amber-500 hover:text-white dark:hover:text-white hover:border-amber-400 hover:shadow-[0_0_35px_rgba(245,158,11,0.7)]",
             image: homeConfig?.image_staff || "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1200&q=80",
             delay: 0.6
         }
     ];
 
     return (
-        <section className="pt-0 pb-24 relative overflow-hidden">
+        <section className="pt-24 md:pt-36 pb-24 relative overflow-hidden">
             {/* Background Elements */}
             <div className="absolute top-1/4 left-0 w-96 h-96 bg-primary/10 rounded-full blur-[100px] -z-10" />
             <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-[100px] -z-10" />
@@ -85,8 +93,20 @@ export function FeatureShowcase() {
                                 </p>
                                 <div className="pt-4">
                                     <Link href={feature.link}>
-                                        <Button variant="outline" size="lg" className="rounded-full bg-background/50 border-border hover:bg-background hover:border-primary/50 transition-all duration-300">
-                                            Learn More <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                        <Button
+                                            variant="outline"
+                                            size="lg"
+                                            className={cn(
+                                                "relative overflow-hidden rounded-full font-bold backdrop-blur-md transition-all duration-300 hover:scale-105 active:scale-95 group/btn cursor-pointer gap-2",
+                                                feature.buttonStyle
+                                            )}
+                                        >
+                                            {/* Shimmer sweep animation on hover */}
+                                            <span className="absolute top-0 -left-full w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover/btn:animate-[shimmer_1.2s_ease-in-out_infinite] pointer-events-none" />
+
+                                            <span className="relative z-10 flex items-center">
+                                                {feature.buttonText} <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1.5" />
+                                            </span>
                                         </Button>
                                     </Link>
                                 </div>

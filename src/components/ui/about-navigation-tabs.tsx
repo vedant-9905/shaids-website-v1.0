@@ -16,7 +16,7 @@ export function AboutNavigationTabs() {
     const pathname = usePathname();
 
     return (
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-12 border-b border-white/10 pb-4">
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-12 border-b border-black/10 dark:border-white/10 pb-4">
             {tabs.map((tab) => {
                 const Icon = tab.icon;
                 const isActive = pathname === tab.href || (tab.href === '/about/achievements' && pathname.startsWith('/about/achievements'));
@@ -27,8 +27,8 @@ export function AboutNavigationTabs() {
                         className={cn(
                             'flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs md:text-sm font-bold transition-all border',
                             isActive
-                                ? 'bg-primary text-white border-primary/50 shadow-[0_0_20px_rgba(139,92,246,0.4)] scale-105'
-                                : 'bg-white/5 text-muted-foreground border-white/10 hover:border-white/20 hover:text-white'
+                                ? 'bg-primary text-primary-foreground border-primary/50 shadow-[0_0_20px_rgba(139,92,246,0.4)] scale-105'
+                                : 'bg-black/5 dark:bg-white/5 text-muted-foreground border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 hover:text-foreground'
                         )}
                     >
                         <Icon size={16} />

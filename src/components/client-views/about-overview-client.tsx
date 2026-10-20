@@ -60,14 +60,14 @@ export function AboutOverviewClient() {
     ];
 
     return (
-        <div className="space-y-14 text-slate-100">
+        <div className="space-y-14 text-foreground">
             {/* Department Introduction Banner */}
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className="p-8 md:p-12 rounded-[2.5rem] border border-white/10 bg-[#07070f]/90 backdrop-blur-xl shadow-2xl relative overflow-hidden space-y-6"
+                className="p-8 md:p-12 rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#07070f]/90 backdrop-blur-xl shadow-xl dark:shadow-2xl relative overflow-hidden space-y-6"
             >
                 <div className="absolute top-0 right-0 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
@@ -81,9 +81,9 @@ export function AboutOverviewClient() {
                     </span>
                 </div>
                 
-                <div className="space-y-4 text-sm md:text-base text-slate-300 leading-relaxed font-normal">
+                <div className="space-y-4 text-sm md:text-base text-muted-foreground leading-relaxed font-normal">
                     <p>
-                        The Department of Artificial Intelligence &amp; Data Science (AI&amp;DS) was established in <strong className="text-white font-semibold">2021</strong> with an initial intake of 60 students. In recognition of the growing demand for AI professionals and the department&apos;s steady academic progress, the intake was expanded to <strong className="text-amber-300 font-semibold">120 students</strong> from the Academic Year <strong className="text-white font-semibold">2024–25</strong>.
+                        The Department of Artificial Intelligence &amp; Data Science (AI&amp;DS) was established in <strong className="text-foreground font-semibold">2021</strong> with an initial intake of 60 students. In recognition of the growing demand for AI professionals and the department&apos;s steady academic progress, the intake was expanded to <strong className="text-amber-500 dark:text-amber-300 font-semibold">120 students</strong> from the Academic Year <strong className="text-foreground font-semibold">2024–25</strong>.
                     </p>
                     <p>
                         The department is committed to providing quality education in Artificial Intelligence, Machine Learning, Data Science, Deep Learning, Computer Vision, and emerging technologies through an industry-oriented curriculum that combines strong theoretical foundations with practical learning.
@@ -103,14 +103,14 @@ export function AboutOverviewClient() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
                     whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-                    className="p-8 md:p-10 rounded-[2.5rem] border border-primary/30 bg-gradient-to-br from-primary/20 via-[#07070e] to-black space-y-5 shadow-2xl relative overflow-hidden group"
+                    className="p-8 md:p-10 rounded-[2.5rem] border border-primary/30 bg-white/80 dark:bg-gradient-to-br dark:from-primary/20 dark:via-[#07070e] dark:to-black space-y-5 shadow-xl dark:shadow-2xl relative overflow-hidden group"
                 >
                     <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
                     <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center text-primary border border-primary/30 group-hover:scale-110 transition-transform duration-300">
                         <Target size={28} />
                     </div>
-                    <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">Department Vision</h2>
-                    <p className="text-slate-200 leading-relaxed text-base md:text-lg font-medium italic">
+                    <h2 className="text-2xl md:text-3xl font-black text-foreground tracking-tight">Department Vision</h2>
+                    <p className="text-foreground/90 dark:text-slate-200 leading-relaxed text-base md:text-lg font-medium italic">
                         &ldquo;To develop professionals in Artificial Intelligence &amp; Data Science Engineering who are socially responsible to meet the needs of society and industries.&rdquo;
                     </p>
                 </motion.div>
@@ -122,14 +122,14 @@ export function AboutOverviewClient() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
                     whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-                    className="p-8 md:p-10 rounded-[2.5rem] border border-secondary/30 bg-gradient-to-br from-secondary/20 via-[#07070e] to-black space-y-5 shadow-2xl relative overflow-hidden group"
+                    className="p-8 md:p-10 rounded-[2.5rem] border border-secondary/30 bg-white/80 dark:bg-gradient-to-br dark:from-secondary/20 dark:via-[#07070e] dark:to-black space-y-5 shadow-xl dark:shadow-2xl relative overflow-hidden group"
                 >
                     <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary/40 to-transparent" />
                     <div className="w-14 h-14 rounded-2xl bg-secondary/20 flex items-center justify-center text-secondary border border-secondary/30 group-hover:scale-110 transition-transform duration-300">
                         <Compass size={28} />
                     </div>
-                    <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">Department Mission</h2>
-                    <ul className="text-slate-200 leading-relaxed text-sm md:text-base font-medium space-y-3">
+                    <h2 className="text-2xl md:text-3xl font-black text-foreground tracking-tight">Department Mission</h2>
+                    <ul className="text-foreground/90 dark:text-slate-200 leading-relaxed text-sm md:text-base font-medium space-y-3">
                         <li className="flex items-start gap-3">
                             <span className="w-2 h-2 rounded-full bg-secondary mt-2 shrink-0" />
                             <span>To offer a strong base knowledge through theory, hands-on lab experience, and the use of the latest technology.</span>
@@ -154,8 +154,8 @@ export function AboutOverviewClient() {
                     viewport={{ once: true }}
                     className="flex items-center gap-3"
                 >
-                    <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white">Core Technical Domains</h2>
-                    <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+                    <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">Core Technical Domains</h2>
+                    <div className="h-px flex-1 bg-gradient-to-r from-black/10 dark:from-white/10 to-transparent" />
                 </motion.div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -169,13 +169,13 @@ export function AboutOverviewClient() {
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
                                 whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-                                className="p-6 rounded-3xl border border-white/10 bg-white/5 space-y-3 hover:border-primary/40 hover:bg-white/10 transition-colors duration-300 shadow-lg group relative overflow-hidden"
+                                className="p-6 rounded-3xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-white/5 space-y-3 hover:border-primary/40 hover:bg-black/5 dark:hover:bg-white/10 transition-colors duration-300 shadow-md dark:shadow-lg group relative overflow-hidden"
                             >
                                 <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20 group-hover:scale-110 transition-transform duration-300">
                                     <Icon size={24} />
                                 </div>
-                                <h3 className="font-bold text-lg text-white leading-snug">{dom.title}</h3>
-                                <p className="text-sm text-slate-300 leading-relaxed">{dom.desc}</p>
+                                <h3 className="font-bold text-lg text-foreground leading-snug">{dom.title}</h3>
+                                <p className="text-sm text-muted-foreground leading-relaxed">{dom.desc}</p>
                             </motion.div>
                         );
                     })}
@@ -190,10 +190,10 @@ export function AboutOverviewClient() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
-                    className="p-8 md:p-10 rounded-[2.5rem] border border-white/10 bg-[#06060c]/90 backdrop-blur-xl space-y-6 shadow-2xl relative overflow-hidden"
+                    className="p-8 md:p-10 rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#06060c]/90 backdrop-blur-xl space-y-6 shadow-xl dark:shadow-2xl relative overflow-hidden"
                 >
                     <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-                    <h2 className="text-2xl font-black flex items-center gap-3 text-white">
+                    <h2 className="text-2xl font-black flex items-center gap-3 text-foreground">
                         <BookOpen className="text-primary" size={24} />
                         Program Educational Objectives (PEOs)
                     </h2>
@@ -205,15 +205,15 @@ export function AboutOverviewClient() {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.4, delay: i * 0.1 }}
-                                className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2 hover:border-primary/30 hover:bg-white/[0.08] transition-all"
+                                className="p-5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 space-y-2 hover:border-primary/30 transition-all"
                             >
                                 <div className="flex items-center gap-2">
                                     <span className="px-2.5 py-0.5 rounded-md bg-primary/20 text-primary text-xs font-black tracking-wider uppercase border border-primary/30">
                                         {peo.number}
                                     </span>
-                                    <h4 className="font-bold text-base text-white">{peo.title}</h4>
+                                    <h4 className="font-bold text-base text-foreground">{peo.title}</h4>
                                 </div>
-                                <p className="text-sm text-slate-300 leading-relaxed pl-1">{peo.desc}</p>
+                                <p className="text-sm text-muted-foreground leading-relaxed pl-1">{peo.desc}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -225,10 +225,10 @@ export function AboutOverviewClient() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.1 }}
-                    className="p-8 md:p-10 rounded-[2.5rem] border border-white/10 bg-[#06060c]/90 backdrop-blur-xl space-y-6 shadow-2xl relative overflow-hidden"
+                    className="p-8 md:p-10 rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#06060c]/90 backdrop-blur-xl space-y-6 shadow-xl dark:shadow-2xl relative overflow-hidden"
                 >
                     <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-secondary/30 to-transparent" />
-                    <h2 className="text-2xl font-black flex items-center gap-3 text-white">
+                    <h2 className="text-2xl font-black flex items-center gap-3 text-foreground">
                         <ShieldCheck className="text-secondary" size={24} />
                         Program Specific Outcomes (PSOs)
                     </h2>
@@ -240,15 +240,15 @@ export function AboutOverviewClient() {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.4, delay: i * 0.1 }}
-                                className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2 hover:border-secondary/30 hover:bg-white/[0.08] transition-all"
+                                className="p-5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 space-y-2 hover:border-secondary/30 transition-all"
                             >
                                 <div className="flex items-center gap-2">
                                     <span className="px-2.5 py-0.5 rounded-md bg-secondary/20 text-secondary text-xs font-black tracking-wider uppercase border border-secondary/30">
                                         {pso.number}
                                     </span>
-                                    <h4 className="font-bold text-base text-white">{pso.title}</h4>
+                                    <h4 className="font-bold text-base text-foreground">{pso.title}</h4>
                                 </div>
-                                <p className="text-sm text-slate-300 leading-relaxed pl-1">{pso.desc}</p>
+                                <p className="text-sm text-muted-foreground leading-relaxed pl-1">{pso.desc}</p>
                             </motion.div>
                         ))}
                     </div>

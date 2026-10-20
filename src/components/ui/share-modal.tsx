@@ -66,20 +66,20 @@ export function ShareModal({ isOpen, onClose, title, description, url }: ShareMo
                     initial={{ opacity: 0, scale: 0.95, y: 10 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                    className="relative w-full max-w-md p-6 rounded-[2.5rem] border border-white/10 bg-[#0a0a0a]/90 backdrop-blur-2xl shadow-2xl text-white overflow-hidden"
+                    className="relative w-full max-w-md p-6 rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-card/95 backdrop-blur-2xl shadow-2xl text-foreground overflow-hidden"
                 >
                     {/* Glowing background subtle effect */}
                     <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
                     <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-secondary/20 rounded-full blur-3xl pointer-events-none" />
 
-                    <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+                    <div className="flex items-center justify-between pb-4 border-b border-black/10 dark:border-white/10 mb-6">
                         <div className="flex items-center gap-2">
                             <Share2 className="w-5 h-5 text-primary" />
                             <h3 className="text-xl font-bold tracking-tight">Share Event</h3>
                         </div>
                         <button
                             onClick={onClose}
-                            className="p-2 text-muted-foreground hover:text-white rounded-full bg-white/5 hover:bg-white/10 transition-colors"
+                            className="p-2 text-muted-foreground hover:text-foreground rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
                         >
                             <X size={18} />
                         </button>
@@ -144,7 +144,7 @@ export function ShareModal({ isOpen, onClose, title, description, url }: ShareMo
 
                     {/* Copy Link Input Bar */}
                     <div className="space-y-3">
-                        <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-white/5 border border-white/10">
+                        <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10">
                             <input
                                 type="text"
                                 readOnly
@@ -166,7 +166,7 @@ export function ShareModal({ isOpen, onClose, title, description, url }: ShareMo
                             <Button
                                 onClick={handleNativeShare}
                                 variant="outline"
-                                className="w-full rounded-2xl h-11 border-white/10 bg-white/5 hover:bg-white/10 text-xs font-bold gap-2"
+                                className="w-full rounded-2xl h-11 border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-xs font-bold gap-2 text-foreground"
                             >
                                 <Share2 className="w-4 h-4" /> Share via System Apps
                             </Button>

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Menu, X, ExternalLink, Shield } from 'lucide-react';
+import { Menu, X, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ModeToggle } from '@/components/mode-toggle';
@@ -73,14 +73,8 @@ export function Navbar() {
                     </nav>
                 </div>
 
-                {/* Right side: Admin Button + ACPCE + Theme */}
+                {/* Right side: ACPCE + Theme */}
                 <div className="hidden md:flex items-center gap-3">
-                    <Link href="/admin" target="_blank">
-                        <Button variant="ghost" className="glass h-9 px-3.5 gap-1.5 hover:bg-primary/20 text-muted-foreground hover:text-primary dark:hover:text-primary rounded-full border border-black/10 dark:border-white/10 hover:border-primary/40 font-bold text-xs transition-all">
-                            <Shield size={14} className="text-primary" />
-                            <span>Admin</span>
-                        </Button>
-                    </Link>
 
                     <Link href="https://acpce.ac.in" target="_blank" className="shrink-0">
                         <Button variant="ghost" className="glass h-9 px-3 gap-2 hover:bg-black/5 dark:hover:bg-white/10 text-muted-foreground hover:text-foreground dark:hover:text-white rounded-full border border-black/10 dark:border-white/10 hover:border-white/20">
@@ -128,16 +122,6 @@ export function Navbar() {
                             {link.name}
                         </Link>
                     ))}
-                    <Link
-                        href="/admin"
-                        target="_blank"
-                        className="flex items-center justify-between px-4 py-3 rounded-xl text-primary font-bold hover:bg-primary/10 transition-colors text-base"
-                        onClick={() => setIsOpen(false)}
-                    >
-                        <span className="flex items-center gap-2">
-                            <Shield size={16} /> Admin Panel
-                        </span>
-                    </Link>
                     <Link
                         href="https://acpce.ac.in"
                         target="_blank"

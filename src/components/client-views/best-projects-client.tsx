@@ -16,9 +16,9 @@ const ImageLightbox = dynamic(
 );
 
 export function BestProjectsClient() {
-    const { projects, academicYear } = useContent();
+    const { projects } = useContent();
 
-    const filteredProjects = projects ? projects.filter(p => !p.academicYear || p.academicYear === academicYear) : [];
+    const filteredProjects = projects || [];
 
     const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
     const [lightboxState, setLightboxState] = useState<{ images: string[]; index: number } | null>(null);
@@ -33,7 +33,7 @@ export function BestProjectsClient() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.4 }}
             >
-                <Link href="/about/achievements" className="inline-flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-cyan-400 transition-colors group font-medium">
+                <Link href="/about/achievements" className="inline-flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-cyan-500 transition-colors group font-medium">
                     <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
                     Back to Achievements
                 </Link>
@@ -45,7 +45,7 @@ export function BestProjectsClient() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.5 }}
-                        className="inline-block px-3.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-black border border-cyan-500/30 uppercase tracking-[0.2em]"
+                        className="inline-block px-3.5 py-1 rounded-full bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 text-xs font-black border border-cyan-500/30 uppercase tracking-[0.2em]"
                     >
                         Capstone &amp; Innovation Showcase
                     </motion.span>
@@ -53,7 +53,7 @@ export function BestProjectsClient() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.1 }}
-                        className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight"
+                        className="text-3xl md:text-5xl font-black text-foreground tracking-tight leading-tight"
                     >
                         Best Capstone <span className="text-gradient">Projects</span>
                     </motion.h1>
@@ -66,14 +66,6 @@ export function BestProjectsClient() {
                         Showcasing outstanding final-year capstones, research prototypes, and award-winning student innovations.
                     </motion.p>
                 </div>
-
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 0.25 }}
-                >
-                    <AcademicYearToggle />
-                </motion.div>
             </div>
 
             {/* Projects Grid */}
@@ -86,13 +78,13 @@ export function BestProjectsClient() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: idx * 0.08, ease: "easeOut" }}
                         whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-                        className="p-6 rounded-[2.5rem] border border-white/10 bg-[#07070b]/90 backdrop-blur-xl space-y-4 flex flex-col justify-between shadow-2xl group hover:border-cyan-500/40 hover:shadow-[0_0_35px_rgba(6,182,212,0.2)] transition-colors relative overflow-hidden"
+                        className="p-6 rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#07070b]/90 backdrop-blur-xl space-y-4 flex flex-col justify-between shadow-xl dark:shadow-2xl group hover:border-cyan-500/40 hover:shadow-[0_0_35px_rgba(6,182,212,0.2)] transition-colors relative overflow-hidden"
                     >
                         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent" />
                         <div className="space-y-4">
                             <div
                                 onClick={() => setLightboxState({ images: [proj.image, ...(proj.gallery || [])], index: 0 })}
-                                className="aspect-[16/9] rounded-2xl overflow-hidden border border-white/10 relative cursor-pointer group/img"
+                                className="aspect-[16/9] rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 relative cursor-pointer group/img"
                             >
                                 <Image fill src={proj.image} alt={proj.title} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500" />
                                 <span className="absolute top-3 left-3 px-3 py-1 rounded-xl bg-black/80 backdrop-blur-md text-[10px] font-black text-cyan-400 border border-cyan-500/30 uppercase tracking-wider">
@@ -100,21 +92,21 @@ export function BestProjectsClient() {
                                 </span>
                             </div>
 
-                            <h2 className="text-xl font-black text-white tracking-tight leading-snug">{proj.title}</h2>
+                            <h2 className="text-xl font-black text-foreground tracking-tight leading-snug">{proj.title}</h2>
                             <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">{proj.abstract}</p>
 
                             <div className="flex flex-wrap gap-1.5 pt-2">
                                 {proj.techStack.map((tech, i) => (
-                                    <span key={i} className="px-2.5 py-1 rounded-lg bg-white/5 text-[10px] font-bold text-muted-foreground border border-white/10">
+                                    <span key={i} className="px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/5 text-[10px] font-bold text-muted-foreground border border-black/10 dark:border-white/10">
                                         {tech}
                                     </span>
                                 ))}
                             </div>
                         </div>
 
-                        <div className="pt-4 border-t border-white/5 space-y-3">
+                        <div className="pt-4 border-t border-black/5 dark:border-white/5 space-y-3">
                             <div className="text-[11px] text-muted-foreground">
-                                <span className="font-bold text-white">Team: </span>{proj.team.join(', ')}
+                                <span className="font-bold text-foreground">Team: </span>{proj.team.join(', ')}
                             </div>
                             <Button onClick={() => setSelectedProject(proj)} variant="neon" className="w-full rounded-2xl h-10 text-xs font-bold gap-2">
                                 <Sparkles size={14} /> View Full Details &amp; Gallery
@@ -127,44 +119,44 @@ export function BestProjectsClient() {
             {/* Project Details Modal */}
             <AnimatePresence>
                 {selectedProject && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 20 }}
                             transition={{ duration: 0.3 }}
-                            className="relative w-full max-w-3xl max-h-[90vh] flex flex-col p-6 md:p-8 rounded-[2.5rem] border border-cyan-500/30 bg-[#0a0a0f] text-white shadow-2xl overflow-y-auto space-y-6"
+                            className="relative w-full max-w-3xl max-h-[90vh] flex flex-col p-6 md:p-8 rounded-[2.5rem] border border-cyan-500/30 bg-white dark:bg-[#0a0a0f] text-foreground dark:text-white shadow-2xl overflow-y-auto space-y-6"
                         >
-                            <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                                <span className="px-3.5 py-1 rounded-xl bg-cyan-500/20 text-cyan-400 text-[10px] font-black uppercase tracking-wider border border-cyan-500/30">
+                            <div className="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-4">
+                                <span className="px-3.5 py-1 rounded-xl bg-cyan-500/10 dark:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-[10px] font-black uppercase tracking-wider border border-cyan-500/30">
                                     {selectedProject.category}
                                 </span>
-                                <button onClick={() => setSelectedProject(null)} className="p-2 text-muted-foreground hover:text-white rounded-xl hover:bg-white/5 cursor-pointer">✕</button>
+                                <button onClick={() => setSelectedProject(null)} className="p-2 text-muted-foreground hover:text-foreground rounded-xl hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer">✕</button>
                             </div>
 
-                            <h2 className="text-2xl md:text-3xl font-black">{selectedProject.title}</h2>
+                            <h2 className="text-2xl md:text-3xl font-black text-foreground dark:text-white">{selectedProject.title}</h2>
                             
                             <div className="space-y-2">
-                                <h4 className="text-xs font-bold uppercase text-cyan-400 tracking-wider">Project Abstract</h4>
-                                <p className="text-xs md:text-sm text-slate-300 leading-relaxed font-medium">{selectedProject.abstract}</p>
+                                <h4 className="text-xs font-bold uppercase text-cyan-600 dark:text-cyan-400 tracking-wider">Project Abstract</h4>
+                                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed font-medium">{selectedProject.abstract}</p>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 text-xs">
+                            <div className="grid grid-cols-2 gap-4 p-4 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs">
                                 <div>
                                     <span className="text-[10px] text-muted-foreground uppercase font-black tracking-wider block">Team Members</span>
-                                    <span className="text-white font-semibold">{selectedProject.team.join(', ')}</span>
+                                    <span className="text-foreground dark:text-white font-semibold">{selectedProject.team.join(', ')}</span>
                                 </div>
                                 <div>
                                     <span className="text-[10px] text-muted-foreground uppercase font-black tracking-wider block">Faculty Advisor</span>
-                                    <span className="text-cyan-400 font-semibold">{selectedProject.advisor}</span>
+                                    <span className="text-cyan-600 dark:text-cyan-400 font-semibold">{selectedProject.advisor}</span>
                                 </div>
                             </div>
 
                             <div className="space-y-2">
-                                <h4 className="text-xs font-bold uppercase text-cyan-400 tracking-wider">Technologies Used</h4>
+                                <h4 className="text-xs font-bold uppercase text-cyan-600 dark:text-cyan-400 tracking-wider">Technologies Used</h4>
                                 <div className="flex flex-wrap gap-2">
                                     {selectedProject.techStack.map((tech, i) => (
-                                        <span key={i} className="px-3 py-1 rounded-xl bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 text-xs font-bold">
+                                        <span key={i} className="px-3 py-1 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-300 border border-cyan-500/20 text-xs font-bold">
                                             {tech}
                                         </span>
                                     ))}
@@ -173,7 +165,7 @@ export function BestProjectsClient() {
 
                             <div className="flex gap-4 pt-2">
                                 {selectedProject.github && (
-                                    <Button variant="outline" asChild className="rounded-2xl gap-2 text-xs">
+                                    <Button variant="outline" asChild className="rounded-2xl gap-2 text-xs border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 text-foreground hover:bg-black/10 dark:hover:bg-white/10">
                                         <a href={selectedProject.github} target="_blank" rel="noopener noreferrer">
                                             <Github size={14} /> Repository
                                         </a>
@@ -189,14 +181,14 @@ export function BestProjectsClient() {
                             </div>
 
                             {selectedProject.gallery && selectedProject.gallery.length > 0 && (
-                                <div className="space-y-3 pt-2 border-t border-white/10">
-                                    <h4 className="text-xs font-bold uppercase tracking-wider text-cyan-400">Project Snapshots</h4>
+                                <div className="space-y-3 pt-2 border-t border-black/10 dark:border-white/10">
+                                    <h4 className="text-xs font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400">Project Snapshots</h4>
                                     <div className="grid grid-cols-3 gap-2">
                                         {selectedProject.gallery.map((imgUrl, i) => (
                                             <div
                                                 key={i}
                                                 onClick={() => setLightboxState({ images: selectedProject.gallery, index: i })}
-                                                className="aspect-[16/9] rounded-xl overflow-hidden border border-white/10 relative cursor-pointer hover:border-cyan-400/50 transition-all"
+                                                className="aspect-[16/9] rounded-xl overflow-hidden border border-black/10 dark:border-white/10 relative cursor-pointer hover:border-cyan-400/50 transition-all"
                                             >
                                                 <Image fill src={imgUrl} alt={`Gallery ${i}`} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-full object-cover" />
                                             </div>

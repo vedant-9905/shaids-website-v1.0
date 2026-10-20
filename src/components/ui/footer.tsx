@@ -3,7 +3,7 @@ import { Instagram } from 'lucide-react';
 
 export function Footer() {
     return (
-        <footer className="border-t border-white/5 dark:border-white/5 bg-zinc-50 dark:bg-[#050505] py-12 transition-colors duration-300">
+        <footer className="border-t border-black/10 dark:border-white/5 bg-zinc-50 dark:bg-[#050505] py-12 transition-colors duration-300">
             <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
                 <div className="flex flex-col items-center md:items-start gap-2">
                     <Link href="/" className="text-2xl font-bold tracking-tighter text-zinc-900 dark:text-white">
@@ -13,6 +13,12 @@ export function Footer() {
                         Student&apos;s Hub for AI &amp; DS at ACPCE.<br />
                         Innovating the Future.
                     </p>
+                    <Link
+                        href="/admin"
+                        className="text-xs text-zinc-500 dark:text-zinc-600 hover:text-primary transition-colors mt-1"
+                    >
+                        Admin Panel
+                    </Link>
                 </div>
 
                 <div className="flex gap-6">

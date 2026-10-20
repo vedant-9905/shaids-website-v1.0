@@ -16,9 +16,9 @@ const ImageLightbox = dynamic(
 );
 
 export function HighlightsClient() {
-    const { highlights, academicYear } = useContent();
+    const { highlights } = useContent();
 
-    const filteredHighlights = highlights ? highlights.filter(h => !h.academicYear || h.academicYear === academicYear) : [];
+    const filteredHighlights = highlights || [];
 
     const [selectedHighlight, setSelectedHighlight] = useState<HighlightItem | null>(null);
     const [lightboxState, setLightboxState] = useState<{ images: string[]; index: number } | null>(null);
@@ -53,7 +53,7 @@ export function HighlightsClient() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.1 }}
-                        className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight"
+                        className="text-3xl md:text-5xl font-black text-foreground tracking-tight leading-tight"
                     >
                         National &amp; Intercollegiate <span className="text-gradient">Highlights</span>
                     </motion.h1>
@@ -66,14 +66,6 @@ export function HighlightsClient() {
                         Celebrating national hackathon victories, intercollegiate technical trophies, and high-impact research publications.
                     </motion.p>
                 </div>
-
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: 0.25 }}
-                >
-                    <AcademicYearToggle />
-                </motion.div>
             </div>
 
             {/* Highlights Cards Grid */}
@@ -86,13 +78,13 @@ export function HighlightsClient() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: idx * 0.08, ease: "easeOut" }}
                         whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-                        className="p-6 rounded-[2.5rem] border border-white/10 bg-[#07070b]/90 backdrop-blur-xl space-y-4 flex flex-col justify-between shadow-2xl group hover:border-primary/40 hover:shadow-[0_0_35px_rgba(168,85,247,0.2)] transition-colors relative overflow-hidden"
+                        className="p-6 rounded-[2.5rem] border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#07070b]/90 backdrop-blur-xl space-y-4 flex flex-col justify-between shadow-xl dark:shadow-2xl group hover:border-primary/40 hover:shadow-[0_0_35px_rgba(168,85,247,0.2)] transition-colors relative overflow-hidden"
                     >
-                        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/20 to-transparent" />
                         <div className="space-y-4">
                             <div
                                 onClick={() => setLightboxState({ images: [item.image, ...(item.gallery || [])], index: 0 })}
-                                className="aspect-[16/9] rounded-2xl overflow-hidden border border-white/10 relative cursor-pointer group/img"
+                                className="aspect-[16/9] rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 relative cursor-pointer group/img"
                             >
                                 <Image fill src={item.image} alt={item.title} sizes="(max-width: 768px) 100vw, 33vw" className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500" />
                                 <span className="absolute top-3 left-3 px-3 py-1 rounded-xl bg-black/80 backdrop-blur-md text-[10px] font-black uppercase tracking-wider border bg-primary/20 text-primary border-primary/30">
@@ -101,19 +93,19 @@ export function HighlightsClient() {
                             </div>
 
                             {item.achievement && (
-                                <div className="px-3.5 py-2 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center gap-2">
-                                    <Trophy size={15} className="text-amber-400 shrink-0" />
+                                <div className="px-3.5 py-2 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-300 text-xs font-bold flex items-center gap-2">
+                                    <Trophy size={15} className="text-amber-500 dark:text-amber-400 shrink-0" />
                                     <span className="font-black uppercase tracking-wider text-[11px]">{item.achievement}</span>
                                 </div>
                             )}
 
-                            <h2 className="text-xl font-black text-white tracking-tight leading-snug">{item.title}</h2>
+                            <h2 className="text-xl font-black text-foreground tracking-tight leading-snug">{item.title}</h2>
                             <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">{item.description}</p>
                         </div>
 
-                        <div className="pt-4 border-t border-white/5 space-y-3">
+                        <div className="pt-4 border-t border-black/5 dark:border-white/5 space-y-3">
                             <div className="text-[11px] text-muted-foreground space-y-1">
-                                <div><span className="font-bold text-white">Team: </span>{item.team}</div>
+                                <div><span className="font-bold text-foreground">Team: </span>{item.team}</div>
                                 <div className="flex items-center gap-3 pt-1 text-[10px]">
                                     <span className="flex items-center gap-1"><MapPin size={10} className="text-primary" /> {item.location}</span>
                                     <span className="flex items-center gap-1"><Calendar size={10} className="text-primary" /> {item.date}</span>
@@ -130,39 +122,39 @@ export function HighlightsClient() {
             {/* Detail Modal */}
             <AnimatePresence>
                 {selectedHighlight && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 20 }}
                             transition={{ duration: 0.3 }}
-                            className="relative w-full max-w-3xl max-h-[90vh] flex flex-col p-6 md:p-8 rounded-[2.5rem] border border-primary/30 bg-[#0a0a0f] text-white shadow-2xl overflow-y-auto space-y-6"
+                            className="relative w-full max-w-3xl max-h-[90vh] flex flex-col p-6 md:p-8 rounded-[2.5rem] border border-primary/30 bg-white dark:bg-[#0a0a0f] text-foreground dark:text-white shadow-2xl overflow-y-auto space-y-6"
                         >
-                            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                            <div className="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-4">
                                 <div className="flex items-center gap-2">
                                     <span className="px-3.5 py-1 rounded-xl text-[10px] font-black uppercase tracking-wider border bg-primary/20 text-primary border-primary/30">
                                         {selectedHighlight.category}
                                     </span>
                                     {selectedHighlight.achievement && (
-                                        <span className="px-3.5 py-1 rounded-xl text-[10px] font-black uppercase tracking-wider border bg-amber-500/20 text-amber-300 border-amber-500/30 flex items-center gap-1">
+                                        <span className="px-3.5 py-1 rounded-xl text-[10px] font-black uppercase tracking-wider border bg-amber-500/20 text-amber-600 dark:text-amber-300 border-amber-500/30 flex items-center gap-1">
                                             🏆 {selectedHighlight.achievement}
                                         </span>
                                     )}
                                 </div>
-                                <button onClick={() => setSelectedHighlight(null)} className="p-2 text-muted-foreground hover:text-white rounded-xl hover:bg-white/5 cursor-pointer">✕</button>
+                                <button onClick={() => setSelectedHighlight(null)} className="p-2 text-muted-foreground hover:text-foreground rounded-xl hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer">✕</button>
                             </div>
 
-                            <h2 className="text-2xl md:text-3xl font-black">{selectedHighlight.title}</h2>
-                            <p className="text-xs md:text-sm text-slate-300 leading-relaxed font-medium">{selectedHighlight.description}</p>
+                            <h2 className="text-2xl md:text-3xl font-black text-foreground dark:text-white">{selectedHighlight.title}</h2>
+                            <p className="text-xs md:text-sm text-muted-foreground leading-relaxed font-medium">{selectedHighlight.description}</p>
 
-                            <div className="grid grid-cols-2 gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 text-xs">
+                            <div className="grid grid-cols-2 gap-4 p-4 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs">
                                 <div>
                                     <span className="text-[10px] text-muted-foreground uppercase font-black tracking-wider block">Award / Placement</span>
-                                    <span className="text-amber-400 font-bold text-sm">{selectedHighlight.achievement || 'Recognition'}</span>
+                                    <span className="text-amber-500 dark:text-amber-400 font-bold text-sm">{selectedHighlight.achievement || 'Recognition'}</span>
                                 </div>
                                 <div>
                                     <span className="text-[10px] text-muted-foreground uppercase font-black tracking-wider block">Team / Contributors</span>
-                                    <span className="text-white font-semibold text-sm">{selectedHighlight.team}</span>
+                                    <span className="text-foreground dark:text-white font-semibold text-sm">{selectedHighlight.team}</span>
                                 </div>
                             </div>
 
@@ -172,14 +164,14 @@ export function HighlightsClient() {
                             </div>
 
                             {selectedHighlight.gallery && selectedHighlight.gallery.length > 0 && (
-                                <div className="space-y-3 pt-2 border-t border-white/10">
+                                <div className="space-y-3 pt-2 border-t border-black/10 dark:border-white/10">
                                     <h4 className="text-xs font-bold uppercase tracking-wider text-primary">Accolade Snapshots</h4>
                                     <div className="grid grid-cols-3 gap-2">
                                         {selectedHighlight.gallery.map((imgUrl, i) => (
                                             <div
                                                 key={i}
                                                 onClick={() => setLightboxState({ images: selectedHighlight.gallery, index: i })}
-                                                className="aspect-[16/9] rounded-xl overflow-hidden border border-white/10 relative cursor-pointer hover:border-primary/50 transition-all"
+                                                className="aspect-[16/9] rounded-xl overflow-hidden border border-black/10 dark:border-white/10 relative cursor-pointer hover:border-primary/50 transition-all"
                                             >
                                                 <Image fill src={imgUrl} alt={`Gallery ${i}`} sizes="(max-width: 768px) 50vw, 33vw" className="w-full h-full object-cover" />
                                             </div>
