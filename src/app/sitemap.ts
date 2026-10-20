@@ -19,6 +19,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/resources',
         '/team',
         '/staff',
+        '/privacy',
+        '/terms',
     ];
 
     return routes.map((route) => ({

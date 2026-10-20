@@ -44,8 +44,8 @@ export function ShareModal({ isOpen, onClose, title, description, url }: ShareMo
                 });
                 toast.success('Shared successfully!');
                 onClose();
-            } catch (err) {
-                console.log('Share canceled or failed', err);
+            } catch {
+                // Share dialog cancelled by user or Web Share API unsupported
             }
         }
     };

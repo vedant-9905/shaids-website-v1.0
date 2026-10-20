@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    qualities: [50, 75, 80, 85, 90, 100],
     remotePatterns: [
       // Google OAuth profile pictures
       {
@@ -42,3 +43,4 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+

@@ -64,12 +64,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             // 2. If not authenticated via local session, check Supabase with a 1.5s max network timeout
             if (!isUserAuthenticated && isSupabaseConfigured && supabase) {
                 try {
-                    const sessionPromise = supabase.auth.getSession();
+                    const sessionPromise = supabase.auth.getSession().catch(() => ({ data: { session: null } }));
                     const timeoutPromise = new Promise<{ data: { session: null } }>((resolve) =>
                         setTimeout(() => resolve({ data: { session: null } }), 1500)
                     );
-                    const { data } = await Promise.race([sessionPromise, timeoutPromise]);
-                    if (data?.session) {
+                    const res = await Promise.race([sessionPromise, timeoutPromise]);
+                    if (res?.data?.session) {
                         isUserAuthenticated = true;
                     }
                 } catch (err) {

@@ -10,7 +10,13 @@ export const isSupabaseConfigured = Boolean(
 );
 
 export const supabase = isSupabaseConfigured
-    ? createClient(supabaseUrl, supabaseAnonKey)
+    ? createClient(supabaseUrl, supabaseAnonKey, {
+        auth: {
+            persistSession: typeof window !== 'undefined',
+            autoRefreshToken: typeof window !== 'undefined',
+            detectSessionInUrl: false,
+        },
+    })
     : null;
 
 /**
@@ -89,7 +95,7 @@ export async function deleteMediaFile(fileUrl?: string, bucket = 'shaids-assets'
             return false;
         }
 
-        console.log('Successfully deleted old file from Storage:', filePath);
+        // Old file cleanup from Storage completed successfully
         return true;
     } catch (err) {
         console.warn('Error deleting old file:', err);

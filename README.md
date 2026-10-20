@@ -53,7 +53,6 @@ Create a `.env.local` file in the repository root:
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
-NEXT_PUBLIC_ADMIN_PASSWORD=your-admin-password
 ```
 
 ### 4. Run Development Server
@@ -86,5 +85,7 @@ For architectural diagrams, database schema definitions, component specification
 
 ## 📄 License
 
-© 2026 SHAIDS-ACPCE. Built with ❤️ by the SHAIDS Tech Team — Department of AI & Data Science, A. C. Patil College of Engineering, Navi Mumbai.
+© 2026 Vedant Mahamunkar. All rights reserved.  
+Developed for SHAIDS — Department of AI & Data Science, A. C. Patil College of Engineering, Navi Mumbai.  
+See [Terms of Use](https://shaids-acpce.org/terms) and [Privacy Policy](https://shaids-acpce.org/privacy).
 

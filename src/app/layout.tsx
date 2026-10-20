@@ -30,7 +30,10 @@ export const metadata: Metadata = {
     "Navi Mumbai Engineering", "A. C. Patil College of Engineering", "VECTORS Fest",
     "KURUKSHETRA Fest", "RHYTHMS Fest", "SIGMOID Magazine", "Student Research", "Machine Learning"
   ],
-  authors: [{ name: "Department of AI & DS, ACPCE" }],
+  authors: [{ name: "Vedant Mahamunkar" }, { name: "Department of AI & DS, ACPCE" }],
+  alternates: {
+    canonical: "https://shaids-acpce.org",
+  },
   openGraph: {
     title: "SHAIDS | Student Hub for AI & Data Science - ACPCE",
     description: "Explore innovation, student research, hackathons, academic excellence, and annual flagship fests at ACPCE AI & DS Department.",
@@ -38,11 +41,18 @@ export const metadata: Metadata = {
     siteName: "SHAIDS ACPCE",
     locale: "en_US",
     type: "website",
+    images: [{
+      url: "https://shaids-acpce.org/og-image.jpg",
+      width: 1200,
+      height: 630,
+      alt: "SHAIDS — Student Hub for AI & Data Science at ACPCE",
+    }],
   },
   twitter: {
     card: "summary_large_image",
     title: "SHAIDS | Student Hub for AI & Data Science - ACPCE",
     description: "Official portal of the Department of Artificial Intelligence & Data Science at A. C. Patil College of Engineering.",
+    images: ["https://shaids-acpce.org/og-image.jpg"],
   },
   robots: {
     index: true,
@@ -87,6 +97,9 @@ export default async function RootLayout({
         {process.env.NEXT_PUBLIC_SUPABASE_URL && (
           <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_SUPABASE_URL} />
         )}
+        <link rel="apple-touch-icon" href="/apple-touch-icon.jpg" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#0e0a20" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}

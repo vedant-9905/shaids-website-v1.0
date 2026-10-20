@@ -687,7 +687,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
                     }
                 }
             } catch (err: unknown) {
-                console.error('Supabase Live Refresh Error:', err);
+                console.warn('Supabase Live Refresh unreachable or offline. Operating in local storage mode:', err);
             } finally {
                 inFlightRefreshPromise = null;
             }
@@ -806,7 +806,11 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
                         scheduleSingleTableRefresh(payload.table);
                     }
                 )
-                .subscribe();
+                .subscribe((status) => {
+                    if (status === 'CHANNEL_ERROR') {
+                        // Channel connection error (e.g., Supabase offline or paused)
+                    }
+                });
         }
 
         // Adaptive Heartbeat & Instant Tab Focus Revalidation
@@ -1996,6 +2000,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
         saveDomainAward,
         deleteDomainAward,
         updateHomeConfig
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }), [
         events,
         team,

@@ -1,0 +1,17 @@
+{
+  "name": "SHAIDS — Student Hub for AI & Data Science",
+  "short_name": "SHAIDS",
+  "description": "Official portal of the Department of Artificial Intelligence & Data Science at A. C. Patil College of Engineering, Navi Mumbai.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0e0a20",
+  "theme_color": "#0e0a20",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}

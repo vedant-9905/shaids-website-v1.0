@@ -14,9 +14,15 @@ export default function AdminLoginPage() {
     const [loading, setLoading] = useState(false);
 
     const performLocalAuth = () => {
+        // Only allow password-bypass in a genuinely unconfigured (dev/local) environment.
+        // If Supabase IS configured but temporarily offline/paused, fail hard — never silently bypass auth.
+        if (isSupabaseConfigured) {
+            toast.error('Authentication service is temporarily unavailable. Please try again shortly.');
+            return;
+        }
         if (password.length >= 4) {
             sessionStorage.setItem('shaids_admin_session', JSON.stringify({ email, authenticated: true, role: 'admin' }));
-            toast.success('Admin Session authenticated (Local Mode)');
+            toast.success('Admin Session authenticated (Local Dev Mode)');
             router.push('/admin');
         } else {
             toast.error('Password must be at least 4 characters for local demo mode');

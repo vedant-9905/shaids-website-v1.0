@@ -16,16 +16,29 @@ export function Footer() {
                 </div>
 
                 <div className="flex gap-6">
-
                     <Link href="https://instagram.com/shaids_acpce/" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-primary transition-colors flex items-center gap-2">
                         <Instagram size={20} />
                         <span className="hidden sm:inline text-sm font-medium">Instagram</span>
                     </Link>
                 </div>
 
-                <p className="text-xs text-zinc-500 dark:text-zinc-600" suppressHydrationWarning>
-                    &copy; {new Date().getFullYear()} SHAIDS-ACPCE. All rights reserved.
-                </p>
+                <div className="flex flex-col items-center md:items-end gap-2">
+                    <p className="text-xs text-zinc-500 dark:text-zinc-600" suppressHydrationWarning>
+                        &copy; {new Date().getFullYear()} Vedant Mahamunkar. All rights reserved.
+                    </p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-600">
+                        Developed for SHAIDS &mdash; Dept. of AI &amp; DS, ACPCE.
+                    </p>
+                    <div className="flex items-center gap-3 mt-1">
+                        <Link href="/privacy" className="text-xs text-zinc-500 dark:text-zinc-600 hover:text-primary transition-colors">
+                            Privacy Policy
+                        </Link>
+                        <span className="text-zinc-600 dark:text-zinc-700 text-xs">·</span>
+                        <Link href="/terms" className="text-xs text-zinc-500 dark:text-zinc-600 hover:text-primary transition-colors">
+                            Terms of Use
+                        </Link>
+                    </div>
+                </div>
             </div>
         </footer>
     );
