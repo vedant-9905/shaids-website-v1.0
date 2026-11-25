@@ -362,6 +362,6 @@ Developed for **SHAIDS — Department of Artificial Intelligence & Data Science,
 
 This repository serves strictly as a **production showcase and architectural reference**. Unauthorized reproduction, redistribution, cloning for deployment, or commercial replication of this codebase is not permitted.
 
-See [Terms of Use](https://shaids-acpce.org/terms) and [Privacy Policy](https://shaids-acpce.org/privacy).
+See [Terms of Use](./TERMS_OF_USE.md) and [Privacy Policy](./PRIVACY_POLICY.md).
 
 **Built with ❤️ by the SHAIDS Tech Team — Department of AI & Data Science, ACPCE Navi Mumbai**
